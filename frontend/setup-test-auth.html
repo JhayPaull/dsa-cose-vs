@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Test Auth - TCC E-Voting System</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>TAGOLOAN COMMUNITY COLLEGE</h1>
+                <p>E-Voting System - Auth Setup</p>
+            </div>
+        </header>
+        
+        <main class="auth-container">
+            <div class="auth-card">
+                <div class="logo-container">
+                    <img src="/images/logo1.png" alt="Logo 1" class="login-logo">
+                    <img src="/images/logo2.png" alt="Logo 2" class="login-logo">
+                </div>
+                <h2>Setup Test Authentication</h2>
+                <p>This page will set up authentication tokens for testing purposes.</p>
+                
+                <div class="form-group">
+                    <label for="userType">User Type:</label>
+                    <select id="userType">
+                        <option value="voter">Voter</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="userName">User Name:</label>
+                    <input type="text" id="userName" value="Test User">
+                </div>
+                
+                <div class="form-group">
+                    <label for="userEmail">Email:</label>
+                    <input type="email" id="userEmail" value="test@example.com">
+                </div>
+                
+                <button id="setupAuth" class="btn btn-primary btn-block">Setup Authentication</button>
+                <button id="clearAuth" class="btn btn-danger btn-block">Clear Authentication</button>
+                
+                <div class="auth-buttons-center">
+                    <p class="auth-link">
+                        <a href="/pages/dashboard/">Go to Dashboard</a>
+                    </p>
+                    <p class="auth-link">
+                        <a href="/pages/admin/">Go to Admin Panel</a>
+                    </p>
+                    <p class="auth-link">
+                        <a href="/auth/login/">Back to Login</a>
+                    </p>
+                    <p class="auth-link">
+                        <a href="/">Back to Home</a>
+                    </p>
+                </div>
+                
+                <div id="message" class="message"></div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        document.getElementById('setupAuth').addEventListener('click', function() {
+            const userType = document.getElementById('userType').value;
+            const userName = document.getElementById('userName').value;
+            const userEmail = document.getElementById('userEmail').value;
+            
+            // Create user data
+            const userData = {
+                email: userEmail,
+                full_name: userName,
+                role: userType
+            };
+            
+            // Store in localStorage
+            localStorage.setItem('token', 'dummy-token-' + Date.now());
+            localStorage.setItem('user', JSON.stringify(userData));
+            
+            // Show success message
+            document.getElementById('message').innerHTML = 'Authentication setup complete! You can now access the dashboard.';
+            document.getElementById('message').className = 'message success';
+        });
+        
+        document.getElementById('clearAuth').addEventListener('click', function() {
+            // Clear authentication
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            
+            // Show success message
+            document.getElementById('message').innerHTML = 'Authentication cleared!';
+            document.getElementById('message').className = 'message success';
+        });
+    </script>
+</body>
+</html>

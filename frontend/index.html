@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCC E-Voting System - Home</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/landing.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <main class="landing-page">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h2>Participate in School Elections Digitally</h2>
+                <p>Experience secure, transparent, and real-time vote tabulation with our advanced e-voting platform</p>
+                <div class="landing-auth-buttons">
+                    <a href="auth/login/" class="btn btn-primary">Login to Vote</a>
+                    <a href="auth/register/" class="btn btn-secondary">Register Account</a>
+                </div>
+            </div>
+        </div>
+    </main>
+        
+    <footer class="copyright">
+        &copy; 2025 Tagoloan Community College. All rights reserved.
+    </footer>
+</div>    <!-- Firebase SDK -->
+<script type="module">
+    // Firebase Web SDK Configuration
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    
+    const firebaseConfig = {
+        apiKey: "AIzaSyDMc7Jjalkz8ymZkLfcbjMAtZgUpYC2xeU",
+        authDomain: "dsa-cose-vs.firebaseapp.com",
+        projectId: "dsa-cose-vs",
+        storageBucket: "dsa-cose-vs.firebasestorage.app",
+        messagingSenderId: "249427875322",
+        appId: "1:249427875322:web:e2a8c1a78cd1157f2f8043",
+        measurementId: "G-R9WJ2VM2ZT"
+    };
+    
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
+    
+    // Make Firebase available globally
+    window.firebaseApp = app;
+    window.firebaseAnalytics = analytics;
+    window.firebaseDb = db;
+    
+    console.log('Firebase initialized for DSA-COSE-VS');
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>

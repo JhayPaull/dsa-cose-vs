@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - TCC E-Voting System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMc7Jjalkz8ymZkLfcbjMAtZgUpYC2xeU",
+            authDomain: "dsa-cose-vs.firebaseapp.com",
+            projectId: "dsa-cose-vs",
+            storageBucket: "dsa-cose-vs.firebasestorage.app",
+            messagingSenderId: "249427875322",
+            appId: "1:249427875322:web:e2a8c1a78cd1157f2f8043",
+            measurementId: "G-R9WJ2VM2ZT"
+        };
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        // Make Firebase services available globally
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
+    </script>
+</head>
+<body>
+    <div style="width: 100%;">
+        <!-- Header will be loaded here by load-header.js -->
+        <script src="/js/load-header.js"></script>
+        
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <nav class="sidebar-nav" id="sidebarNav">
+        <a href="/pages/dashboard/" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+        </a>
+    
+        <a href="/pages/admin/" class="nav-item active" id="adminLink">
+            <i class="fas fa-user-shield"></i>
+            <span>Admin Panel</span>
+        </a>
+    
+        <a href="/pages/voting/" class="nav-item">
+            <i class="fas fa-vote-yea"></i>
+            <span>Voting</span>
+        </a>
+    
+        <a href="/pages/analytics/" class="nav-item">
+            <i class="fas fa-chart-bar"></i>
+            <span>Analytics</span>
+        </a>
+    
+        <a href="/pages/notifications/" class="nav-item">
+            <i class="fas fa-bell"></i>
+            <span>Notifications</span>
+        </a>
+    
+        <a href="/pages/profile/" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+            </aside>
+            
+            <main class="dashboard-content">
+                <div class="page-header">
+                    <h2>Analytics & Reports</h2>
+                    <p>Detailed election statistics and data visualization</p>
+                </div>
+                
+                <div class="analytics-grid">
+                    <div class="section-card">
+                        <h3>Voter Turnout</h3>
+                        <canvas id="turnoutChart"></canvas>
+                    </div>
+                    
+                    <div class="section-card">
+                        <h3>Candidate Performance</h3>
+                        <canvas id="candidateChart"></canvas>
+                    </div>
+                    
+                    <div class="section-card full-width">
+                        <h3>Vote Distribution Over Time</h3>
+                        <canvas id="timeChart"></canvas>
+                    </div>
+                    
+                    <div class="section-card">
+                        <h3>Export Data</h3>
+                        <div class="export-options">
+                            <button id="exportPdf" class="btn btn-primary">
+                                <i class="fas fa-file-pdf"></i> Export as PDF
+                            </button>
+                            <button id="exportCsv" class="btn btn-secondary">
+                                <i class="fas fa-file-csv"></i> Export as CSV
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <div id="notificationPanel" class="notification-panel">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="close-btn" id="closeNotifications">&times;</button>
+        </div>
+        <div id="notificationList" class="notification-list">
+            <p class="empty-state">No notifications</p>
+        </div>
+    </div>
+    
+    <footer class="copyright">
+        &copy; 2025 Tagoloan Community College. All rights reserved.
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/api-config.js"></script>
+    <script src="/js/analytics.js"></script>
+    <script src="/js/admin-menu.js"></script>
+    <script src="/js/notifications.js"></script>
+    <script src="/js/header-nav.js"></script>
+</body>
+</html>

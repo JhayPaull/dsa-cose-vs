@@ -1,0 +1,17 @@
+{
+  "name": "tcc-e-voting-system",
+  "version": "1.0.0",
+  "description": "Web and Mobile-Based E-Voting System with Real-Time Vote Tabulation for School Elections",
+  "scripts": {
+    "serve": "npx serve -l 8080 frontend",
+    "dev": "npx serve -l 8080 frontend",
+    "start": "node frontend/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "firebase": "^12.6.0",
+    "node-fetch": "^3.3.2",
+    "serve": "^14.2.1",
+    "express": "^4.18.2"
+  }
+}

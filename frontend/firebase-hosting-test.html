@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Hosting Test</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Firebase Hosting Test</h1>
+            <p>Testing responsive container sizing and Firebase deployment</p>
+        </header>
+        
+        <main>
+            <div class="dashboard-container">
+                <div class="sidebar">
+                    <h2>Sidebar</h2>
+                    <p>This should size properly on all screens</p>
+                </div>
+                
+                <div class="dashboard-content">
+                    <h2>Main Content Area</h2>
+                    <p>This content area should expand to fill available space.</p>
+                    
+                    <div class="test-grid">
+                        <div class="test-card">
+                            <h3>Test Card 1</h3>
+                            <p>Responsive sizing test</p>
+                        </div>
+                        <div class="test-card">
+                            <h3>Test Card 2</h3>
+                            <p>Container fitting test</p>
+                        </div>
+                        <div class="test-card">
+                            <h3>Test Card 3</h3>
+                            <p>Flexbox layout test</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <style>
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .test-card {
+            background: var(--gray-light);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</body>
+</html>

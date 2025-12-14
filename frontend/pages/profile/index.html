@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - TCC E-Voting System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMc7Jjalkz8ymZkLfcbjMAtZgUpYC2xeU",
+            authDomain: "dsa-cose-vs.firebaseapp.com",
+            projectId: "dsa-cose-vs",
+            storageBucket: "dsa-cose-vs.firebasestorage.app",
+            messagingSenderId: "249427875322",
+            appId: "1:249427875322:web:e2a8c1a78cd1157f2f8043",
+            measurementId: "G-R9WJ2VM2ZT"
+        };
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        // Make Firebase services available globally
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
+    </script>
+</head>
+<body>
+    <div style="width: 100%;">
+        <header class="admin-header">
+            <div class="container">
+                <div class="logo">
+                    <div class="logo-container">
+                        <img src="/images/logo1.png" alt="Logo 1" class="logo-image">
+                        <img src="/images/logo2.png" alt="Logo 2" class="logo-image">
+                        <img src="/images/logo3.png" alt="Logo 3" class="logo-image">
+                    </div>
+                    <div class="logo-text">
+                        <h1>TAGOLOAN COMMUNITY COLLEGE</h1>
+                        <p>E-Voting System - <span id="userRole">Student</span> Portal</p>
+                    </div>
+                    <div class="user-nav active">
+                        <button class="bars-menu-btn" id="userMenuBtn">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                        <div class="dropdown-menu" id="userDropdown">
+                            <a href="/pages/profile/" class="dropdown-item">
+                                <i class="fas fa-user"></i> Profile
+                            </a>
+                            <a href="/logout" class="dropdown-item text-danger" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="menu-overlay" id="menuOverlay"></div>
+        
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <nav class="sidebar-nav" id="sidebarNav">
+        <a href="/pages/dashboard/" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+        </a>
+    
+        <a href="/pages/admin/" class="nav-item active" id="adminLink">
+            <i class="fas fa-user-shield"></i>
+            <span>Admin Panel</span>
+        </a>
+    
+        <a href="/pages/voting/" class="nav-item">
+            <i class="fas fa-vote-yea"></i>
+            <span>Voting</span>
+        </a>
+    
+        <a href="/pages/analytics/" class="nav-item">
+            <i class="fas fa-chart-bar"></i>
+            <span>Analytics</span>
+        </a>
+    
+        <a href="/pages/notifications/" class="nav-item">
+            <i class="fas fa-bell"></i>
+            <span>Notifications</span>
+        </a>
+    
+        <a href="/pages/profile/" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+            </aside>
+            
+            <main class="dashboard-content">
+                <div class="page-header">
+                    <h2>User Profile</h2>
+                    <p>Manage your account settings and preferences</p>
+                </div>
+                
+                <div class="profile-container">
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="profile-info">
+                                <h3 id="profileName">User Name</h3>
+                                <p id="profileEmail">user@example.com</p>
+                                <span class="role-badge" id="profileRole">voter</span>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-details">
+                            <h4>Account Information</h4>
+                            <div class="detail-row">
+                                <span class="label">Student ID:</span>
+                                <span id="studentId" class="value">STUDENT001</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Department:</span>
+                                <span id="department" class="value">Computer Science</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Year & Section:</span>
+                                <span id="yearSection" class="value">4th Year - A</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="label">Member Since:</span>
+                                <span id="memberSince" class="value">January 1, 2024</span>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-actions">
+                            <button id="editProfileBtn" class="btn btn-secondary">
+                                <i class="fas fa-edit"></i> Edit Profile
+                            </button>
+                            <button id="changePasswordBtn" class="btn btn-primary">
+                                <i class="fas fa-key"></i> Change Password
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-vote-yea"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="votesCast">0</h3>
+                                <p>Votes Cast</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="notificationsReceived">0</h3>
+                                <p>Notifications</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <div id="notificationPanel" class="notification-panel">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="close-btn" id="closeNotifications">&times;</button>
+        </div>
+        <div id="notificationList" class="notification-list">
+            <p class="empty-state">No notifications</p>
+        </div>
+    </div>
+    
+    <footer class="copyright">
+        &copy; 2025 Tagoloan Community College. All rights reserved.
+    </footer>
+    
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <button class="close-btn" id="closeEditProfile">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm" class="profile-form">
+                    <div class="form-group">
+                        <label for="editFirstName">First Name:</label>
+                        <input type="text" id="editFirstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLastName">Last Name:</label>
+                        <input type="text" id="editLastName" name="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEmail">Email:</label>
+                        <input type="email" id="editEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDepartment">Department:</label>
+                        <input type="text" id="editDepartment" name="department" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Change Password</h3>
+                <button class="close-btn" id="closeChangePassword">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm" class="profile-form">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password:</label>
+                        <input type="password" id="currentPassword" name="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password:</label>
+                        <input type="password" id="newPassword" name="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmNewPassword">Confirm New Password:</label>
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/api-config.js"></script>
+    <script src="/js/profile.js"></script>
+    <script src="/js/admin-menu.js"></script>
+    <script src="/js/notifications.js"></script>
+    <script src="/js/header-nav.js"></script>
+</body>
+</html>

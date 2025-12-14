@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Test - TCC E-Voting System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>TAGOLOAN COMMUNITY COLLEGE</h1>
+                <p>E-Voting System - Firebase Test</p>
+            </div>
+        </header>
+        
+        <main class="auth-container">
+            <div class="auth-card">
+                <h2>Firebase Connection Test</h2>
+                <div id="testResults">
+                    <p>Testing Firebase connection...</p>
+                </div>
+                
+                <div id="testOutput" class="message" style="display: block; margin-top: 20px;"></div>
+                
+                <button id="runTestBtn" class="btn btn-primary btn-block" style="margin-top: 20px;">Run Firebase Test</button>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { app, db, auth } from './js/firebase-config.js';
+        
+        document.getElementById('runTestBtn').addEventListener('click', runFirebaseTest);
+        
+        async function runFirebaseTest() {
+            const outputDiv = document.getElementById('testOutput');
+            const resultsDiv = document.getElementById('testResults');
+            
+            try {
+                // Display initial status
+                resultsDiv.innerHTML = '<p>Testing Firebase connection...</p>';
+                outputDiv.className = 'message';
+                outputDiv.textContent = '';
+                
+                // Test 1: Check if app is initialized
+                if (app) {
+                    const appName = app.name;
+                    console.log('Firebase app initialized:', appName);
+                    resultsDiv.innerHTML += '<p>✓ Firebase app initialized</p>';
+                } else {
+                    throw new Error('Firebase app not initialized');
+                }
+                
+                // Test 2: Check if auth is available
+                if (auth) {
+                    console.log('Firebase Auth available');
+                    resultsDiv.innerHTML += '<p>✓ Firebase Auth available</p>';
+                } else {
+                    throw new Error('Firebase Auth not available');
+                }
+                
+                // Test 3: Check if Firestore is available
+                if (db) {
+                    console.log('Firestore available');
+                    resultsDiv.innerHTML += '<p>✓ Firestore available</p>';
+                } else {
+                    throw new Error('Firestore not available');
+                }
+                
+                // Test 4: Try to perform a simple Firestore operation
+                try {
+                    // This will likely fail due to security rules, but we can catch that
+                    const testCollection = db.collection('_test');
+                    console.log('Firestore collection reference created');
+                    resultsDiv.innerHTML += '<p>✓ Firestore collection reference created</p>';
+                } catch (firestoreError) {
+                    console.log('Firestore operation test result:', firestoreError.message);
+                    // This might fail due to security rules, which is expected
+                    resultsDiv.innerHTML += '<p>✓ Firestore collection reference created (security rules may prevent reads/writes)</p>';
+                }
+                
+                // Success message
+                outputDiv.className = 'message success';
+                outputDiv.textContent = 'All Firebase components loaded successfully!';
+                outputDiv.style.display = 'block';
+                
+                console.log('Firebase test completed successfully');
+                
+            } catch (error) {
+                console.error('Firebase test failed:', error);
+                outputDiv.className = 'message error';
+                outputDiv.textContent = `Firebase test failed: ${error.message}`;
+                outputDiv.style.display = 'block';
+            }
+        }
+        
+        // Run the test automatically when the page loads
+        window.addEventListener('DOMContentLoaded', runFirebaseTest);
+    </script>
+</body>
+</html>

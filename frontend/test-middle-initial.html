@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Middle Initial</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Test Middle Initial Functionality</h1>
+        
+        <form id="testForm">
+            <div class="form-group">
+                <label for="middleInitial">Middle Initial 
+                    <button type="button" id="toggleMiddleInitial" class="btn btn-primary btn-small">Remove Middle Initial</button>
+                </label>
+                <input type="text" id="middleInitial" name="middleInitial">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButton = document.getElementById('toggleMiddleInitial');
+            const middleInitialInput = document.getElementById('middleInitial');
+            
+            console.log('Elements found:', {toggleButton, middleInitialInput});
+            
+            if (toggleButton && middleInitialInput) {
+                console.log('Setting up event listener');
+                
+                toggleButton.addEventListener('click', function() {
+                    console.log('Button clicked!');
+                    console.log('Current disabled state:', middleInitialInput.disabled);
+                    
+                    if (!middleInitialInput.disabled) {
+                        // DISABLE the input when button is pressed
+                        middleInitialInput.disabled = true;
+                        middleInitialInput.value = '';
+                        toggleButton.textContent = 'Add Middle Initial';
+                        toggleButton.classList.remove('btn-primary');
+                        toggleButton.classList.add('btn-secondary');
+                        console.log('Disabled middle initial input');
+                    } else {
+                        // ENABLE the input when button is pressed again
+                        middleInitialInput.disabled = false;
+                        middleInitialInput.value = '';
+                        toggleButton.textContent = 'Remove Middle Initial';
+                        toggleButton.classList.remove('btn-secondary');
+                        toggleButton.classList.add('btn-primary');
+                        console.log('Enabled middle initial input');
+                    }
+                });
+            } else {
+                console.log('Toggle button or input not found');
+            }
+            
+            document.getElementById('testForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const value = document.getElementById('middleInitial').value;
+                document.getElementById('result').innerHTML = '<p>Submitted value: "' + value + '"</p>';
+            });
+        });
+    </script>
+</body>
+</html>

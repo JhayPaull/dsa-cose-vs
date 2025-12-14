@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .info {
+            color: blue;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #800020;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #a0002a;
+        }
+        #result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Final Connection Test</h1>
+    
+    <div class="test-section">
+        <h2>Test Backend Health</h2>
+        <button id="testHealth">Test Backend Health</button>
+        <div id="healthResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Registration</h2>
+        <button id="testRegistration">Test User Registration</button>
+        <div id="registrationResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Login</h2>
+        <button id="testLogin">Test User Login</button>
+        <div id="loginResult"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3001/api';
+        
+        // Generate a unique email for testing
+        const testEmail = `testuser${Date.now()}@example.com`;
+        const testPassword = 'password123';
+        const testStudentId = `STUDENT${Date.now()}`;
+        
+        document.getElementById('testHealth').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('healthResult');
+            resultDiv.innerHTML = 'Testing backend health...';
+            resultDiv.className = 'info';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<span class="success">✓ Backend health check successful!<br>Status: ${data.message}<br>Database: ${data.database}</span>`;
+                    resultDiv.className = 'success';
+                } else {
+                    resultDiv.innerHTML = `<span class="error">✗ Backend health check failed: ${response.status} ${response.statusText}</span>`;
+                    resultDiv.className = 'error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ Backend health check error: ${error.message}</span>`;
+                resultDiv.className = 'error';
+                console.error('Health check error:', error);
+            }
+        });
+        
+        document.getElementById('testRegistration').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('registrationResult');
+            resultDiv.innerHTML = 'Testing registration...';
+            resultDiv.className = 'info';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        lastName: 'Test',
+                        firstName: 'User',
+                        middleInitial: 'T',
+                        year: '1',
+                        section: 'A',
+                        department: 'Computer Science',
+                        studentId: testStudentId,
+                        email: testEmail,
+                        password: testPassword,
+                        confirmPassword: testPassword,
+                        fullName: 'User T Test'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<span class="success">✓ Registration successful!<br>User ID: ${data.userId}</span>`;
+                    resultDiv.className = 'success';
+                } else {
+                    resultDiv.innerHTML = `<span class="error">✗ Registration failed: ${data.message || 'Unknown error'}</span>`;
+                    resultDiv.className = 'error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ Registration network error: ${error.message}</span>`;
+                resultDiv.className = 'error';
+                console.error('Registration error:', error);
+            }
+        });
+        
+        document.getElementById('testLogin').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('loginResult');
+            resultDiv.innerHTML = 'Testing login...';
+            resultDiv.className = 'info';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: testEmail,
+                        password: testPassword
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<span class="success">✓ Login successful!<br>Token: ${data.token.substring(0, 20)}...</span>`;
+                    resultDiv.className = 'success';
+                } else {
+                    resultDiv.innerHTML = `<span class="error">✗ Login failed: ${data.message || 'Unknown error'}</span>`;
+                    resultDiv.className = 'error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ Login network error: ${error.message}</span>`;
+                resultDiv.className = 'error';
+                console.error('Login error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

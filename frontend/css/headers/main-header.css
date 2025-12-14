@@ -1,0 +1,258 @@
+/* ============================================
+   Main Header Styles
+   Tagoloan Community College E-Voting System
+   ============================================ */
+
+.main-header {
+    width: 100%;
+    background: #800020; /* Dark red/maroon background */
+    color: #ffffff;
+    padding: 15px 0 10px 0;
+    margin: 0;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #800020;
+}
+
+/* Top Yellow Line - at the very top of header (thin) */
+.main-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #FFD700; /* Yellow line at top */
+    z-index: 3;
+}
+
+.main-header .header-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Logos Row - Three logos arranged horizontally */
+.main-header .logos-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    padding: 15px 0 10px 0;
+    position: relative;
+}
+
+/* Individual Logo Item */
+.main-header .logo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    position: relative;
+}
+
+.main-header .logo-image {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: transparent;
+}
+
+/* Logo Label Text - Left side (COLLEGE and 2003) */
+.main-header .logo-label-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 8px;
+}
+
+.main-header .logo-label-left .logo-label-line {
+    font-size: 0.75rem;
+    color: #ffffff;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.main-header .logo-label-left .logo-year {
+    font-size: 0.75rem;
+    color: #ffffff;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-top: 1px;
+}
+
+/* Logo Label Text - Right side (TCC - COMMISSION ON / STUDENT ELECTIONS) */
+.main-header .logo-label-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 8px;
+}
+
+.main-header .logo-label-right .logo-label-line {
+    font-size: 0.75rem;
+    color: #ffffff;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+/* Yellow Separator Line - Below logos (thicker) */
+.main-header .logo-separator {
+    width: 100%;
+    height: 4px;
+    background: #FFD700; /* Yellow color */
+    margin: 10px 0 15px 0;
+    border: none;
+    padding: 0;
+}
+
+/* Logo Text Container */
+.main-header .logo-text {
+    text-align: center;
+    padding: 0 20px;
+    width: 100%;
+}
+
+/* Main Title - Large yellow bold text */
+.main-header .logo-text h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #FFD700;
+    margin: 0 0 5px 0;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    line-height: 1.2;
+}
+
+/* Subtitle - White text */
+.main-header .logo-text p {
+    font-size: 1.1rem;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+#userRole {
+    font-weight: 600;
+    color: #FFD700;
+}
+
+/* Bottom Border - Yellow line at the very bottom (thicker) */
+.main-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #FFD700; /* Yellow line at bottom */
+    z-index: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-header {
+        min-height: 180px;
+        padding: 12px 0 8px 0;
+    }
+    
+    .main-header .logos-row {
+        gap: 20px;
+        padding: 8px 0;
+    }
+    
+    .main-header .logo-image {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .main-header .logo-label-left .logo-label-line,
+    .main-header .logo-label-right .logo-label-line {
+        font-size: 0.6rem;
+    }
+    
+    .main-header .logo-label-left .logo-year {
+        font-size: 0.6rem;
+    }
+    
+    .main-header .logo-separator {
+        width: 85%;
+        margin: 5px auto 12px auto;
+    }
+    
+    .main-header .logo-text h1 {
+        font-size: 1.6rem;
+        letter-spacing: 1px;
+    }
+    
+    .main-header .logo-text p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-header {
+        min-height: 170px;
+        padding: 10px 0 6px 0;
+    }
+    
+    .main-header .logos-row {
+        gap: 15px;
+        padding: 6px 0;
+    }
+    
+    .main-header .logo-image {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .main-header .logo-label-left .logo-label-line,
+    .main-header .logo-label-right .logo-label-line {
+        font-size: 0.5rem;
+    }
+    
+    .main-header .logo-label-left .logo-year {
+        font-size: 0.5rem;
+    }
+    
+    .main-header .logo-separator {
+        width: 80%;
+        margin: 4px auto 10px auto;
+        height: 1.5px;
+    }
+    
+    .main-header .logo-text h1 {
+        font-size: 1.3rem;
+        letter-spacing: 0.8px;
+    }
+    
+    .main-header .logo-text p {
+        font-size: 0.9rem;
+    }
+}
+

@@ -1,0 +1,20 @@
+# Use the official Node.js 18 image
+FROM node:18-slim
+
+# Create and change to the app directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json from root
+COPY package*.json ./
+
+# Install production dependencies only
+RUN npm ci --only=production
+
+# Copy local code to the container image
+COPY frontend/ ./frontend/
+
+# Expose port 8080
+EXPOSE 8080
+
+# Run the frontend server
+CMD ["npx", "serve", "-l", "8080", "frontend"]

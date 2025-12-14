@@ -1,0 +1,258 @@
+/* ============================================
+   Landing Page Specific Styles
+   ============================================ */
+
+:root {
+    /* Add only the missing variables that aren't in style.css */
+    --red: #dc3545; /* Add the missing red variable */
+}
+
+.container {
+    max-width: 1030px;  /* Changed from 1070px to 1030px */
+    margin: 0 auto;
+    padding: 0;
+}
+
+header, .admin-header {
+    width: 100% !important;
+    background: linear-gradient(135deg, var(--maroon) 0%, var(--maroon-dark) 100%) !important;
+    color: var(--white) !important;
+    box-sizing: border-box !important;
+    border-bottom: 2px solid var(--gold) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    z-index: 10 !important;
+    padding: 5px 20px !important;
+    margin: 0 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+    min-height: 60px !important;
+    height: 60px !important;
+    overflow: hidden !important;
+}
+
+header .container, .admin-header .container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: 1000px !important;
+    padding: 0 15px !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+}
+
+header .logo, .admin-header .logo {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    min-height: 100% !important;
+    height: 100% !important;
+    justify-content: space-between !important;
+    width: 100%;
+    padding: 5px 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Logo container */
+.logo-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+    width: 100%;
+    padding: 0;
+}
+
+/* Logo image styles */
+.logo-image, .login-logo, .static-logo {
+    height: 40px;
+    width: auto;
+    max-width: 50px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    display: block;
+    filter: none;
+    opacity: 1;
+    background: transparent;
+    padding: 0;
+}
+
+/* Logo hover effect */
+header .logo-image:hover,
+header .login-logo:hover,
+header .static-logo:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+header .logo-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-align: center;
+}
+
+header .logo-text h1 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    line-height: 1.2;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    text-align: left;
+    text-transform: uppercase;
+    padding: 0 10px 0 0;
+    border: none;
+}
+
+header .logo-text p {
+    display: block;
+    font-size: 1.1rem;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    border: 2px solid var(--white);
+    color: var(--maroon);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+    min-width: 44px;
+    min-height: 44px;
+    box-shadow: var(--shadow-md);
+    font-weight: bold;
+}
+
+.mobile-menu-btn:hover {
+    background: linear-gradient(135deg, var(--white) 0%, var(--gold-light) 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.landing-auth-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 2rem 0;
+    padding: 0;
+}
+
+.landing-auth-buttons .btn {
+    flex: 0 0 auto;
+    min-width: 140px;
+    max-width: 160px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    text-align: center;
+    justify-content: center;
+    height: 45px;
+}
+
+.copyright {
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 0.9rem;
+    color: var(--gray-dark);
+    width: 100%;
+    margin-top: auto;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    header, .admin-header {
+        min-height: 60px;
+        height: 60px !important;
+        padding: 5px 10px;
+    }
+    
+    .logo-container {
+        gap: 15px;
+        margin: 0;
+    }
+    
+    .logo-image {
+        height: 50px;
+        max-width: 65px;
+    }
+    
+    header .logo-text h1 {
+        font-size: 1.4rem;
+        max-width: 100%;
+        padding: 0 10px;
+        letter-spacing: 1px;
+    }
+    
+    .landing-auth-buttons {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        margin: 1rem 0;
+    }
+    
+    .landing-auth-buttons .btn {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    header {
+        min-height: 120px;
+        padding: 8px 5px;
+    }
+    
+    .logo-container {
+        gap: 8px;
+    }
+    
+    .logo-image {
+        height: 40px;
+        max-width: 45px;
+    }
+    
+    header .logo-text h1 {
+        font-size: 1.1rem;
+        max-width: 100%;
+        padding: 0 5px;
+        letter-spacing: 0.5px;
+    }
+    
+    .landing-auth-buttons {
+        margin: 0.8rem 0;
+    }
+    
+    .landing-auth-buttons .btn {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connection Test</title>
+</head>
+<body>
+    <h1>Connection Test</h1>
+    <button id="testBtn">Test Connection</button>
+    <div id="result"></div>
+
+    <script>
+        // Use the same API base URL as the frontend
+        const API_BASE_URL = 'http://localhost:3001/api';
+        
+        document.getElementById('testBtn').addEventListener('click', async function() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                const data = await response.json();
+                document.getElementById('result').innerHTML = `<p style="color: green;">Success: ${JSON.stringify(data)}</p>`;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

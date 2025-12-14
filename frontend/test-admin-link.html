@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Admin Link</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="logo">
+                <img src="/images/logo1.png" alt="TCC Logo 1" class="logo-image left-logo">
+                <div class="logo-text">
+                    <h1>TAGOLOAN COMMUNITY COLLEGE</h1>
+                    <p>E-Voting System - Test</p>
+                </div>
+                <img src="/images/logo2.png" alt="TCC Logo 2" class="logo-image right-logo">
+            </div>
+        </header>
+        <div class="menu-overlay" id="menuOverlay"></div>
+        
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <nav class="sidebar-nav">
+                    <a href="/pages/dashboard/" class="nav-item">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/pages/voting/" class="nav-item">
+                        <i class="fas fa-vote-yea"></i>
+                        <span>Vote</span>
+                    </a>
+                    <a href="/pages/analytics/" class="nav-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="/pages/notifications/" class="nav-item">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </a>
+                    <a href="/pages/profile/" class="nav-item">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </nav>
+            </aside>
+            
+            <main class="dashboard-content">
+                <div class="page-header">
+                    <h2>Test Admin Link</h2>
+                    <p>This page tests the dynamic admin panel link</p>
+                </div>
+                
+                <div class="section-card">
+                    <h3>Testing Admin Panel Link</h3>
+                    <p>If you're logged in as an admin or sub-admin, you should see an "Admin Panel" link in the sidebar.</p>
+                    <p>To test this functionality:</p>
+                    <ol>
+                        <li>Log in as an admin or sub-admin</li>
+                        <li>Navigate to this page</li>
+                        <li>Check if the "Admin Panel" link appears in the sidebar</li>
+                    </ol>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <div id="notificationPanel" class="notification-panel">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="close-btn" id="closeNotifications">&times;</button>
+        </div>
+        <div id="notificationList" class="notification-list">
+            <p class="empty-state">No notifications</p>
+        </div>
+    </div>
+    
+    <footer class="copyright">
+        &copy; 2025 Tagoloan Community College. All rights reserved.
+    </footer>
+    
+    <script src="/js/admin-menu.js"></script>
+    <script src="/js/notifications.js"></script>
+</body>
+</html>

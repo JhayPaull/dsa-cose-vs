@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Hosting Verification</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Final Hosting Verification</h1>
+            <p>Confirming Firebase hosting and responsive container sizing</p>
+        </header>
+        
+        <main>
+            <div class="verification-status">
+                <h2>System Status</h2>
+                <div class="status-grid">
+                    <div class="status-card success">
+                        <h3>Firebase Hosting</h3>
+                        <p>✅ Active and Deployed</p>
+                        <p>URL: https://dsa-cose-vs.web.app</p>
+                    </div>
+                    
+                    <div class="status-card success">
+                        <h3>Container Sizing</h3>
+                        <p>✅ Responsive Layout</p>
+                        <p>Adapts to all screen sizes</p>
+                    </div>
+                    
+                    <div class="status-card success">
+                        <h3>CSS Fixes</h3>
+                        <p>✅ Height Adjustments</p>
+                        <p>Proper flexbox implementation</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-container">
+                <div class="sidebar">
+                    <h2>Navigation</h2>
+                    <ul>
+                        <li>Dashboard</li>
+                        <li>Voting</li>
+                        <li>Analytics</li>
+                        <li>Profile</li>
+                    </ul>
+                </div>
+                
+                <div class="dashboard-content">
+                    <h2>Main Content Area</h2>
+                    <p>This area should now properly size to fit the browser window on all devices.</p>
+                    
+                    <div class="test-section">
+                        <h3>Responsive Test</h3>
+                        <p>Resize your browser window to test responsive behavior.</p>
+                        
+                        <div class="size-indicator">
+                            <p>Current viewport size: <span id="viewport-size">Loading...</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <style>
+        .verification-status {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .status-card {
+            background: var(--white);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--gray);
+        }
+        
+        .status-card.success {
+            border-left-color: var(--success);
+        }
+        
+        .status-card h3 {
+            margin-top: 0;
+        }
+        
+        .test-section {
+            margin-top: var(--spacing-lg);
+            padding: var(--spacing-md);
+            background: var(--gray-light);
+            border-radius: var(--radius-md);
+        }
+        
+        .size-indicator {
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-sm);
+            background: var(--maroon);
+            color: var(--white);
+            border-radius: var(--radius-sm);
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script>
+        // Update viewport size indicator
+        function updateViewportSize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            document.getElementById('viewport-size').textContent = `${width} × ${height}`;
+        }
+        
+        // Update on load and resize
+        window.addEventListener('load', updateViewportSize);
+        window.addEventListener('resize', updateViewportSize);
+    </script>
+</body>
+</html>

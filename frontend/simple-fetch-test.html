@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Fetch Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .info {
+            color: blue;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #800020;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #a0002a;
+        }
+        #result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Fetch Test</h1>
+    
+    <div class="test-section">
+        <h2>Direct Fetch Test</h2>
+        <button id="testFetch">Test Direct Fetch to Backend</button>
+        <div id="fetchResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>XHR Test</h2>
+        <button id="testXHR">Test XHR to Backend</button>
+        <div id="xhrResult"></div>
+    </div>
+
+    <script>
+        document.getElementById('testFetch').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('fetchResult');
+            resultDiv.innerHTML = 'Testing fetch...';
+            resultDiv.className = 'info';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/health');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<span class="success">✓ Fetch successful!<br>Status: ${data.message}<br>Database: ${data.database}</span>`;
+                    resultDiv.className = 'success';
+                } else {
+                    resultDiv.innerHTML = `<span class="error">✗ Fetch failed: ${response.status} ${response.statusText}</span>`;
+                    resultDiv.className = 'error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ Fetch error: ${error.message}</span>`;
+                resultDiv.className = 'error';
+                console.error('Fetch error:', error);
+            }
+        });
+        
+        document.getElementById('testXHR').addEventListener('click', () => {
+            const resultDiv = document.getElementById('xhrResult');
+            resultDiv.innerHTML = 'Testing XHR...';
+            resultDiv.className = 'info';
+            
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://localhost:3000/api/health', true);
+            
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    resultDiv.innerHTML = `<span class="success">✓ XHR successful!<br>Status: ${data.message}<br>Database: ${data.database}</span>`;
+                    resultDiv.className = 'success';
+                } else {
+                    resultDiv.innerHTML = `<span class="error">✗ XHR failed: ${xhr.status} ${xhr.statusText}</span>`;
+                    resultDiv.className = 'error';
+                }
+            };
+            
+            xhr.onerror = function() {
+                resultDiv.innerHTML = `<span class="error">✗ XHR network error</span>`;
+                resultDiv.className = 'error';
+            };
+            
+            xhr.send();
+        });
+    </script>
+</body>
+</html>

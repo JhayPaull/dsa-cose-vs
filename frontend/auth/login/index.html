@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TCC E-Voting System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        // SECURITY: Immediately clear any credentials from URL parameters on page load
+        // This prevents credentials from being exposed in the URL, browser history, or server logs
+        (function() {
+            if (window.location.search && (window.location.search.includes('email=') || window.location.search.includes('password='))) {
+                // Clear URL parameters immediately
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="container">
+        <main class="auth-container">
+            <div class="auth-card">
+                <div class="logo">
+                    <div class="logo-container">
+                        <img src="../../images/logo1.png" alt="Logo 1" class="login-logo">
+                        <img src="../../images/logo2.png" alt="Logo 2" class="login-logo">
+                        <img src="../../images/logo3.png" alt="Logo 3" class="login-logo">
+                    </div>
+                    <div class="logo-text">
+                        <h1>Tagoloan Community College</h1>
+                        <p>E-Voting System</p>
+                    </div>
+                </div>
+                <h2>Login</h2>
+                <form id="loginForm" method="post" onsubmit="return false;">
+                    <div class="form-group">
+                        <label for="email">Email or Student ID</label>
+                        <input type="text" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-group">
+                            <input type="password" id="password" name="password" class="form-control" required>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-secondary" id="togglePassword" aria-label="Show password">
+                                    <i class="fas fa-eye" id="togglePasswordIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="remember-me">
+                            <input type="checkbox" id="rememberMe" name="rememberMe">
+                            <label for="rememberMe">Remember me</label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
+                
+                <div class="auth-buttons-center">
+                    <p class="auth-link">
+                        Don't have an account? <a href="/auth/register/">Register here</a>
+                    </p>
+                    <p class="auth-link">
+                        <a href="/">Back to Home</a>
+                    </p>
+                </div>
+                
+                <footer class="copyright">
+                    2025 Tagoloan Community College. All rights reserved.
+                </footer>
+                
+                <div id="loginMessage" class="message"></div>
+            </div>
+        </main>
+    </div>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMc7Jjalkz8ymZkLfcbjMAtZgUpYC2xeU",
+            authDomain: "dsa-cose-vs.firebaseapp.com",
+            projectId: "dsa-cose-vs",
+            storageBucket: "dsa-cose-vs.firebasestorage.app",
+            messagingSenderId: "249427875322",
+            appId: "1:249427875322:web:e2a8c1a78cd1157f2f8043",
+            measurementId: "G-R9WJ2VM2ZT"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const firebaseAuth = firebase.auth();
+        const firebaseDb = firebase.firestore();
+        
+        // Make Firebase services available globally
+        window.firebaseApp = app;
+        window.firebaseAuth = firebaseAuth;
+        window.firebaseDb = firebaseDb;
+        
+        console.log('Firebase initialized for DSA-COSE-VS');
+    </script>
+    <script src="/js/api-config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script>
+        // Toggle password visibility
+        document.addEventListener('DOMContentLoaded', function() {
+            const togglePassword = document.querySelector('#togglePassword');
+            const password = document.querySelector('#password');
+            const icon = document.querySelector('#togglePasswordIcon');
+            
+            togglePassword.addEventListener('click', function() {
+                // Toggle the type attribute
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                
+                // Toggle the eye icon
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+                
+                // Update aria-label for accessibility
+                const label = type === 'password' ? 'Show password' : 'Hide password';
+                this.setAttribute('aria-label', label);
+            });
+            
+            // Check for saved credentials
+            const rememberMe = document.getElementById('rememberMe');
+            const emailInput = document.getElementById('email');
+            
+            // Check if we have saved credentials
+            const savedEmail = localStorage.getItem('savedEmail');
+            if (savedEmail) {
+                emailInput.value = savedEmail;
+                rememberMe.checked = true;
+            }
+            
+            // Save email if remember me is checked
+            document.getElementById('loginForm').addEventListener('submit', function() {
+                if (rememberMe.checked) {
+                    localStorage.setItem('savedEmail', emailInput.value);
+                } else {
+                    localStorage.removeItem('savedEmail');
+                }
+            });
+        });
+    </script>
+    <style>
+        /* Password input group styles */
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-control {
+            padding-right: 40px; /* Make space for the toggle button */
+            width: 100%;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            height: 38px;
+        }
+        
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        
+        .input-group-append {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            z-index: 5;
+            margin: 0;
+        }
+        
+        .input-group-append .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 0 12px;
+            background: transparent;
+            border: none;
+            color: #6c757d;
+            position: relative;
+            right: 10px;
+            z-index: 10;
+        }
+        
+        .input-group-append .btn:hover {
+            background: transparent;
+            color: #6c757d;
+        }
+        
+        .input-group-append .btn:focus {
+            box-shadow: none;
+            outline: none;
+        }
+        
+        .input-group-append .btn i {
+            font-size: 1rem;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Remember me styles */
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .remember-me input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
+        }
+        
+        .remember-me label {
+            margin: 0;
+            cursor: pointer;
+            user-select: none;
+            color: var(--gray-dark);
+            font-size: 0.9rem;
+        }
+        
+        .remember-me:hover label {
+            color: var(--maroon);
+        }
+    </style>
+</body>
+</html>

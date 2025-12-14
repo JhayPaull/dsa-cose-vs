@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frontend-Backend Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #800020;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #a0002a;
+        }
+        #result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Frontend-Backend Connection Test</h1>
+    
+    <div class="test-section">
+        <h2>Test Backend Connectivity</h2>
+        <button id="testConnection">Test Connection to Backend</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('testConnection').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing connection...';
+            resultDiv.className = '';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/health');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<span class="success">✓ Success! Connected to backend.<br>Status: ${data.message}<br>Database: ${data.database}</span>`;
+                    resultDiv.className = 'success';
+                } else {
+                    resultDiv.innerHTML = `<span class="error">✗ Error: ${data.message || 'Unknown error'}</span>`;
+                    resultDiv.className = 'error';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ Connection failed: ${error.message}</span>`;
+                resultDiv.className = 'error';
+                console.error('Connection error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

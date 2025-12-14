@@ -1,0 +1,53 @@
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: evoting-backend
+    ports:
+      - "3001:3001"
+    volumes:
+      # Primary service account key location
+      - ./backend/serviceAccountKey.json:/usr/src/app/serviceAccountKey.json:ro
+      # Alternative service account key location (if exists)
+      - ./dsa-cose-vs-firebase-adminsdk-fbsvc-c1f89c2c57.json:/usr/src/app/dsa-cose-vs-firebase-adminsdk-fbsvc-c1f89c2c57.json:ro
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - FIREBASE_PROJECT_ID=dsa-cose-vs
+      - FIREBASE_SERVICE_ACCOUNT_PATH=/usr/src/app/serviceAccountKey.json
+      # Alternative: Use service account key as environment variable (more secure)
+      # - FIREBASE_SERVICE_ACCOUNT_KEY=${FIREBASE_SERVICE_ACCOUNT_KEY}
+      # JWT Secret for token generation
+      - JWT_SECRET=tcc_evoting_secret_key_2024
+    networks:
+      - evoting-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/api/health', (r) => {let data=''; r.on('data',()=>{}); r.on('end',()=>process.exit(r.statusCode===200?0:1))}).on('error',()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  frontend:
+    build: 
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: evoting-frontend
+    ports:
+      - "8081:8080"  # Changed from 8080:8080 to 8081:8080 to avoid port conflict
+    environment:
+      - NODE_ENV=production
+      - BACKEND_URL=http://backend:3001
+      - API_BASE_URL=http://backend:3001/api
+    networks:
+      - evoting-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  evoting-network:
+    driver: bridge

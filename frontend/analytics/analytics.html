@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - TCC E-Voting System</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>TAGOLOAN COMMUNITY COLLEGE</h1>
+                <p>E-Voting System</p>
+            </div>
+            <nav class="user-nav">
+                <div class="notifications-icon" id="notificationsIcon">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadge">0</span>
+                </div>
+                <div class="user-profile">
+                    <span id="userName">User</span>
+                    <button id="logoutBtn" class="btn btn-small">Logout</button>
+                </div>
+            </nav>
+        </header>
+        
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <nav class="sidebar-nav">
+                    <a href="../dashboard/dashboard.html" class="nav-item">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="../voting/voting.html" class="nav-item">
+                        <i class="fas fa-vote-yea"></i>
+                        <span>Vote</span>
+                    </a>
+                    <a href="analytics.html" class="nav-item active">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="../notifications/notifications.html" class="nav-item">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </a>
+                    <a href="../profile/profile.html" class="nav-item">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </nav>
+            </aside>
+            
+            <main class="dashboard-content">
+                <div class="page-header">
+                    <h2>Data Analytics & Reporting</h2>
+                    <p>Real-time vote tabulation and election statistics</p>
+                </div>
+                
+                <div class="analytics-controls">
+                    <select id="electionFilter" class="form-control">
+                        <option value="all">All Elections</option>
+                        <option value="current">Current Election</option>
+                    </select>
+                    <button id="exportBtn" class="btn btn-secondary">
+                        <i class="fas fa-download"></i> Export Report
+                    </button>
+                </div>
+                
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>Vote Distribution</h3>
+                        <canvas id="voteDistributionChart"></canvas>
+                    </div>
+                    
+                    <div class="analytics-card">
+                        <h3>Voting Trends</h3>
+                        <canvas id="votingTrendsChart"></canvas>
+                    </div>
+                    
+                    <div class="analytics-card">
+                        <h3>Turnout by Time</h3>
+                        <canvas id="turnoutChart"></canvas>
+                    </div>
+                    
+                    <div class="analytics-card">
+                        <h3>Candidate Performance</h3>
+                        <div id="candidateTable" class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Candidate</th>
+                                        <th>Position</th>
+                                        <th>Votes</th>
+                                        <th>Percentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="candidateTableBody">
+                                    <tr>
+                                        <td colspan="4" class="empty-state">No data available</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analytics-summary">
+                    <div class="summary-card">
+                        <h3>Election Summary</h3>
+                        <div class="summary-stats">
+                            <div class="summary-item">
+                                <span class="label">Total Votes:</span>
+                                <span class="value" id="totalVotes">0</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="label">Registered Voters:</span>
+                                <span class="value" id="registeredVoters">0</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="label">Voter Turnout:</span>
+                                <span class="value" id="voterTurnout">0%</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="label">Election Status:</span>
+                                <span class="value" id="electionStatus">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <div id="notificationPanel" class="notification-panel">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button class="close-btn" id="closeNotifications">&times;</button>
+        </div>
+        <div id="notificationList" class="notification-list">
+            <p class="empty-state">No notifications</p>
+        </div>
+    </div>
+    
+    <script src="../js/analytics.js"></script>
+    <script src="../js/notifications.js"></script>
+</body>
+</html>
+

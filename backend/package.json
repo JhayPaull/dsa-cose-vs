@@ -1,0 +1,41 @@
+{
+  "name": "tcc-e-voting-backend",
+  "version": "1.0.0",
+  "description": "Backend API for TCC E-Voting System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "init-firebase": "node init-firebase.js",
+    "create-admin": "node create-initial-admin.js",
+    "seed": "node seed/seed-all.js",
+    "seed-users": "node seed/seed-users.js",
+    "seed-elections": "node seed/seed-elections.js",
+    "migrate": "node migrations/run-migrations.js",
+    "test-firebase": "node test-firebase-connection.js",
+    "test-api": "node test-api-connection.js",
+    "test-connection": "node ../test-frontend-backend.js"
+  },
+  "keywords": [
+    "e-voting",
+    "election",
+    "voting"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.11.2",
+    "firebase-admin": "^12.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.0.2",
+    "socket.io": "^4.6.1"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}

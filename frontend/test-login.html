@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Login - TCC E-Voting System</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>TAGOLOAN COMMUNITY COLLEGE</h1>
+                <p>E-Voting System - Test Login</p>
+            </div>
+        </header>
+        
+        <main class="auth-container">
+            <div class="auth-card">
+                <div class="logo-container">
+                    <img src="/images/logo1.png" alt="Logo 1" class="login-logo">
+                    <img src="/images/logo2.png" alt="Logo 2" class="login-logo">
+                </div>
+                <h2>Test Login</h2>
+                <form id="testLoginForm">
+                    <div class="form-group">
+                        <label for="email">Email or Student ID</label>
+                        <input type="text" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Test Login</button>
+                </form>
+                
+                <div class="auth-buttons-center">
+                    <p class="auth-link">
+                        <a href="/auth/login/">Back to Main Login</a>
+                    </p>
+                    <p class="auth-link">
+                        <a href="/">Back to Home</a>
+                    </p>
+                </div>
+                
+                <div id="loginMessage" class="message"></div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Simple test login that redirects to dashboard
+        document.getElementById('testLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation
+            if (!email || !password) {
+                document.getElementById('loginMessage').innerHTML = 'Please enter both email and password';
+                document.getElementById('loginMessage').className = 'message error';
+                return;
+            }
+            
+            // Simulate successful login
+            document.getElementById('loginMessage').innerHTML = 'Login successful! Redirecting to dashboard...';
+            document.getElementById('loginMessage').className = 'message success';
+            
+            // Store dummy user data
+            const userData = {
+                email: email,
+                full_name: email.split('@')[0],
+                role: 'voter'
+            };
+            
+            localStorage.setItem('token', 'dummy-token-' + Date.now());
+            localStorage.setItem('user', JSON.stringify(userData));
+            
+            // Redirect to dashboard after short delay
+            setTimeout(function() {
+                window.location.href = '/dashboard/';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

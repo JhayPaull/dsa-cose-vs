@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Docker Host Test</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Docker Host Test</h1>
+        <p>Testing connection between frontend and backend services.</p>
+        
+        <div id="status">
+            <h2>Status: <span id="status-text">Checking...</span></h2>
+        </div>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const statusText = document.getElementById('status-text');
+            const resultDiv = document.getElementById('result');
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/health');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusText.textContent = 'Connected';
+                    statusText.style.color = 'green';
+                    resultDiv.innerHTML = `
+                        <h3>Backend Connection Successful</h3>
+                        <p><strong>Status:</strong> ${data.status}</p>
+                        <p><strong>Message:</strong> ${data.message}</p>
+                        <p><strong>Database:</strong> ${data.database}</p>
+                        <p><strong>Timestamp:</strong> ${data.timestamp}</p>
+                    `;
+                } else {
+                    statusText.textContent = 'Error';
+                    statusText.style.color = 'red';
+                    resultDiv.innerHTML = `<p style="color: red;">Error: ${data.message}</p>`;
+                }
+            } catch (error) {
+                statusText.textContent = 'Error';
+                statusText.style.color = 'red';
+                resultDiv.innerHTML = `<p style="color: red;">Network error: ${error.message}</p>`;
+                console.error('Connection test error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
