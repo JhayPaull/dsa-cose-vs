@@ -50,6 +50,13 @@ function initHeader() {
 
 // Load header content
 document.addEventListener('DOMContentLoaded', function() {
+    // Skip header loading for dashboard page since it has its own header
+    if (window.location.pathname.includes('/pages/dashboard/')) {
+        // Initialize sidebar functionality only
+        initHeader();
+        return;
+    }
+    
     // Create header container
     const headerContainer = document.createElement('div');
     headerContainer.id = 'header-container';
@@ -62,7 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Determine which header to load based on the current page
-    const isAdminPage = window.location.pathname.includes('/pages/admin/') || window.location.pathname.includes('/pages/student/');
+    // Since we're consolidating admin functionality into the dashboard, treat admin pages as dashboard pages
+    const isAdminPage = window.location.pathname.includes('/pages/dashboard/') || window.location.pathname.includes('/pages/admin/') || window.location.pathname.includes('/pages/student/');
     const headerPath = isAdminPage 
         ? '/components/headers/admin-student-header.html' 
         : '/components/headers/main-page-header.html';
@@ -82,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isAdminPage) {
                 const userRoleElement = document.getElementById('userRole');
                 if (userRoleElement) {
-                    userRoleElement.textContent = window.location.pathname.includes('/pages/admin/') ? 'Admin' : 'Student';
+                    userRoleElement.textContent = (window.location.pathname.includes('/pages/admin/') || window.location.pathname.includes('/pages/dashboard/')) ? 'Admin' : 'Student';
                 }
             }
             
@@ -102,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                             <div class="logo-text">
                                 <h1>TAGOLOAN COMMUNITY COLLEGE</h1>
-                                <p>E-Voting System - <span id="userRole">${window.location.pathname.includes('/pages/admin/') ? 'Admin' : 'Student'}</span> Portal</p>
+                                <p>E-Voting System - <span id="userRole">${(window.location.pathname.includes('/pages/admin/') || window.location.pathname.includes('/pages/dashboard/')) ? 'Admin' : 'Student'}</span> Portal</p>
                             </div>
                         </div>
                     </div>

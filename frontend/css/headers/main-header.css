@@ -3,7 +3,146 @@
    Tagoloan Community College E-Voting System
    ============================================ */
 
-.main-header {
+/* Bootstrap Navbar Styles */
+.main-header.navbar {
+    width: 100%;
+    background: #800020; /* Dark red/maroon background */
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    min-height: 56px;
+    border-bottom: 1px solid #800020;
+}
+
+/* Top Yellow Line - at the very top of header (thin) */
+.main-header.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #FFD700; /* Yellow line at top */
+    z-index: 3;
+}
+
+/* Bottom Border - Yellow line at the very bottom (thicker) */
+.main-header.navbar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #FFD700; /* Yellow line at bottom */
+    z-index: 1;
+}
+
+/* Navbar Brand */
+.main-header .navbar-brand {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Navbar Links */
+.main-header .nav-link {
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.main-header .nav-link:hover {
+    color: #FFD700;
+    background-color: rgba(255, 215, 0, 0.1);
+    border-radius: 4px;
+}
+
+/* Dropdown Menu */
+.main-header .dropdown-menu {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    margin-top: 0.5rem;
+}
+
+.main-header .dropdown-item {
+    color: #212529;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.main-header .dropdown-item:hover {
+    background-color: #800020;
+    color: #ffffff;
+}
+
+.main-header .dropdown-item i {
+    width: 20px;
+    text-align: center;
+    margin-right: 0.5rem;
+}
+
+/* Dark Mode Toggle */
+#toogleDark {
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+#toogleDark:hover {
+    color: #FFD700;
+    transform: rotate(15deg);
+}
+
+/* User Menu Icon */
+.nav-item .nav-link .far.fa-user {
+    font-size: 1.2rem;
+}
+
+/* Notification Bell Icon */
+.nav-item .nav-link .far.fa-bell {
+    font-size: 1.2rem;
+}
+
+/* Hamburger Menu Icon */
+.nav-item .nav-link .fas.fa-bars {
+    font-size: 1.2rem;
+}
+
+/* Dropdown Header */
+.dropdown-header {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Dropdown Divider */
+.dropdown-divider {
+    margin: 0.5rem 0;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Dropdown Footer */
+.dropdown-item.dropdown-footer {
+    text-align: center;
+    font-weight: 500;
+    color: #007bff;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+.dropdown-item.dropdown-footer:hover {
+    background-color: #e9ecef;
+    color: #0056b3;
+}
+
+/* Original Header Styles (for backward compatibility) */
+.main-header:not(.navbar) {
     width: 100%;
     background: #800020; /* Dark red/maroon background */
     color: #ffffff;
@@ -20,7 +159,7 @@
 }
 
 /* Top Yellow Line - at the very top of header (thin) */
-.main-header::before {
+.main-header:not(.navbar)::before {
     content: '';
     position: absolute;
     top: 0;
@@ -31,7 +170,7 @@
     z-index: 3;
 }
 
-.main-header .header-content {
+.main-header:not(.navbar) .header-content {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -44,7 +183,7 @@
 }
 
 /* Logos Row - Three logos arranged horizontally */
-.main-header .logos-row {
+.main-header:not(.navbar) .logos-row {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -56,7 +195,7 @@
 }
 
 /* Individual Logo Item */
-.main-header .logo-item {
+.main-header:not(.navbar) .logo-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -65,7 +204,7 @@
     position: relative;
 }
 
-.main-header .logo-image {
+.main-header:not(.navbar) .logo-image {
     width: 80px;
     height: 80px;
     object-fit: contain;
@@ -74,7 +213,7 @@
 }
 
 /* Logo Label Text - Left side (COLLEGE and 2003) */
-.main-header .logo-label-left {
+.main-header:not(.navbar) .logo-label-left {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -82,7 +221,7 @@
     margin-top: 8px;
 }
 
-.main-header .logo-label-left .logo-label-line {
+.main-header:not(.navbar) .logo-label-left .logo-label-line {
     font-size: 0.75rem;
     color: #ffffff;
     font-weight: 500;
@@ -91,7 +230,7 @@
     white-space: nowrap;
 }
 
-.main-header .logo-label-left .logo-year {
+.main-header:not(.navbar) .logo-label-left .logo-year {
     font-size: 0.75rem;
     color: #ffffff;
     font-weight: 500;
@@ -100,7 +239,7 @@
 }
 
 /* Logo Label Text - Right side (TCC - COMMISSION ON / STUDENT ELECTIONS) */
-.main-header .logo-label-right {
+.main-header:not(.navbar) .logo-label-right {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -108,7 +247,7 @@
     margin-top: 8px;
 }
 
-.main-header .logo-label-right .logo-label-line {
+.main-header:not(.navbar) .logo-label-right .logo-label-line {
     font-size: 0.75rem;
     color: #ffffff;
     font-weight: 500;
@@ -118,7 +257,7 @@
 }
 
 /* Yellow Separator Line - Below logos (thicker) */
-.main-header .logo-separator {
+.main-header:not(.navbar) .logo-separator {
     width: 100%;
     height: 4px;
     background: #FFD700; /* Yellow color */
@@ -128,14 +267,14 @@
 }
 
 /* Logo Text Container */
-.main-header .logo-text {
+.main-header:not(.navbar) .logo-text {
     text-align: center;
     padding: 0 20px;
     width: 100%;
 }
 
 /* Main Title - Large yellow bold text */
-.main-header .logo-text h1 {
+.main-header:not(.navbar) .logo-text h1 {
     font-size: 2rem;
     font-weight: 700;
     color: #FFD700;
@@ -148,7 +287,7 @@
 }
 
 /* Subtitle - White text */
-.main-header .logo-text p {
+.main-header:not(.navbar) .logo-text p {
     font-size: 1.1rem;
     color: #ffffff;
     margin: 0;
@@ -163,7 +302,7 @@
 }
 
 /* Bottom Border - Yellow line at the very bottom (thicker) */
-.main-header::after {
+.main-header:not(.navbar)::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -176,83 +315,100 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .main-header {
+    .main-header.navbar {
+        min-height: 50px;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .main-header:not(.navbar) {
         min-height: 180px;
         padding: 12px 0 8px 0;
     }
     
-    .main-header .logos-row {
+    .main-header:not(.navbar) .logos-row {
         gap: 20px;
         padding: 8px 0;
     }
     
-    .main-header .logo-image {
+    .main-header:not(.navbar) .logo-image {
         width: 60px;
         height: 60px;
     }
     
-    .main-header .logo-label-left .logo-label-line,
-    .main-header .logo-label-right .logo-label-line {
+    .main-header:not(.navbar) .logo-label-left .logo-label-line,
+    .main-header:not(.navbar) .logo-label-right .logo-label-line {
         font-size: 0.6rem;
     }
     
-    .main-header .logo-label-left .logo-year {
+    .main-header:not(.navbar) .logo-label-left .logo-year {
         font-size: 0.6rem;
     }
     
-    .main-header .logo-separator {
+    .main-header:not(.navbar) .logo-separator {
         width: 85%;
         margin: 5px auto 12px auto;
     }
     
-    .main-header .logo-text h1 {
+    .main-header:not(.navbar) .logo-text h1 {
         font-size: 1.6rem;
         letter-spacing: 1px;
     }
     
-    .main-header .logo-text p {
+    .main-header:not(.navbar) .logo-text p {
         font-size: 1rem;
+    }
+    
+    .main-header .nav-link {
+        padding: 0.5rem 0.75rem;
     }
 }
 
 @media (max-width: 576px) {
-    .main-header {
+    .main-header.navbar {
+        min-height: 46px;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .main-header:not(.navbar) {
         min-height: 170px;
         padding: 10px 0 6px 0;
     }
     
-    .main-header .logos-row {
+    .main-header:not(.navbar) .logos-row {
         gap: 15px;
         padding: 6px 0;
     }
     
-    .main-header .logo-image {
+    .main-header:not(.navbar) .logo-image {
         width: 50px;
         height: 50px;
     }
     
-    .main-header .logo-label-left .logo-label-line,
-    .main-header .logo-label-right .logo-label-line {
+    .main-header:not(.navbar) .logo-label-left .logo-label-line,
+    .main-header:not(.navbar) .logo-label-right .logo-label-line {
         font-size: 0.5rem;
     }
     
-    .main-header .logo-label-left .logo-year {
+    .main-header:not(.navbar) .logo-label-left .logo-year {
         font-size: 0.5rem;
     }
     
-    .main-header .logo-separator {
+    .main-header:not(.navbar) .logo-separator {
         width: 80%;
         margin: 4px auto 10px auto;
         height: 1.5px;
     }
     
-    .main-header .logo-text h1 {
+    .main-header:not(.navbar) .logo-text h1 {
         font-size: 1.3rem;
         letter-spacing: 0.8px;
     }
     
-    .main-header .logo-text p {
+    .main-header:not(.navbar) .logo-text p {
         font-size: 0.9rem;
     }
+    
+    .main-header .nav-link {
+        padding: 0.5rem 0.5rem;
+    }
 }
-

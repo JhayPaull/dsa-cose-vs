@@ -26,7 +26,7 @@ app.get('/dashboard/', (req, res) => {
 });
 
 app.get('/admin/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'pages/admin/index.html'));
+  res.sendFile(path.join(__dirname, 'pages/dashboard/index.html'));
 });
 
 app.get('/analytics/', (req, res) => {
@@ -51,7 +51,7 @@ app.get('/pages/dashboard/', (req, res) => {
 });
 
 app.get('/pages/admin/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'pages/admin/index.html'));
+  res.sendFile(path.join(__dirname, 'pages/dashboard/index.html'));
 });
 
 app.get('/pages/analytics/', (req, res) => {

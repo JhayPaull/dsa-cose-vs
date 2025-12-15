@@ -236,13 +236,11 @@ async function handleVoteSubmit(e) {
         if (response.ok) {
             showMessage('voteMessage', 'Vote submitted successfully!', 'success');
             setTimeout(() => {
-                // Redirect based on user role
-                const user = JSON.parse(localStorage.getItem('user') || '{}');
-                if (user.role === 'admin') {
-                    window.location.href = '/pages/admin/';
-                } else {
-                    window.location.href = '/pages/dashboard/';
-                }
+                // Redirect all users to the same dashboard page
+                // Add a small delay to ensure proper redirect
+                setTimeout(() => {
+                    window.location.href = 'https://dsa-cose-vs.web.app/pages/dashboard/';
+                }, 100);
             }, 2000);
         } else {
             showMessage('voteMessage', data.message || 'Failed to submit vote', 'error');

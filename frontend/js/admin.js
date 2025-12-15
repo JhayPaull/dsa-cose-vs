@@ -115,6 +115,9 @@ function initializeAdminPanel() {
     // Set up mobile menu
     setupMobileMenu();
     
+    // Set up logout functionality
+    setupLogout();
+
     // Load initial data
     loadSubAdmins();
     loadAllUsers();
@@ -306,15 +309,15 @@ function logout() {
     if (window.firebaseAuth && window.firebaseAuth.signOut) {
         window.firebaseAuth.signOut().then(() => {
             // Redirect to login page
-            window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+            window.location.href = '/auth/login/';
         }).catch((error) => {
             console.error('Firebase sign out error:', error);
             // Even if Firebase sign out fails, redirect to login
-            window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+            window.location.href = '/auth/login/';
         });
     } else {
         // Redirect to login page
-        window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+        window.location.href = '/auth/login/';
     }
 }
 
@@ -335,6 +338,17 @@ function setupMobileMenu() {
         menuOverlay.addEventListener('click', () => {
             sidebar.classList.remove('active');
             menuOverlay.classList.remove('active');
+        });
+    }
+}
+
+// Set up logout functionality
+function setupLogout() {
+    const logoutLink = document.getElementById('logoutLink');
+    if (logoutLink) {
+        logoutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
         });
     }
 }

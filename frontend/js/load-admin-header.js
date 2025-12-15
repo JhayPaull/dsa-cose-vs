@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update user role based on current page
             const userRoleElement = document.getElementById('userRole');
             if (userRoleElement) {
-                if (window.location.pathname.includes('/pages/admin/')) {
+                if (window.location.pathname.includes('/pages/admin/') || window.location.pathname.includes('/pages/dashboard/')) {
                     userRoleElement.textContent = 'Admin';
                 } else {
                     userRoleElement.textContent = 'Student';
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                             <div class="logo-text">
                                 <h1>TAGOLOAN COMMUNITY COLLEGE</h1>
-                                <p>E-Voting System - <span id="userRole">${window.location.pathname.includes('/pages/admin/') ? 'Admin' : 'Student'}</span> Portal</p>
+                                <p>E-Voting System - <span id="userRole">${(window.location.pathname.includes('/pages/admin/') || window.location.pathname.includes('/pages/dashboard/')) ? 'Admin' : 'Student'}</span> Portal</p>
                             </div>
                         </div>
                     </div>

@@ -20,7 +20,7 @@
       },
       {
         "source": "/pages/admin",
-        "destination": "/pages/admin/index.html"
+        "destination": "/pages/dashboard/index.html"
       },
       {
         "source": "/pages/dashboard",
@@ -69,6 +69,15 @@
             "value": "max-age=31536000"
           }
         ]
+      },
+      {
+        "source": "**/*.@(html)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
       }
     ]
   },
@@ -76,7 +85,6 @@
     {
       "source": "functions",
       "codebase": "default",
-      "disallowLegacyRuntimeConfig": true,
       "ignore": [
         "node_modules",
         "git",

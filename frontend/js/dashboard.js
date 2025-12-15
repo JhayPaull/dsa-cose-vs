@@ -12,11 +12,49 @@ const recentActivityEl = document.getElementById('recentActivity');
 
 // Check authentication on page load (matching DEV folder pattern)
 document.addEventListener('DOMContentLoaded', function() {
+    // Set up dark mode toggle
+    setupDarkModeToggle();
+    
+    // Set up logout functionality
+    setupLogout();
+    
     // Delay the authentication check slightly to ensure token is properly set
     setTimeout(() => {
         checkAuthentication();
     }, 100);
 });
+
+function setupDarkModeToggle() {
+    const darkModeToggle = document.getElementById('toogleDark');
+    const darkModeIcon = document.getElementById('conToogleDark');
+    
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Toggle dark mode functionality would go here
+            // For now, we'll just toggle the icon as an example
+            if (darkModeIcon) {
+                if (darkModeIcon.classList.contains('fa-moon')) {
+                    darkModeIcon.classList.remove('fa-moon');
+                    darkModeIcon.classList.add('fa-sun');
+                } else {
+                    darkModeIcon.classList.remove('fa-sun');
+                    darkModeIcon.classList.add('fa-moon');
+                }
+            }
+        });
+    }
+}
+
+function setupLogout() {
+    const logoutLink = document.getElementById('logout');
+    if (logoutLink) {
+        logoutLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+    }
+}
 
 function checkAuthentication() {
     const token = localStorage.getItem('token');
@@ -27,7 +65,7 @@ function checkAuthentication() {
     // Check if user is logged in (matching DEV folder pattern)
     if (!token) {
         console.log('No token found, redirecting to login');
-        window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+        window.location.href = '/auth/login/';
         return;
     }
     
@@ -39,7 +77,7 @@ function checkAuthentication() {
                 console.log('Token invalid, redirecting to login');
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
-                window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+                window.location.href = '/auth/login/';
                 return;
             }
             
@@ -54,7 +92,7 @@ function checkAuthentication() {
                         console.log('Firebase auth lost, redirecting to login');
                         localStorage.removeItem('token');
                         localStorage.removeItem('user');
-                        window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+                        window.location.href = '/auth/login/';
                         return;
                     }
                     // Refresh token if needed
@@ -70,7 +108,7 @@ function checkAuthentication() {
             console.error('Token validation error:', error);
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+            window.location.href = '/auth/login/';
         });
 }
 
@@ -214,18 +252,21 @@ function logout() {
     localStorage.removeItem('user');
     
     // Sign out from Firebase if available
-    if (window.firebaseAuth && window.firebaseAuth.signOut) {
-        window.firebaseAuth.signOut().then(() => {
-            // Redirect to login page
-            window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
-        }).catch((error) => {
-            console.error('Firebase sign out error:', error);
-            // Even if Firebase sign out fails, redirect to login
-            window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
-        });
+    if (window.firebaseAuth && typeof window.firebaseAuth.signOut === 'function') {
+        window.firebaseAuth.signOut()
+            .then(() => {
+                console.log('Firebase sign out successful');
+                // Redirect to login
+                window.location.href = '/auth/login/';
+            })
+            .catch((error) => {
+                console.error('Firebase sign out error:', error);
+                // Even if Firebase sign out fails, redirect to login
+                window.location.href = '/auth/login/';
+            });
     } else {
         // Redirect to login page
-        window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+        window.location.href = '/auth/login/';
     }
 }
 

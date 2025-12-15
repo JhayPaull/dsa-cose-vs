@@ -13,6 +13,9 @@ function initAuth() {
     console.log('Initializing auth system');
     console.log('API Base URL:', API_BASE_URL);
     
+    // Check authentication state
+    checkAuthState();
+    
     // Restore saved form data
     restoreFormData();
     
@@ -141,17 +144,14 @@ function initAuth() {
                         sessionStorage.removeItem('formSubmitted');
                         
                         // Redirect based on user role
-                        console.log('Redirecting user based on role:', loginData.user.role);
+                        console.log('Redirecting user to dashboard:', loginData.user.role);
+                        console.log('Full user data:', loginData.user);
+                        
+                        // Add a small delay to ensure proper redirect
                         setTimeout(() => {
-                            const user = loginData.user;
-                            if (user.role === 'admin' || user.role === 'sub-admin') {
-                                console.log('Redirecting admin to admin panel');
-                                window.location.href = '/pages/admin/';
-                            } else {
-                                console.log('Redirecting voter to dashboard');
-                                window.location.href = '/pages/dashboard/';
-                            }
-                        }, 500);
+                            // Use relative path for consistency
+                            window.location.href = '/pages/dashboard/';
+                        }, 100);
                     } catch (loginError) {
                         console.error('Auto-login error:', loginError);
                         // If auto-login fails, redirect to login page
@@ -228,89 +228,83 @@ function initAuth() {
         // Clear the form submission flag
         sessionStorage.removeItem('formSubmitted');
         
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            console.log('Login form submitted');
-            
-            // Set form submission flag to prevent security warning on reload
-            sessionStorage.setItem('formSubmitted', 'true');
-            
-            const formData = {
-                email: document.getElementById('email').value.trim(), // email OR student ID
-                password: document.getElementById('password').value,
-                rememberMe: document.getElementById('rememberMe') ? document.getElementById('rememberMe').checked : false
-            };
-            
-            // SECURITY: Double-check that URL doesn't contain credentials
-            // But allow form submissions to proceed
-            if (window.location.search && (window.location.search.includes('email=') || window.location.search.includes('password=')) &&
-                !sessionStorage.getItem('formSubmitted')) {
-                // Clear URL parameters to prevent credentials from being exposed
-                window.history.replaceState({}, document.title, window.location.pathname);
-                showMessage('loginMessage', 'Security Warning: Login credentials should never be passed in URL parameters.', 'error');
-                sessionStorage.removeItem('formSubmitted');
-                return;
-            }
-            
-            if (!formData.email || !formData.password) {
-                showMessage('loginMessage', 'Please enter both email/student ID and password', 'error');
-                sessionStorage.removeItem('formSubmitted');
-                return;
-            }
+        loginForm.addEventListener('submit', handleLogin);
+    }
+}
 
-            try {
-                // Login via backend API (supports both email and student ID)
-                const response = await fetch(`${API_BASE_URL}/auth/login`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: formData.email, // Backend handles both email and student ID
-                        password: formData.password
-                    })
-                });
-
-                let data;
-                try {
-                    data = await response.json();
-                } catch (parseError) {
-                    throw new Error('Invalid response from server. Please check if the backend is running.');
-                }
-            
-                if (!response.ok) {
-                    throw new Error(data.message || `Login failed with status ${response.status}`);
-                }
-
-                // Store token and user data in localStorage
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user', JSON.stringify(data.user));
-                
-                // Clear the form submission flag
-                sessionStorage.removeItem('formSubmitted');
-                
-                // Redirect based on user role
-                console.log('Login successful, redirecting user based on role:', data.user.role);
-                if (data.user.role === 'admin' || data.user.role === 'sub-admin') {
-                    window.location.href = '/pages/admin/';
-                } else {
-                    window.location.href = '/pages/dashboard/';
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                // Clear the form submission flag on error
-                sessionStorage.removeItem('formSubmitted');
-                
-                let errorMessage = 'Login failed. Please try again.';
-                if (error.message && error.message.includes('NetworkError')) {
-                    errorMessage = 'Unable to connect to the server. Please check your internet connection.';
-                } else if (error.message) {
-                    errorMessage = error.message;
-                }
-                
-                showMessage('loginMessage', errorMessage, 'error');
-            }
+// Handle login with role-based redirection
+async function handleLogin(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    const loginData = {
+        email: formData.get('email'),
+        password: formData.get('password')
+    };
+    
+    try {
+        // Show loading state
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+        submitButton.textContent = 'Logging in...';
+        submitButton.disabled = true;
+        
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(loginData)
         });
+        
+        let data;
+        try {
+            data = await response.json();
+        } catch (parseError) {
+            throw new Error('Invalid response from server. Please check if the backend is running.');
+        }
+        
+        if (!response.ok) {
+            throw new Error(data.message || `Login failed with status ${response.status}`);
+        }
+        
+        // Store token and user data in localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        // Clear the form submission flag
+        sessionStorage.removeItem('formSubmitted');
+        
+        // Redirect based on user role
+        console.log('Login successful, redirecting user:', data.user.role);
+        console.log('Full user data:', data.user);
+        
+        // Add a small delay to ensure proper redirect
+        setTimeout(() => {
+            // Use relative path for consistency
+            window.location.href = '/pages/dashboard/';
+        }, 100);
+    } catch (error) {
+        console.error('Login error:', error);
+        // Clear the form submission flag on error
+        sessionStorage.removeItem('formSubmitted');
+        
+        let errorMessage = 'Login failed. Please try again.';
+        if (error.message && error.message.includes('NetworkError')) {
+            errorMessage = 'Unable to connect to the server. Please check your internet connection.';
+        } else if (error.message) {
+            errorMessage = error.message;
+        }
+        
+        showMessage('loginMessage', errorMessage, 'error');
+    } finally {
+        // Restore button state
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) {
+            submitButton.textContent = 'Login';
+            submitButton.disabled = false;
+        }
     }
 }
 
@@ -432,16 +426,15 @@ function checkAuthState() {
     
     console.log('Checking auth state:', { token, currentPath, userRole: user.role });
     
-    // If user is logged in but on auth pages, redirect to appropriate dashboard
+    // If user is logged in but on auth pages, redirect to dashboard
     if (token && (currentPath.includes('/auth/login/') || currentPath.includes('/auth/register/'))) {
-        console.log('User already logged in, redirecting based on role:', user.role);
-        if (user.role === 'admin' || user.role === 'sub-admin') {
-            console.log('Redirecting admin to admin panel');
-            window.location.href = '/pages/admin/';
-        } else {
-            console.log('Redirecting to dashboard');
+        console.log('User already logged in, redirecting to dashboard:', user.role);
+        console.log('Full user data:', user);
+        // Add a small delay to ensure proper redirect
+        setTimeout(() => {
+            // Use relative path for consistency
             window.location.href = '/pages/dashboard/';
-        }
+        }, 100);
         return;
     }
     
@@ -459,9 +452,10 @@ function checkAuthState() {
         return;
     }
     
-    // If user is logged in but trying to access admin page without admin role
-    if (token && currentPath.includes('/pages/admin/') && user.role !== 'admin' && user.role !== 'sub-admin') {
-        console.log('Non-admin user trying to access admin area, redirecting to dashboard');
+    // If user is logged in and trying to access admin page directly, redirect to dashboard
+    // since we're consolidating admin functionality into the dashboard
+    if (token && currentPath.includes('/pages/admin/')) {
+        console.log('User accessing admin page, redirecting to consolidated dashboard');
         window.location.href = '/pages/dashboard/';
     }
 }

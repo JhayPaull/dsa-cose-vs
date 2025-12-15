@@ -1,10 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Test Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        /* Quick test to see if CSS is loading */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f6fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .test-box {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .success {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Test Page</h1>
-    <p>This is a test page to verify the server is working.</p>
+    <div class="test-box">
+        <h1>Dashboard CSS Test</h1>
+        <p>If you can see this page, the server is working correctly.</p>
+        
+        <h2>CSS Test Results:</h2>
+        <div id="css-test">
+            <p>Testing dashboard.css... <span id="css-status">Checking...</span></p>
+        </div>
+        
+        <h2>Next Steps:</h2>
+        <ul>
+            <li>If the test above shows success, the dashboard should work at <a href="/pages/dashboard/">/pages/dashboard/</a></li>
+            <li>If not, please check the browser's developer console for any error messages (F12 or right-click -> Inspect -> Console)</li>
+        </ul>
+    </div>
+
+    <script>
+        // Simple test to verify CSS is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const testElement = document.createElement('div');
+            testElement.style.display = 'none';
+            testElement.className = 'stat-card';
+            document.body.appendChild(testElement);
+            
+            const styles = window.getComputedStyle(testElement);
+            const isCssLoaded = styles.display === 'flex' || styles.display === 'block';
+            
+            const statusElement = document.getElementById('css-status');
+            if (isCssLoaded) {
+                statusElement.textContent = '✅ Success! Dashboard CSS is loaded.';
+                statusElement.className = 'success';
+            } else {
+                statusElement.textContent = '❌ Dashboard CSS not loaded. Please check the console for errors.';
+            }
+            
+            document.body.removeChild(testElement);
+        });
+    </script>
 </body>
 </html>

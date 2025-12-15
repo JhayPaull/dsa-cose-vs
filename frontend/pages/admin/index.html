@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - TCC E-Voting System</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>Dashboard - TCC E-Voting System</title>
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -32,292 +32,122 @@
     </script>
 </head>
 <body>
-    <div style="width: 100%;">
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>TAGOLOAN COMMUNITY COLLEGE</h1>
+                <p>E-Voting System</p>
+            </div>
+            <nav class="user-nav">
+                <div class="notifications-icon" id="notificationsIcon">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadge">0</span>
+                </div>
+                <div class="user-profile">
+                    <span id="userName">User</span>
+                    <button id="logoutBtn" class="btn btn-small">Logout</button>
+                </div>
+            </nav>
+        </header>
+        
         <div class="dashboard-container">
             <aside class="sidebar">
-                <nav class="sidebar-nav" id="sidebarNav">
-        <a href="/pages/dashboard/" class="nav-item" id="dashboardLink">
-            <i class="fas fa-home"></i>
-            <span>Dashboard</span>
-        </a>
-    
-        <a href="/pages/admin/" class="nav-item active" id="adminLink">
-            <i class="fas fa-user-shield"></i>
-            <span>Admin Panel</span>
-        </a>
-    
-        <a href="/pages/voting/" class="nav-item">
-            <i class="fas fa-vote-yea"></i>
-            <span>Voting</span>
-        </a>
-    
-        <a href="/pages/analytics/" class="nav-item">
-            <i class="fas fa-chart-bar"></i>
-            <span>Analytics</span>
-        </a>
-    
-        <a href="/pages/notifications/" class="nav-item">
-            <i class="fas fa-bell"></i>
-            <span>Notifications</span>
-        </a>
-    
-        <a href="/pages/profile/" class="nav-item">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
-        </a>
-    </nav>
+                <nav class="sidebar-nav">
+                    <a href="/pages/dashboard/" class="nav-item active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="../voting/voting.html" class="nav-item">
+                        <i class="fas fa-vote-yea"></i>
+                        <span>Vote</span>
+                    </a>
+                    <a href="../analytics/analytics.html" class="nav-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="../notifications/notifications.html" class="nav-item">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                    </a>
+                    <a href="../profile/profile.html" class="nav-item">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </nav>
             </aside>
             
             <main class="dashboard-content">
                 <div class="page-header">
-                    <h2>Admin Panel</h2>
-                    <p>Manage users and sub-administrators</p>
+                    <h2>Dashboard</h2>
+                    <p>Welcome back! Here's an overview of the election.</p>
                 </div>
                 
-                <div class="admin-tabs">
-                    <button class="tab-btn active" data-tab="dashboard">Admin Dashboard</button>
-                    <button class="tab-btn" data-tab="sub-admins">Sub-Admins</button>
-                    <button class="tab-btn" data-tab="users">All Users</button>
-                    <button class="tab-btn" data-tab="create">Create Sub-Admin</button>
-                </div>
-                
-                <div class="tab-content active" id="dashboard-tab">
-                    <div class="section-card">
-                        <h3>Admin Dashboard Overview</h3>
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                                <div class="stat-info">
-                                    <h3 id="totalUsers">0</h3>
-                                    <p>Total Users</p>
-                                </div>
-                            </div>
-                            
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-user-shield"></i>
-                                </div>
-                                <div class="stat-info">
-                                    <h3 id="totalSubAdmins">0</h3>
-                                    <p>Sub-Admins</p>
-                                </div>
-                            </div>
-                            
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-vote-yea"></i>
-                                </div>
-                                <div class="stat-info">
-                                    <h3 id="totalVotes">0</h3>
-                                    <p>Total Votes</p>
-                                </div>
-                            </div>
-                            
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-bell"></i>
-                                </div>
-                                <div class="stat-info">
-                                    <h3 id="pendingNotifications">0</h3>
-                                    <p>Pending Notifications</p>
-                                </div>
-                            </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
                         </div>
-                        
-                        <div class="dashboard-sections">
-                            <div class="section-card">
-                                <h3>Recent Activity</h3>
-                                <div id="adminRecentActivity" class="activity-list">
-                                    <p class="empty-state">No recent activity</p>
-                                </div>
-                            </div>
-                            
-                            <div class="section-card">
-                                <h3>System Status</h3>
-                                <div class="system-status">
-                                    <div class="status-item">
-                                        <span class="status-indicator status-online"></span>
-                                        <span>Database Connection</span>
-                                    </div>
-                                    <div class="status-item">
-                                        <span class="status-indicator status-online"></span>
-                                        <span>Authentication Service</span>
-                                    </div>
-                                    <div class="status-item">
-                                        <span class="status-indicator status-online"></span>
-                                        <span>Voting System</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="stat-info">
+                            <h3 id="totalVoters">0</h3>
+                            <p>Total Voters</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="votesCast">0</h3>
+                            <p>Votes Cast</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="turnoutRate">0%</h3>
+                            <p>Turnout Rate</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="timeRemaining">--:--</h3>
+                            <p>Time Remaining</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="tab-content" id="sub-admins-tab">
+                <div class="dashboard-sections">
                     <div class="section-card">
-                        <h3>Sub-Administrators</h3>
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Student ID</th>
-                                        <th>Course</th>
-                                        <th>Created</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="subAdminsTable">
-                                    <tr>
-                                        <td colspan="6" class="empty-state">Loading sub-admins...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <h3>Recent Activity</h3>
+                        <div id="recentActivity" class="activity-list">
+                            <p class="empty-state">No recent activity</p>
                         </div>
                     </div>
-                </div>
-                
-                <div class="tab-content" id="users-tab">
+                    
                     <div class="section-card">
-                        <h3>All Registered Users</h3>
-                        <div class="table-container">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Student ID</th>
-                                        <th>Role</th>
-                                        <th>Course</th>
-                                        <th>Created</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="usersTable">
-                                    <tr>
-                                        <td colspan="6" class="empty-state">Loading users...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <h3>Quick Actions</h3>
+                        <div class="quick-actions">
+                            <a href="../voting/voting.html" class="action-btn">
+                                <i class="fas fa-vote-yea"></i>
+                                <span>Cast Your Vote</span>
+                            </a>
+                            <a href="../analytics/analytics.html" class="action-btn">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>View Analytics</span>
+                            </a>
+                            <a href="../notifications/notifications.html" class="action-btn">
+                                <i class="fas fa-bell"></i>
+                                <span>Check Notifications</span>
+                            </a>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="tab-content" id="create-tab">
-                    <div class="section-card">
-                        <h3>Create New Sub-Administrator</h3>
-                        <form id="createSubAdminForm" class="admin-form">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="firstName">First Name:</label>
-                                    <input type="text" id="firstName" name="firstName" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lastName">Last Name:</label>
-                                    <input type="text" id="lastName" name="lastName" required>
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="middleInitial">Middle Initial:</label>
-                                    <input type="text" id="middleInitial" name="middleInitial">
-                                </div>
-                                <div class="form-group">
-                                    <label for="year">Year:</label>
-                                    <select id="year" name="year" required>
-                                        <option value="">Select Year</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="section">Section:</label>
-                                    <select id="section" name="section" required>
-                                        <option value="">Select Section</option>
-                                        <option value="A">A</option>
-                                        <option value="B">B</option>
-                                        <option value="C">C</option>
-                                        <option value="D">D</option>
-                                        <option value="E">E</option>
-                                        <option value="F">F</option>
-                                        <option value="G">G</option>
-                                        <option value="H">H</option>
-                                        <option value="I">I</option>
-                                        <option value="J">J</option>
-                                        <option value="K">K</option>
-                                        <option value="L">L</option>
-                                        <option value="M">M</option>
-                                        <option value="N">N</option>
-                                        <option value="O">O</option>
-                                        <option value="P">P</option>
-                                        <option value="Q">Q</option>
-                                        <option value="R">R</option>
-                                        <option value="S">S</option>
-                                        <option value="T">T</option>
-                                        <option value="U">U</option>
-                                        <option value="V">V</option>
-                                        <option value="W">W</option>
-                                        <option value="X">X</option>
-                                        <option value="Y">Y</option>
-                                        <option value="Z">Z</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="course">Course:</label>
-                                    <select id="course" name="course" required>
-                                        <option value="">Select Course</option>
-                                        <option value="Bachelor of Science in Community Development">Bachelor of Science in Community Development</option>
-                                        <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
-                                        <option value="Bachelor of Science in Business Administration">Bachelor of Science in Business Administration</option>
-                                        <option value="Bachelor of Science in Hospitality Management">Bachelor of Science in Hospitality Management</option>
-                                        <option value="Bachelor of Science in Engineering Technology">Bachelor of Science in Engineering Technology</option>
-                                        <option value="Bachelor of Library and Information Science">Bachelor of Library and Information Science</option>
-                                        <option value="Bachelor of Science in Criminology">Bachelor of Science in Criminology</option>
-                                        <option value="Bachelor of Science in Midwifery">Bachelor of Science in Midwifery</option>
-                                        <option value="Bachelor of Elementary Education">Bachelor of Elementary Education</option>
-                                        <option value="Bachelor of Secondary Education">Bachelor of Secondary Education</option>
-                                        <option value="Bachelor of Physical Education">Bachelor of Physical Education</option>
-                                        <option value="Bachelor of Arts in Sociology">Bachelor of Arts in Sociology</option>
-                                        <option value="Certificate for Professional Teaching">Certificate for Professional Teaching</option>
-                                        <option value="Graduate in Midwifery">Graduate in Midwifery</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="studentId">Student ID:</label>
-                                    <input type="text" id="studentId" name="studentId" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email:</label>
-                                    <input type="email" id="email" name="email" required>
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="password">Password:</label>
-                                    <input type="password" id="password" name="password" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="confirmPassword">Confirm Password:</label>
-                                    <input type="password" id="confirmPassword" name="confirmPassword" required>
-                                </div>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary">Create Sub-Admin</button>
-                        </form>
-                        
-                        <div id="adminMessage" class="message"></div>
                     </div>
                 </div>
             </main>
@@ -334,13 +164,7 @@
         </div>
     </div>
     
-    <footer class="copyright">
-        &copy; 2025 Tagoloan Community College. All rights reserved.
-    </footer>
-    
-    <script src="/js/api-config.js"></script>
-    <script src="/js/admin.js"></script>
-    <script src="/js/user-nav.js"></script>
-    <script src="/js/notifications.js"></script>
+    <script src="../js/admin-dashboard.js"></script>
+    <script src="../js/notifications.js"></script>
 </body>
 </html>
