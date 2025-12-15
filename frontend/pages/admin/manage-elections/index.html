@@ -3,14 +3,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Elections - Admin Panel</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>Manage Elections - E-Voting System</title>
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    
+    <!-- Custom Gold and Maroon Theme CSS -->
+    <link rel="stylesheet" href="../../../css/gold-maroon-theme.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        .content-wrapper {
+            background-color: #f4f6f9;
+        }
+        
+        .brand-text {
+            color: #FFD700 !important;
+            font-weight: bold;
+        }
+        
+        .card-header {
+            background-color: #800000;
+            color: white;
+        }
+        
+        .breadcrumb-item a {
+            color: #800000 !important;
+        }
+        
+        .breadcrumb-item.active {
+            color: #FFD700 !important;
+        }
+        
+        .user-panel .info a {
+            color: white !important;
+        }
+        
+        .election-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+        
+        .election-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-completed {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Manage Elections</h1>
-        <p>This page would contain election management functionality for administrators.</p>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <div id="navbar-container">
+            <!-- Navbar will be loaded here -->
+        </div>
+        <!-- /.navbar -->
+
+        <!-- Include the Gold and Maroon Sidebar -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="/pages/dashboard/" class="brand-link">
+                <span class="brand-text font-weight-light">E-Voting System</span>
+            </a>
+
+            <!-- Load sidebar content -->
+            <div id="sidebar-container">
+                <!-- Sidebar will be loaded here -->
+            </div>
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Manage Elections</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="/pages/dashboard/">Home</a></li>
+                                <li class="breadcrumb-item active">Manage Elections</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Elections Management</h3>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <button class="btn btn-gold" data-toggle="modal" data-target="#createElectionModal">
+                                            <i class="fas fa-plus-circle"></i> Create New Election
+                                        </button>
+                                    </div>
+                                    
+                                    <div id="electionsContainer">
+                                        <!-- Elections will be loaded here -->
+                                        <div class="election-card">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h5>Student Council President 2025</h5>
+                                                    <p class="text-muted">Election for the Student Council President position</p>
+                                                    <div class="mb-2">
+                                                        <span class="election-status status-active">Active</span>
+                                                        <span class="ml-2"><i class="fas fa-calendar"></i> Ends: Dec 20, 2025</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <button class="btn btn-sm btn-maroon mr-1">
+                                                        <i class="fas fa-edit"></i> Edit
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="mt-3">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-gold" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
+                                                </div>
+                                                <div class="d-flex justify-content-between mt-1">
+                                                    <small>325 / 500 votes</small>
+                                                    <small>7 days remaining</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="election-card">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h5>Class Representative Grade 10</h5>
+                                                    <p class="text-muted">Election for Grade 10 Class Representatives</p>
+                                                    <div class="mb-2">
+                                                        <span class="election-status status-completed">Completed</span>
+                                                        <span class="ml-2"><i class="fas fa-calendar"></i> Ended: Nov 30, 2025</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <button class="btn btn-sm btn-secondary mr-1">
+                                                        <i class="fas fa-eye"></i> View Results
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="election-card">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h5>Academic Committee Members</h5>
+                                                    <p class="text-muted">Election for Academic Committee positions</p>
+                                                    <div class="mb-2">
+                                                        <span class="election-status status-pending">Pending</span>
+                                                        <span class="ml-2"><i class="fas fa-calendar"></i> Starts: Jan 5, 2026</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <button class="btn btn-sm btn-maroon mr-1">
+                                                        <i class="fas fa-edit"></i> Edit
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- Create Election Modal -->
+        <div class="modal fade" id="createElectionModal" tabindex="-1" role="dialog" aria-labelledby="createElectionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createElectionModalLabel">Create New Election</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createElectionForm">
+                            <div class="form-group">
+                                <label for="electionName">Election Name</label>
+                                <input type="text" class="form-control" id="electionName" placeholder="Enter election name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="electionDescription">Description</label>
+                                <textarea class="form-control" id="electionDescription" rows="3" placeholder="Enter election description"></textarea>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="startDate">Start Date</label>
+                                    <input type="date" class="form-control" id="startDate" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="endDate">End Date</label>
+                                    <input type="date" class="form-control" id="endDate" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="candidates">Number of Candidates</label>
+                                <input type="number" class="form-control" id="candidates" min="2" max="20" value="2">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="eligibleVoters">Eligible Voters</label>
+                                <select class="form-control" id="eligibleVoters">
+                                    <option>All Registered Voters</option>
+                                    <option>Grade 10 Students</option>
+                                    <option>Grade 11 Students</option>
+                                    <option>Grade 12 Students</option>
+                                    <option>Faculty</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-gold" id="saveElectionBtn">Create Election</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2025 <a href="#">E-Voting System</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0.0
+            </div>
+        </footer>
     </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap 5 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AdminLTE App -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    
+    <!-- SweetAlert2 for beautiful alerts -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+    
+    <script src="../../../js/sidebar.js"></script>
+    <script>
+// Function to load navbar
+function loadNavbar() {
+    fetch('/components/admin-navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar-container').innerHTML = data;
+        })
+        .catch(error => {
+            console.error('Error loading navbar:', error);
+        });
+}
+
+// Function to load sidebar
+function loadSidebar() {
+    fetch('/components/admin-sidebar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('sidebar-container').innerHTML = data;
+            setActiveLink(); // Set active link after loading sidebar
+        })
+        .catch(error => {
+            console.error('Error loading sidebar:', error);
+        });
+}
+
+// Load navbar and sidebar when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadNavbar();
+    loadSidebar();
+});
+</script>
 </body>
 </html>

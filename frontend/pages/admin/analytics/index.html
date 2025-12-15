@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Slider - E-Voting System</title>
+    <title>Analytics - E-Voting System</title>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -16,6 +16,9 @@
     
     <!-- Custom Gold and Maroon Theme CSS -->
     <link rel="stylesheet" href="../../../css/gold-maroon-theme.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         body {
@@ -48,26 +51,30 @@
             color: white !important;
         }
         
-        .image-preview {
-            max-width: 200px;
-            max-height: 150px;
-            margin-top: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
         }
         
-        .slider-item {
-            border: 1px solid #ddd;
+        .stat-card {
+            text-align: center;
+            padding: 20px;
             border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 15px;
-            background-color: #fff;
+            background: white;
+            box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+            margin-bottom: 20px;
         }
         
-        .slider-item img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #800000;
+        }
+        
+        .stat-card .label {
+            font-size: 1rem;
+            color: #6c757d;
         }
     </style>
 </head>
@@ -100,12 +107,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Edit Slider</h1>
+                            <h1 class="m-0">Analytics</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="/pages/dashboard/">Home</a></li>
-                                <li class="breadcrumb-item active">Edit Slider</li>
+                                <li class="breadcrumb-item active">Analytics</li>
                             </ol>
                         </div>
                     </div>
@@ -116,54 +123,40 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+                    <!-- Stats Row -->
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Add New Slider Item</h3>
-                                </div>
-                                <div class="card-body">
-                                    <form id="sliderForm">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="sliderTitle">Title</label>
-                                                    <input type="text" class="form-control" id="sliderTitle" placeholder="Enter slider title" required>
-                                                </div>
-                                                
-                                                <div class="form-group">
-                                                    <label for="sliderDescription">Description (Optional)</label>
-                                                    <textarea class="form-control" id="sliderDescription" rows="3" placeholder="Enter description"></textarea>
-                                                </div>
-                                                
-                                                <div class="form-group">
-                                                    <label for="sliderLink">Link (Optional)</label>
-                                                    <input type="url" class="form-control" id="sliderLink" placeholder="https://example.com">
-                                                </div>
-                                                
-                                                <button type="submit" class="btn btn-gold">Add Slider Item</button>
-                                            </div>
-                                            
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="sliderImage">Image</label>
-                                                    <input type="file" class="form-control" id="sliderImage" accept="image/*" required>
-                                                    <small class="form-text text-muted">Recommended size: 1200x600 pixels</small>
-                                                    <div id="imagePreviewContainer"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                        <div class="col-lg-3 col-6">
+                            <div class="stat-card">
+                                <div class="value">1,410</div>
+                                <div class="label">Total Votes</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <div class="stat-card">
+                                <div class="value">2,300</div>
+                                <div class="label">Registered Voters</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <div class="stat-card">
+                                <div class="value">3</div>
+                                <div class="label">Active Elections</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-6">
+                            <div class="stat-card">
+                                <div class="value">72%</div>
+                                <div class="label">Turnout Rate</div>
                             </div>
                         </div>
                     </div>
                     
+                    <!-- Charts Row -->
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Current Slider Items</h3>
+                                    <h3 class="card-title">Votes Over Time</h3>
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                             <i class="fas fa-minus"></i>
@@ -171,12 +164,79 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div id="currentSliderItems">
-                                        <!-- Slider items will be loaded here -->
-                                        <div class="text-center p-5">
-                                            <p>No slider items found. Add your first slider item above.</p>
-                                        </div>
+                                    <div class="chart-container">
+                                        <canvas id="votesOverTimeChart"></canvas>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Election Distribution</h3>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="electionDistributionChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Detailed Analytics -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Detailed Analytics</h3>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Election</th>
+                                                <th>Total Votes</th>
+                                                <th>Registered Voters</th>
+                                                <th>Turnout %</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Student Council President</td>
+                                                <td>850</td>
+                                                <td>1,200</td>
+                                                <td>70.8%</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Class Representative</td>
+                                                <td>420</td>
+                                                <td>600</td>
+                                                <td>70.0%</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Academic Committee</td>
+                                                <td>140</td>
+                                                <td>500</td>
+                                                <td>28.0%</td>
+                                                <td><span class="badge bg-warning">Ongoing</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -232,115 +292,48 @@
             document.getElementById('userRole').textContent = userData.role;
             document.getElementById('sidebarUserName').textContent = userData.name;
             document.getElementById('sidebarUserRole').textContent = userData.role;
+            
+            // Initialize charts
+            initializeCharts();
         });
         
-        // Image preview functionality
-        document.getElementById('sliderImage').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const previewContainer = document.getElementById('imagePreviewContainer');
-                    previewContainer.innerHTML = `
-                        <img src="${e.target.result}" class="image-preview" alt="Preview">
-                        <p class="mt-2"><small>Image Preview</small></p>
-                    `;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-        
-        // Form submission
-        document.getElementById('sliderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const title = document.getElementById('sliderTitle').value;
-            const description = document.getElementById('sliderDescription').value;
-            const link = document.getElementById('sliderLink').value;
-            const imageFile = document.getElementById('sliderImage').files[0];
-            
-            if (!title || !imageFile) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Missing Information',
-                    text: 'Please provide both a title and an image.',
-                    confirmButtonColor: '#800000'
-                });
-                return;
-            }
-            
-            // In a real application, you would upload the image and save the data to a database
-            // For this demo, we'll just show a success message and add to the list
-            
-            Swal.fire({
-                icon: 'success',
-                title: 'Slider Item Added!',
-                text: 'Your slider item has been successfully added.',
-                confirmButtonColor: '#800000'
-            }).then(() => {
-                // Reset form
-                document.getElementById('sliderForm').reset();
-                document.getElementById('imagePreviewContainer').innerHTML = '';
-                
-                // Add to current slider items (in a real app, this would come from the server)
-                addToCurrentSliderItems(title, description, link, imageFile.name);
+        // Initialize charts
+        function initializeCharts() {
+            // Votes over time chart
+            const votesCtx = document.getElementById('votesOverTimeChart').getContext('2d');
+            const votesChart = new Chart(votesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Votes',
+                        data: [65, 59, 80, 81, 56, 55, 40],
+                        borderColor: '#800000',
+                        backgroundColor: 'rgba(128, 0, 0, 0.1)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
             });
-        });
-        
-        // Function to add item to current slider items list
-        function addToCurrentSliderItems(title, description, link, imageName) {
-            const container = document.getElementById('currentSliderItems');
             
-            // Remove the placeholder if it exists
-            if (container.querySelector('.text-center')) {
-                container.innerHTML = '';
-            }
-            
-            // Create new slider item element
-            const newItem = document.createElement('div');
-            newItem.className = 'slider-item';
-            newItem.innerHTML = `
-                <div class="row">
-                    <div class="col-md-3">
-                        <img src="https://via.placeholder.com/300x150/800000/FFD700?text=${encodeURIComponent(title)}" alt="${title}">
-                    </div>
-                    <div class="col-md-7">
-                        <h5>${title}</h5>
-                        <p>${description || 'No description provided'}</p>
-                        ${link ? `<p><a href="${link}" target="_blank">${link}</a></p>` : ''}
-                    </div>
-                    <div class="col-md-2 text-end">
-                        <button class="btn btn-sm btn-maroon delete-slider-item">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            // Add to the beginning of the container
-            container.insertBefore(newItem, container.firstChild);
-            
-            // Add event listener to delete button
-            newItem.querySelector('.delete-slider-item').addEventListener('click', function() {
-                Swal.fire({
-                    title: 'Delete Slider Item?',
-                    text: "This action cannot be undone!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#800000',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        newItem.remove();
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Deleted!',
-                            text: 'Slider item has been deleted.',
-                            confirmButtonColor: '#800000'
-                        });
-                    }
-                });
+            // Election distribution chart
+            const electionCtx = document.getElementById('electionDistributionChart').getContext('2d');
+            const electionChart = new Chart(electionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Student Council', 'Class Reps', 'Academic Comm', 'Sports Coord', 'Cultural Sec'],
+                    datasets: [{
+                        data: [700, 500, 400, 600, 300],
+                        backgroundColor: ['#FFD700', '#800000', '#DAA520', '#A52A2A', '#FFEC8B']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
             });
         }
         

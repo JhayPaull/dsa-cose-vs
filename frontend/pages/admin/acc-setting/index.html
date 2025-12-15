@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Setting - E-Voting System</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
+    <!-- Custom Gold and Maroon Theme CSS -->
+    <link rel="stylesheet" href="../../../css/gold-maroon-theme.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        .content-wrapper {
+            background-color: #f4f6f9;
+        }
+        
+        .brand-text {
+            color: #FFD700 !important;
+            font-weight: bold;
+        }
+        
+        .card-header {
+            background-color: #800000;
+            color: white;
+        }
+        
+        .breadcrumb-item a {
+            color: #800000 !important;
+        }
+        
+        .breadcrumb-item.active {
+            color: #FFD700 !important;
+        }
+        
+        .user-panel .info a {
+            color: white !important;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background-color: #800000;
+            color: #FFD700;
+            border-color: #800000;
+        }
+        
+        .nav-tabs .nav-link {
+            color: #800000;
+        }
+        
+        .form-control.bg-light {
+            background-color: #f8f9fa !important;
+        }
+        
+        .select2-container .select2-selection--single {
+            height: calc(2.25rem + 2px);
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+        }
+        
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 28px;
+            padding-left: 0;
+        }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <div id="navbar-container">
+            <!-- Navbar will be loaded here -->
+        </div>
+        <!-- /.navbar -->
+
+        <!-- Include the Gold and Maroon Sidebar -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="/pages/dashboard/" class="brand-link">
+                <span class="brand-text font-weight-light">E-Voting System</span>
+            </a>
+
+            <!-- Load sidebar content -->
+            <div id="sidebar-container">
+                <!-- Sidebar will be loaded here -->
+            </div>
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Account Settings</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="/pages/dashboard/">Home</a></li>
+                                <li class="breadcrumb-item active">Account Settings</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-header p-2">
+                                        <ul class="nav nav-pills">
+                                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#basicinformation">Basic Information</a></li>
+                                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#settings">Account Settings</a></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="tab-content mt-3">
+                                        <!-- Basic Information Tab -->
+                                        <div class="tab-pane active" id="basicinformation">
+                                            <form id="userprofile_update_basicinfo" method="POST" novalidate="">
+                                                <input type="hidden" name="_token" value="zooU9haeO2AFS7ZNSMsdJ3U6VtYZFV3OwV9GVPKQ" autocomplete="off">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label for="inputLastName">Last Name</label>
+                                                        <input type="text" class="form-control" id="inputLastName" name="inputLastName" value="Admin" required>
+                                                        <div class="invalid-feedback">Please provide a last name.</div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="inputFirstName">First Name</label>
+                                                        <input type="text" class="form-control" id="inputFirstName" name="inputFirstName" value="System" required>
+                                                        <div class="invalid-feedback">Please provide a first name.</div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="info_mname">Middle Name</label>
+                                                        <input type="text" class="form-control" id="info_mname" name="info_mname" placeholder="Middle Name" value="">
+                                                        <div class="invalid-feedback">Please provide a middle name.</div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="info_sname">Name Extension</label>
+                                                        <input type="text" class="form-control" id="info_sname" name="info_sname" placeholder="Eg Jr, Sr, II, III" value="">
+                                                        <div class="invalid-feedback">Please provide a name extension or N/A.</div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-md-3">
+                                                        <label for="info_sex">Sex <span class="text-danger">*</span></label>
+                                                        <select class="form-control" id="info_sex" name="info_sex" required="">
+                                                            <option disabled="" value="">--Select Sex--</option>
+                                                            <option value="Female">Female</option>
+                                                            <option selected="" value="Male">Male</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">Please select sex.</div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label for="info_civilstatus">Civil Status <span class="text-danger">*</span></label>
+                                                        <select class="form-control" id="info_civilstatus" name="info_civilstatus" required="">
+                                                            <option disabled="" value="">--Select Civil Status--</option>
+                                                            <option selected="" value="Single">Single</option>
+                                                            <option value="Married">Married</option>
+                                                            <option value="Divorced">Divorced</option>
+                                                            <option value="Widowed">Widowed</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">Please select civil status.</div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label for="info_birthday">Birthdate <span class="text-danger">*</span></label>
+                                                        <input class="form-control bg-white " id="info_birthday" name="info_birthday" readonly="" required="" type="text" value="Jan 01, 2000">
+                                                        <div class="invalid-feedback">Please provide a birthdate.</div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label for="info_religion">Religion <span class="text-danger">*</span></label>
+                                                        <input class="form-control" id="info_religion" name="info_religion" required="" type="text" value="Christian">
+                                                        <div class="invalid-feedback">Please provide a religion.</div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12">
+                                                        <label for="info_placeofbirth">Place of Birth <span class="text-danger">*</span></label>
+                                                        <input class="form-control" id="info_placeofbirth" name="info_placeofbirth" required="" type="text" value="Tagoloan, Misamis Oriental">
+                                                        <div class="invalid-feedback">Please provide a place of birth.</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-3">
+                                                    <div class="col-md-4">
+                                                        <label for="info_prov">Provincial Address <span class="text-danger">*</span></label>
+                                                        <select class="form-control select2" id="info_prov" name="info_prov" required="">
+                                                            <option value="1401">ABRA</option>
+                                                            <option value="1602">AGUSAN DEL NORTE</option>
+                                                            <option value="1603">AGUSAN DEL SUR</option>
+                                                            <option value="0604">AKLAN</option>
+                                                            <option value="0505">ALBAY</option>
+                                                            <option value="0606">ANTIQUE</option>
+                                                            <option value="1481">APAYAO</option>
+                                                            <option value="0377">AURORA</option>
+                                                            <option value="1507">BASILAN</option>
+                                                            <option value="0308">BATAAN</option>
+                                                            <option value="0209">BATANES</option>
+                                                            <option value="0410">BATANGAS</option>
+                                                            <option value="1411">BENGUET</option>
+                                                            <option value="0878">BILIRAN</option>
+                                                            <option value="0712">BOHOL</option>
+                                                            <option value="1013">BUKIDNON</option>
+                                                            <option value="0314">BULACAN</option>
+                                                            <option value="0215">CAGAYAN</option>
+                                                            <option value="0516">CAMARINES NORTE</option>
+                                                            <option value="0517">CAMARINES SUR</option>
+                                                            <option value="1018">CAMIGUIN</option>
+                                                            <option value="0619">CAPIZ</option>
+                                                            <option value="0520">CATANDUANES</option>
+                                                            <option value="0421">CAVITE</option>
+                                                            <option value="0722">CEBU</option>
+                                                            <option value="0997">CITY OF ISABELA</option>
+                                                            <option value="1339">CITY OF MANILA</option>
+                                                            <option value="1182">COMPOSTELA VALLEY</option>
+                                                            <option value="1247">COTABATO (NORTH COTABATO)</option>
+                                                            <option value="1298">COTABATO CITY</option>
+                                                            <option value="1123">DAVAO DEL NORTE</option>
+                                                            <option value="1124">DAVAO DEL SUR</option>
+                                                            <option value="1186">DAVAO OCCIDENTAL</option>
+                                                            <option value="1125">DAVAO ORIENTAL</option>
+                                                            <option value="1685">DINAGAT ISLANDS</option>
+                                                            <option value="0826">EASTERN SAMAR</option>
+                                                            <option value="0679">GUIMARAS</option>
+                                                            <option value="1427">IFUGAO</option>
+                                                            <option value="0128">ILOCOS NORTE</option>
+                                                            <option value="0129">ILOCOS SUR</option>
+                                                            <option value="0630">ILOILO</option>
+                                                            <option value="0231">ISABELA</option>
+                                                            <option value="1432">KALINGA</option>
+                                                            <option value="0133">LA UNION</option>
+                                                            <option value="0434">LAGUNA</option>
+                                                            <option value="1035">LANAO DEL NORTE</option>
+                                                            <option value="1536">LANAO DEL SUR</option>
+                                                            <option value="0837">LEYTE</option>
+                                                            <option value="1538">MAGUINDANAO</option>
+                                                            <option value="1740">MARINDUQUE</option>
+                                                            <option value="0541">MASBATE</option>
+                                                            <option value="1042">MISAMIS OCCIDENTAL</option>
+                                                            <option selected="" value="1043">MISAMIS ORIENTAL</option>
+                                                            <option value="1444">MOUNTAIN PROVINCE</option>
+                                                            <option value="1339">NCR, CITY OF MANILA, FIRST DISTRICT</option>
+                                                            <option value="1376">NCR, FOURTH DISTRICT</option>
+                                                            <option value="1374">NCR, SECOND DISTRICT</option>
+                                                            <option value="1375">NCR, THIRD DISTRICT</option>
+                                                            <option value="0645">NEGROS OCCIDENTAL</option>
+                                                            <option value="0746">NEGROS ORIENTAL</option>
+                                                            <option value="0848">NORTHERN SAMAR</option>
+                                                            <option value="0349">NUEVA ECIJA</option>
+                                                            <option value="0250">NUEVA VIZCAYA</option>
+                                                            <option value="1751">OCCIDENTAL MINDORO</option>
+                                                            <option value="1752">ORIENTAL MINDORO</option>
+                                                            <option value="1753">PALAWAN</option>
+                                                            <option value="0354">PAMPANGA</option>
+                                                            <option value="0155">PANGASINAN</option>
+                                                            <option value="0456">QUEZON</option>
+                                                            <option value="0257">QUIRINO</option>
+                                                            <option value="0458">RIZAL</option>
+                                                            <option value="1759">ROMBLON</option>
+                                                            <option value="0860">SAMAR (WESTERN SAMAR)</option>
+                                                            <option value="1280">SARANGANI</option>
+                                                            <option value="0761">SIQUIJOR</option>
+                                                            <option value="0562">SORSOGON</option>
+                                                            <option value="1263">SOUTH COTABATO</option>
+                                                            <option value="0864">SOUTHERN LEYTE</option>
+                                                            <option value="1265">SULTAN KUDARAT</option>
+                                                            <option value="1566">SULU</option>
+                                                            <option value="1667">SURIGAO DEL NORTE</option>
+                                                            <option value="1668">SURIGAO DEL SUR</option>
+                                                            <option value="0369">TARLAC</option>
+                                                            <option value="1570">TAWI-TAWI</option>
+                                                            <option value="0371">ZAMBALES</option>
+                                                            <option value="0972">ZAMBOANGA DEL NORTE</option>
+                                                            <option value="0973">ZAMBOANGA DEL SUR</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">Please select a province.</div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <label for="info_city">City/Municipality <span class="text-danger">*</span></label>
+                                                        <select class="form-control select2" id="info_city" name="info_city" required="">
+                                                            <option value="">--Select City/Municipality--</option>
+                                                            <option selected value="Tagoloan">Tagoloan</option>
+                                                            <option value="Cagayan de Oro City">Cagayan de Oro City</option>
+                                                            <option value="Gingoog City">Gingoog City</option>
+                                                            <option value="El Salvador City">El Salvador City</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">Please select a city/municipality.</div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4">
+                                                        <label for="info_barangay">Barangay <span class="text-danger">*</span></label>
+                                                        <select class="form-control select2" id="info_barangay" name="info_barangay" required="">
+                                                            <option value="">--Select Barangay--</option>
+                                                            <option selected value="Poblacion">Poblacion</option>
+                                                            <option value="Bonbon">Bonbon</option>
+                                                            <option value="Del Monte">Del Monte</option>
+                                                            <option value="Kalabaylabay">Kalabaylabay</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">Please select a barangay.</div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-gold">
+                                                                <i class="fas fa-save"></i> Save Changes
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        
+                                        <!-- Account Settings Tab -->
+                                        <div class="tab-pane" id="settings">
+                                            <form action="/" autocomplete="off" class="form-horizontal" id="passwordForm" method="POST" novalidate="">
+                                                <input type="hidden" name="_token" value="zooU9haeO2AFS7ZNSMsdJ3U6VtYZFV3OwV9GVPKQ" autocomplete="off">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-3 col-form-label" for="current_password">Current Password</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group">
+                                                            <input aria-describedby="current_password_error" autocomplete="current-password" class="form-control " id="current_password" name="current_password" placeholder="Enter current password" required="" type="password" value="">
+                                                            <div class="input-group-append">
+                                                                <button aria-label="Toggle password visibility" class="btn btn-outline-secondary toggle-password" data-target="#current_password" type="button">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <span class="invalid-feedback" role="alert"><strong id="current_password_error"></strong></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-3 col-form-label" for="password">New Password</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group">
+                                                            <input aria-describedby="password_error requirements_help" autocomplete="new-password" class="form-control " id="password" minlength="8" name="password" placeholder="Enter new password" required="" type="password">
+                                                            <div class="input-group-append">
+                                                                <button aria-label="Toggle password visibility" class="btn btn-outline-secondary toggle-password" data-target="#password" type="button">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <span class="invalid-feedback" role="alert"><strong id="password_error"></strong></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-3 col-form-label" for="password_confirmation">Confirm Password</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group">
+                                                            <input aria-describedby="password_confirmation_error" autocomplete="new-password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm new password" required="" type="password">
+                                                            <div class="input-group-append">
+                                                                <button aria-label="Toggle password visibility" class="btn btn-outline-secondary toggle-password" data-target="#password_confirmation" type="button">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <span class="invalid-feedback" role="alert"><strong id="password_confirmation_error"></strong></span>
+                                                    </div>
+                                                </div>
+                                                <style>
+                                                    .label-length {
+                                                        width: 23px;
+                                                        display: inline-block;
+                                                        text-align: center;
+                                                    }
+                                                </style>
+                                                <div class="form-group">
+                                                    <label class="font-weight-bold">Password must:</label>
+                                                    <ul class="pl-3 list-unstyled" id="password_requirements">
+                                                        <li class="d-flex align-items-center mb-1">
+                                                            <span class="label-length">
+                                                                <i class="hide fas fa-check text-success mr-2" id="req1"></i>
+                                                            </span>
+                                                            <span>be at least <strong>8 characters</strong> long</span>
+                                                        </li>
+                                                        <li class="d-flex align-items-center mb-1">
+                                                            <span class="label-length">
+                                                                <i class="hide fas fa-check text-success mr-2" id="req2"></i>
+                                                            </span>
+                                                            <span>contain at least <strong>one letter</strong></span>
+                                                        </li>
+                                                        <li class="d-flex align-items-center mb-1">
+                                                            <span class="label-length">
+                                                                <i class="hide fas fa-check text-success mr-2" id="req3"></i>
+                                                            </span>
+                                                            <span>contain at least <strong>one number</strong></span>
+                                                        </li>
+                                                        <script>
+                                                            var change_pass = true;
+                                                        </script>
+                                                        <li class="d-flex align-items-center mb-1">
+                                                            <span class="label-length">
+                                                                <i class="hide fas fa-check text-success mr-2" id="req4"></i>
+                                                            </span>
+                                                            <span>match the <strong>new password</strong></span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="offset-sm-3 col-sm-10">
+                                                        <button class="btn btn-primary" type="submit">
+                                                            <i class="fas fa-key"></i> Update Password
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2025 <a href="#">E-Voting System</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0.0
+            </div>
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap 5 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <!-- AdminLTE App -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    
+    <!-- SweetAlert2 for beautiful alerts -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+    
+    <script src="../../../js/sidebar.js"></script>
+    <script>
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Initialize Select2
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+        
+        // Fetch and display user information
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mock user data for demonstration
+            const userData = {
+                name: "Admin User",
+                role: "Administrator"
+            };
+            
+            // Update user information in the UI
+            document.getElementById('userName').textContent = userData.name;
+            document.getElementById('userRole').textContent = userData.role;
+            document.getElementById('sidebarUserName').textContent = userData.name;
+            document.getElementById('sidebarUserRole').textContent = userData.role;
+        });
+        
+        // Handle form submissions
+        document.getElementById('userprofile_update_basicinfo').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Profile Updated!',
+                text: 'Your profile information has been successfully updated.',
+                confirmButtonColor: '#800000'
+            });
+        });
+        
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newPassword = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('password_confirmation').value;
+            
+            if (newPassword !== confirmPassword) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Password Mismatch',
+                    text: 'New password and confirmation do not match.',
+                    confirmButtonColor: '#800000'
+                });
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Weak Password',
+                    text: 'Password must be at least 8 characters long.',
+                    confirmButtonColor: '#800000'
+                });
+                return;
+            }
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Password Changed!',
+                text: 'Your password has been successfully updated.',
+                confirmButtonColor: '#800000'
+            }).then(() => {
+                document.getElementById('passwordForm').reset();
+            });
+        });
+        
+        // Set up logout functionality with SweetAlert2
+        function setupLogout() {
+            const logoutBtn = document.getElementById('logout');
+            const logoutLink = document.getElementById('logoutLink');
+            
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    
+                    const result = await Swal.fire({
+                        title: 'Logout Confirmation',
+                        text: 'Are you sure you want to sign out?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#800000',
+                        cancelButtonColor: '#FFD700',
+                        confirmButtonText: 'Yes, sign me out',
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: true
+                    });
+
+                    if (result.isConfirmed) {
+                        try {
+                            // Show loading state
+                            Swal.fire({
+                                title: 'Signing out...',
+                                text: 'Please wait while we sign you out.',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+
+                            // Clear local storage
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('user');
+                            localStorage.removeItem('registerFormData');
+                            localStorage.removeItem('loginFormData');
+                            
+                            // Redirect to login page
+                            window.location.href = '/auth/login/';
+                        } catch (error) {
+                            console.error('Logout error:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'There was an error signing out. Please try again.',
+                                confirmButtonColor: '#3085d6',
+                            });
+                        }
+                    }
+                });
+            }
+            
+            if (logoutLink) {
+                logoutLink.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    // Trigger the same logout functionality
+                    if (logoutBtn) {
+                        logoutBtn.click();
+                    }
+                });
+            }
+        }
+
+        // Initialize when DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up logout button
+            setupLogout();
+            
+            // Load navbar and sidebar
+            loadNavbar();
+            loadSidebar();
+        });
+
+        // Function to load navbar
+        function loadNavbar() {
+            fetch('/components/admin-navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading navbar:', error);
+                });
+        }
+
+        // Function to load sidebar
+        function loadSidebar() {
+            fetch('/components/admin-sidebar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('sidebar-container').innerHTML = data;
+                    setActiveLink(); // Set active link after loading sidebar
+                })
+                .catch(error => {
+                    console.error('Error loading sidebar:', error);
+                });
+        }
+    </script>
+</body>
+</html>
