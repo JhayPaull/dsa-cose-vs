@@ -18,7 +18,7 @@
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
     
     <!-- Custom Gold and Maroon Theme CSS -->
-    <link rel="stylesheet" href="../css/gold-maroon-theme.css">
+    <link rel="stylesheet" href="gold-maroon-theme.css">
     
     <style>
         body {
@@ -667,9 +667,19 @@
             if (logoutLink) {
                 logoutLink.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    // Trigger the same logout functionality
-                    if (logoutBtn) {
-                        logoutBtn.click();
+                    // Use the proper logout functionality with confirmation
+                    if (typeof confirmLogout !== 'undefined') {
+                        confirmLogout();
+                    } else {
+                        // Fallback if confirmLogout is not available
+                        if (confirm('Are you sure you want to logout?')) {
+                            // Clear local storage
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('user');
+                            
+                            // Redirect to login page
+                            window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+                        }
                     }
                 });
             }
@@ -789,7 +799,7 @@
 
         // Function to load sidebar
         function loadSidebar() {
-            fetch('/components/admin-sidebar.html')
+            fetch('gold-maroon-sidebar.html')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('sidebar-container').innerHTML = data;

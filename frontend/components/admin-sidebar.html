@@ -1,21 +1,24 @@
 <!-- Sidebar -->
 <div class="sidebar" style="overflow-y: auto;">
     <!-- Sidebar user panel (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-            <i class="fas fa-user-circle fa-2x" style="color: #FFD700;"></i>
-        </div>
-        <div class="info">
-            <a href="#" class="d-block" id="sidebarUserName">John Admin</a>
-            <small class="text-muted" id="sidebarUserRole">Administrator</small>
-        </div>
+    <div class="user-panel mt-3 pb-3 mb-3">
+        <ul class="nav nav-pills nav-sidebar flex-column">
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <p>
+                        <span id="sidebarUserName">John Admin</span>
+                        <small class="text-muted d-block" id="sidebarUserRole">Administrator</small>
+                    </p>
+                </a>
+            </li>
+        </ul>
     </div>
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
-                <a href="/pages/dashboard/" class="nav-link active" id="dashboard-link">
+                <a href="/pages/dashboard/" class="nav-link" id="dashboard-link">
                     <i class="nav-icon fas fa-home"></i>
                     <p>Dashboard</p>
                 </a>

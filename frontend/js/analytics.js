@@ -215,7 +215,7 @@ if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        window.location.href = '/auth/login/';
+        window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
     });
 }
 

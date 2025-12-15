@@ -309,15 +309,15 @@ function logout() {
     if (window.firebaseAuth && window.firebaseAuth.signOut) {
         window.firebaseAuth.signOut().then(() => {
             // Redirect to login page
-            window.location.href = '/auth/login/';
+            window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
         }).catch((error) => {
             console.error('Firebase sign out error:', error);
             // Even if Firebase sign out fails, redirect to login
-            window.location.href = '/auth/login/';
+            window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
         });
     } else {
         // Redirect to login page
-        window.location.href = '/auth/login/';
+        window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
     }
 }
 

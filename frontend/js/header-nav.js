@@ -7,9 +7,53 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle logout
     function handleLogout(e) {
         e.preventDefault();
-        // Add your logout logic here
-        console.log('Logout clicked');
-        // Example: window.location.href = '/auth/logout';
+        // Show confirmation dialog before logging out
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                title: 'Confirm Logout',
+                text: 'Are you sure you want to logout?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#800000',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    performLogout();
+                }
+            });
+        } else {
+            // Fallback to native confirm dialog
+            if (confirm('Are you sure you want to logout?')) {
+                performLogout();
+            }
+        }
+    }
+    
+    // Perform actual logout
+    function performLogout() {
+        // Clear local storage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
+        // Sign out from Firebase if available
+        if (window.firebaseAuth && typeof window.firebaseAuth.signOut === 'function') {
+            window.firebaseAuth.signOut()
+                .then(() => {
+                    console.log('Firebase sign out successful');
+                    // Redirect to login
+                    window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+                })
+                .catch((error) => {
+                    console.error('Firebase sign out error:', error);
+                    // Even if Firebase sign out fails, redirect to login
+                    window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+                });
+        } else {
+            // Redirect to login page
+            window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+        }
     }
 
     // Set active link based on current URL

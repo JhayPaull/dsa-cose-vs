@@ -187,11 +187,9 @@
         </div>
         <!-- /.content-wrapper -->
 
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2025 <a href="#">E-Voting System</a>.</strong>
-            All rights reserved.
-            <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 1.0.0
+        <footer class="copyright text-center">
+            <div class="container">
+                <p class="mb-0 py-3">© 2025 Tagoloan Community College. All rights reserved.</p>
             </div>
         </footer>
     </div>
@@ -401,19 +399,23 @@
             if (logoutLink) {
                 logoutLink.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    // Trigger the same logout functionality
-                    if (logoutBtn) {
-                        logoutBtn.click();
+                    // Use the proper logout functionality with confirmation
+                    if (typeof confirmLogout !== 'undefined') {
+                        confirmLogout();
+                    } else {
+                        // Fallback if confirmLogout is not available
+                        if (confirm('Are you sure you want to logout?')) {
+                            // Clear local storage
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('user');
+                            
+                            // Redirect to login page
+                            window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+                        }
                     }
                 });
             }
         }
-
-        // Initialize when DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set up logout button
-            setupLogout();
-        });
 
         // Function to load navbar
         function loadNavbar() {
@@ -442,6 +444,18 @@
 
         // Load navbar and sidebar when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            // Set up logout button
+            setupLogout();
+            loadNavbar();
+            loadSidebar();
+        });
+    </script>
+</body>
+</html>
+        // Load navbar and sidebar when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up logout button
+            setupLogout();
             loadNavbar();
             loadSidebar();
         });

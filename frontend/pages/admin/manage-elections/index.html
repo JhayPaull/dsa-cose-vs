@@ -285,11 +285,9 @@
             </div>
         </div>
 
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2025 <a href="#">E-Voting System</a>.</strong>
-            All rights reserved.
-            <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 1.0.0
+        <footer class="copyright text-center">
+            <div class="container">
+                <p class="mb-0 py-3">© 2025 Tagoloan Community College. All rights reserved.</p>
             </div>
         </footer>
     </div>
@@ -310,37 +308,38 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
     
     <script src="../../../js/sidebar.js"></script>
+    <script src="../../../js/load-sidebar.js"></script>
     <script>
-// Function to load navbar
-function loadNavbar() {
-    fetch('/components/admin-navbar.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('navbar-container').innerHTML = data;
-        })
-        .catch(error => {
-            console.error('Error loading navbar:', error);
-        });
-}
+        // Function to load navbar
+        function loadNavbar() {
+            fetch('/components/admin-navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading navbar:', error);
+                });
+        }
 
-// Function to load sidebar
-function loadSidebar() {
-    fetch('/components/admin-sidebar.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('sidebar-container').innerHTML = data;
-            setActiveLink(); // Set active link after loading sidebar
-        })
-        .catch(error => {
-            console.error('Error loading sidebar:', error);
-        });
-}
+        // Function to load sidebar
+        function loadSidebar() {
+            fetch('/components/admin-sidebar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('sidebar-container').innerHTML = data;
+                    setActiveLink(); // Set active link after loading sidebar
+                })
+                .catch(error => {
+                    console.error('Error loading sidebar:', error);
+                });
+        }
 
-// Load navbar and sidebar when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    loadNavbar();
-    loadSidebar();
-});
-</script>
+        // Load navbar and sidebar when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNavbar();
+            loadSidebar();
+        });
+    </script>
 </body>
 </html>

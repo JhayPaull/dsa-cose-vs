@@ -31,13 +31,13 @@ function loadSidebar() {
             sidebarContainer.innerHTML = `
                 <aside class="sidebar">
                     <nav class="sidebar-nav">
-                        <a href="/pages/dashboard/" class="nav-item active">
-                            <i class="fas fa-home"></i>
-                            <span>Dashboard</span>
+                        <a href="/pages/dashboard/" class="nav-link active">
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>Dashboard</p>
                         </a>
-                        <a href="#" class="nav-item" id="logoutLink">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
+                        <a href="#" class="nav-link" id="logoutLink">
+                            <i class="nav-icon fas fa-sign-out-alt"></i>
+                            <p>Logout</p>
                         </a>
                     </nav>
                 </aside>
@@ -58,7 +58,7 @@ function setupSidebarEvents() {
     
     // Set up active link highlighting
     const currentPath = window.location.pathname;
-    const navItems = document.querySelectorAll('.nav-item');
+    const navItems = document.querySelectorAll('.nav-link');
     
     navItems.forEach(item => {
         const href = item.getAttribute('href');
@@ -72,50 +72,28 @@ function setupSidebarEvents() {
 }
 
 function confirmLogout() {
-    // Create confirmation modal
-    const modal = document.createElement('div');
-    modal.className = 'modal fade';
-    modal.id = 'logoutModal';
-    modal.tabIndex = '-1';
-    modal.setAttribute('aria-labelledby', 'logoutModalLabel');
-    modal.setAttribute('aria-hidden', 'true');
-    
-    modal.innerHTML = `
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to logout?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="confirmLogoutBtn">Logout</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    // Add modal to body
-    document.body.appendChild(modal);
-    
-    // Show modal
-    const bootstrapModal = new bootstrap.Modal(modal);
-    bootstrapModal.show();
-    
-    // Handle confirm logout
-    document.getElementById('confirmLogoutBtn').addEventListener('click', function() {
-        performLogout();
-        bootstrapModal.hide();
-        modal.remove();
-    });
-    
-    // Clean up modal after it's hidden
-    modal.addEventListener('hidden.bs.modal', function() {
-        modal.remove();
-    });
+    // Check if SweetAlert2 is available
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: 'Confirm Logout',
+            text: 'Are you sure you want to logout?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#800000',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Logout',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                performLogout();
+            }
+        });
+    } else {
+        // Fallback to native confirm dialog
+        if (confirm('Are you sure you want to logout?')) {
+            performLogout();
+        }
+    }
 }
 
 function performLogout() {
@@ -129,15 +107,15 @@ function performLogout() {
             .then(() => {
                 console.log('Firebase sign out successful');
                 // Redirect to login
-                window.location.href = '/auth/login/';
+                window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
             })
             .catch((error) => {
                 console.error('Firebase sign out error:', error);
                 // Even if Firebase sign out fails, redirect to login
-                window.location.href = '/auth/login/';
+                window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
             });
     } else {
         // Redirect to login page
-        window.location.href = '/auth/login/';
+        window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
     }
 }
