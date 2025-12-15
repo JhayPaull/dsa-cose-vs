@@ -460,9 +460,48 @@ function checkAuthState() {
     }
 }
 
-// Logout function
-async function logout() {
+// Show logout confirmation dialog
+function confirmLogout() {
+    // Check if SweetAlert2 is available
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: 'Logout Confirmation',
+            text: 'Are you sure you want to log out?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, log me out',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                performLogout();
+            }
+        });
+    } else {
+        // Fallback to native confirm dialog
+        if (confirm('Are you sure you want to log out?')) {
+            performLogout();
+        }
+    }
+}
+
+// Perform the actual logout
+async function performLogout() {
     try {
+        // Show loading state
+        if (Swal) {
+            Swal.fire({
+                title: 'Logging out...',
+                text: 'Please wait while we log you out.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        }
+
         // Clear local storage
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -470,19 +509,39 @@ async function logout() {
         localStorage.removeItem('loginFormData');
         
         // Sign out from Firebase if available
-        if (auth && auth.signOut) {
-            await auth.signOut();
+        if (window.firebaseAuth && typeof window.firebaseAuth.signOut === 'function') {
+            await window.firebaseAuth.signOut();
+        } else if (window.auth && typeof window.auth.signOut === 'function') {
+            await window.auth.signOut();
+        }
+        
+        // Close any open SweetAlert dialogs
+        if (Swal) {
+            Swal.close();
         }
         
         // Redirect to login page
         window.location.href = '/auth/login/';
     } catch (error) {
         console.error('Logout error:', error);
-        // Even if logout fails, clear local data and redirect
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.removeItem('registerFormData');
-        localStorage.removeItem('loginFormData');
-        window.location.href = '/auth/login/';
+        
+        // Show error message
+        if (Swal) {
+            Swal.fire({
+                title: 'Logout Error',
+                text: 'An error occurred while trying to log out. You have been redirected to the login page.',
+                icon: 'error'
+            }).then(() => {
+                // Even if logout fails, redirect to login
+                window.location.href = '/auth/login/';
+            });
+        } else {
+            // Fallback to alert and redirect
+            alert('An error occurred during logout. You will be redirected to the login page.');
+            window.location.href = '/auth/login/';
+        }
     }
 }
+
+// Export the confirmLogout function for use in other files
+window.confirmLogout = confirmLogout;

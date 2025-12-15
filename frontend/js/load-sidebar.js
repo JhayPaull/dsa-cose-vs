@@ -75,14 +75,13 @@ function confirmLogout() {
     // Check if SweetAlert2 is available
     if (typeof Swal !== 'undefined') {
         Swal.fire({
-            title: 'Confirm Logout',
-            text: 'Are you sure you want to logout?',
+            title: 'Are you sure you want to log out?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#800000',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Logout',
-            cancelButtonText: 'Cancel'
+            confirmButtonText: '<i class="fas fa-sign-out-alt"></i> Yes, log out',
+            cancelButtonText: '<i class="fas fa-times"></i> Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
                 performLogout();

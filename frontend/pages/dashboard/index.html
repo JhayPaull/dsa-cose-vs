@@ -152,6 +152,8 @@
             border-radius: 8px;
         }
     </style>
+        <script src="/js/shared-logout.js"></script>
+        <script src="/js/auth.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -588,6 +590,9 @@
     <!-- Slider Manager -->
     <script src="../../js/slider-manager.js"></script>
     
+    <!-- Load Sidebar -->
+    <script src="../../js/load-sidebar.js"></script>
+    
     <script>
         // Initialize tooltips
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -733,16 +738,16 @@
                     display: true
                 },
                 scales: {
-                    xAxes: [{
+                    xAxes: [({
                         gridLines: {
                             display: false,
                         }
-                    }],
-                    yAxes: [{
+                    })],
+                    yAxes: [({
                         gridLines: {
                             display: true,
                         }
-                    }]
+                    })]
                 }
             };
 
@@ -804,6 +809,10 @@
                 .then(data => {
                     document.getElementById('sidebar-container').innerHTML = data;
                     setActiveLink(); // Set active link after loading sidebar
+                    // Initialize logout functionality after sidebar is loaded
+                    if (typeof window.initializeLogout === 'function') {
+                        window.initializeLogout();
+                    }
                 })
                 .catch(error => {
                     console.error('Error loading sidebar:', error);
@@ -831,7 +840,6 @@
                 '/pages/dashboard/': 'dashboard-link',
                 '/pages/admin/manage-elections/': 'manage-elections-link',
                 '/pages/admin/voting-history/': 'voting-history-link',
-                '/pages/admin/manage-users/': 'manage-users-link',
                 '/pages/admin/sub-admins/': 'sub-admins-link',
                 '/pages/admin/analytics/': 'analytics-link',
                 '/pages/admin/edit-slider/': 'edit-slider-link',

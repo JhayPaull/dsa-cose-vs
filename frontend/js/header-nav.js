@@ -3,39 +3,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutBtn = document.getElementById('logoutBtn');
     const sidebar = document.querySelector('.sidebar');
     const menuOverlay = document.getElementById('menuOverlay');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 
-    // Handle logout
-    function handleLogout(e) {
-        e.preventDefault();
-        // Show confirmation dialog before logging out
-        if (typeof Swal !== 'undefined') {
-            Swal.fire({
-                title: 'Confirm Logout',
-                text: 'Are you sure you want to logout?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#800000',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Logout',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
+    // Handle logout button click
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Use the centralized confirmLogout function from auth.js
+            if (typeof window.confirmLogout === 'function') {
+                window.confirmLogout();
+            } else {
+                // Fallback to default behavior if confirmLogout is not available
+                if (confirm('Are you sure you want to log out?')) {
                     performLogout();
                 }
-            });
-        } else {
-            // Fallback to native confirm dialog
-            if (confirm('Are you sure you want to logout?')) {
-                performLogout();
             }
-        }
+        });
     }
     
-    // Perform actual logout
+    // Perform actual logout (fallback function)
     function performLogout() {
         // Clear local storage
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('registerFormData');
+        localStorage.removeItem('loginFormData');
         
         // Sign out from Firebase if available
         if (window.firebaseAuth && typeof window.firebaseAuth.signOut === 'function') {
@@ -43,12 +35,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(() => {
                     console.log('Firebase sign out successful');
                     // Redirect to login
-                    window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+                    window.location.href = '/auth/login/';
                 })
                 .catch((error) => {
                     console.error('Firebase sign out error:', error);
                     // Even if Firebase sign out fails, redirect to login
-                    window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+                    window.location.href = '/auth/login/';
                 });
         } else {
             // Redirect to login page
