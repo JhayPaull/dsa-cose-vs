@@ -9,6 +9,7 @@ class SliderItem {
         this.createdAt = data.createdAt || new Date();
         this.updatedAt = data.updatedAt || new Date();
         this.createdBy = data.createdBy || null; // admin user ID
+        this.updatedBy = data.updatedBy || null; // admin user ID
     }
 
     // Convert to Firestore document data
@@ -20,7 +21,8 @@ class SliderItem {
             link: this.link,
             createdAt: this.createdAt,
             updatedAt: this.updatedAt,
-            createdBy: this.createdBy
+            createdBy: this.createdBy,
+            updatedBy: this.updatedBy
         };
     }
 

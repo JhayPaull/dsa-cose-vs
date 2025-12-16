@@ -282,7 +282,7 @@
                     
                     // Add each slider item
                     sliderItems.forEach(item => {
-                        addToCurrentSliderItems(item.title, item.description, item.link, item.imageUrl);
+                        addToCurrentSliderItems(item.id, item.title, item.description, item.link, item.imageUrl);
                     });
                     
                     // If no items, show placeholder
@@ -368,7 +368,7 @@
                         document.getElementById('imagePreviewContainer').innerHTML = '';
                         
                         // Add to current slider items
-                        addToCurrentSliderItems(newSliderItem.title, newSliderItem.description, newSliderItem.link, newSliderItem.imageUrl);
+                        addToCurrentSliderItems(newSliderItem.id, newSliderItem.title, newSliderItem.description, newSliderItem.link, newSliderItem.imageUrl);
                     });
                 } else {
                     // Try to parse JSON error response
@@ -398,7 +398,7 @@
         });
         
         // Function to add item to current slider items list
-        function addToCurrentSliderItems(title, description, link, imageUrl) {
+        function addToCurrentSliderItems(id, title, description, link, imageUrl) {
             const container = document.getElementById('currentSliderItems');
             
             // Remove the placeholder if it exists
@@ -409,6 +409,7 @@
             // Create new slider item element
             const newItem = document.createElement('div');
             newItem.className = 'slider-item';
+            newItem.setAttribute('data-id', id);
             newItem.innerHTML = `
                 <div class="row">
                     <div class="col-md-3">
@@ -442,16 +443,32 @@
                     confirmButtonText: 'Yes, delete it!'
                 }).then(async (result) => {
                     if (result.isConfirmed) {
-                        // In a real application, you would delete from the database
                         try {
-                            // For now, we'll just remove it from the UI
-                            newItem.remove();
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Deleted!',
-                                text: 'Slider item has been deleted.',
-                                confirmButtonColor: '#800000'
+                            // Get token from localStorage
+                            const token = localStorage.getItem('token');
+                            
+                            // Get the slider item ID from the data attribute
+                            const itemId = newItem.getAttribute('data-id');
+                            
+                            const response = await fetch(`/api/slider/${itemId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`
+                                }
                             });
+                            
+                            if (response.ok) {
+                                newItem.remove();
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Deleted!',
+                                    text: 'Slider item has been deleted.',
+                                    confirmButtonColor: '#800000'
+                                });
+                            } else {
+                                throw new Error('Failed to delete slider item');
+                            }
+                        
                         } catch (error) {
                             console.error('Error deleting slider item:', error);
                             Swal.fire({
