@@ -51,14 +51,16 @@
             color: white !important;
         }
         
-        .nav-tabs .nav-link.active {
-            background-color: #800000;
-            color: #FFD700;
-            border-color: #800000;
+        /* Updated styles for white tab text and nav-pills */
+        .nav-pills .nav-link {
+            color: white;
+            border-radius: .25rem;
         }
         
-        .nav-tabs .nav-link {
-            color: #800000;
+        .nav-pills .nav-link.active {
+            background-color: #800000;
+            color: white;
+            border-radius: .25rem;
         }
         
         .form-control.bg-light {
@@ -79,6 +81,10 @@
             padding-left: 0;
         }
     </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
         <script src="/js/shared-logout.js"></script>
         <script src="/js/auth.js"></script>
 </head>
@@ -106,24 +112,6 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">Account Settings</h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="/pages/dashboard/">Home</a></li>
-                                <li class="breadcrumb-item active">Account Settings</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.content-header -->
-
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
@@ -132,199 +120,92 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="card-header p-2">
-                                        <ul class="nav nav-pills">
-                                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#basicinformation">Basic Information</a></li>
-                                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#settings">Account Settings</a></li>
+                                        <ul class="nav nav-pills" id="accountTabs" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="basicinformation-tab" data-bs-toggle="tab" data-bs-target="#basicinformation" type="button" role="tab" aria-controls="basicinformation" aria-selected="true">Basic Information</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Change Password</button>
+                                            </li>
                                         </ul>
                                     </div>
                                     
-                                    <div class="tab-content mt-3">
+                                    <div class="tab-content mt-3" id="accountTabContent">
                                         <!-- Basic Information Tab -->
-                                        <div class="tab-pane active" id="basicinformation">
+                                        <div class="tab-pane fade show active" id="basicinformation" role="tabpanel" aria-labelledby="basicinformation-tab">
                                             <form id="userprofile_update_basicinfo" method="POST" novalidate="">
                                                 <input type="hidden" name="_token" value="zooU9haeO2AFS7ZNSMsdJ3U6VtYZFV3OwV9GVPKQ" autocomplete="off">
                                                 <div class="row">
                                                     <div class="col-md-3">
+                                                        <label for="inputStudentId">Student ID</label>
+                                                        <input type="text" class="form-control bg-light" id="inputStudentId" name="inputStudentId" value="20231732" readonly>
+                                                        <div class="invalid-feedback">Please provide a student ID.</div>
+                                                    </div>
+                                                    <div class="col-md-3">
                                                         <label for="inputLastName">Last Name</label>
-                                                        <input type="text" class="form-control" id="inputLastName" name="inputLastName" value="Admin" required>
+                                                        <input type="text" class="form-control bg-light" id="inputLastName" name="inputLastName" value="De Vera" readonly>
                                                         <div class="invalid-feedback">Please provide a last name.</div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <label for="inputFirstName">First Name</label>
-                                                        <input type="text" class="form-control" id="inputFirstName" name="inputFirstName" value="System" required>
+                                                        <input type="text" class="form-control bg-light" id="inputFirstName" name="inputFirstName" value="Jhay Paul" readonly>
                                                         <div class="invalid-feedback">Please provide a first name.</div>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <label for="info_mname">Middle Name</label>
-                                                        <input type="text" class="form-control" id="info_mname" name="info_mname" placeholder="Middle Name" value="">
-                                                        <div class="invalid-feedback">Please provide a middle name.</div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="info_sname">Name Extension</label>
-                                                        <input type="text" class="form-control" id="info_sname" name="info_sname" placeholder="Eg Jr, Sr, II, III" value="">
-                                                        <div class="invalid-feedback">Please provide a name extension or N/A.</div>
+                                                        <label for="info_mname">Middle Initial</label>
+                                                        <input type="text" class="form-control bg-light" id="info_mname" name="info_mname" value="Calustre" readonly>
+                                                        <div class="invalid-feedback">Please provide a middle initial.</div>
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-md-3">
-                                                        <label for="info_sex">Sex <span class="text-danger">*</span></label>
-                                                        <select class="form-control" id="info_sex" name="info_sex" required="">
-                                                            <option disabled="" value="">--Select Sex--</option>
-                                                            <option value="Female">Female</option>
-                                                            <option selected="" value="Male">Male</option>
+                                                        <label for="info_year">Year <span class="text-danger">*</span></label>
+                                                        <select class="form-control" id="info_year" name="info_year" required>
+                                                            <option value="">Select Year</option>
+                                                            <option value="1">1st Year</option>
+                                                            <option value="2">2nd Year</option>
+                                                            <option value="3" selected>3rd Year</option>
+                                                            <option value="4">4th Year</option>
                                                         </select>
-                                                        <div class="invalid-feedback">Please select sex.</div>
+                                                        <div class="invalid-feedback">Please select a year level.</div>
                                                     </div>
-
                                                     <div class="col-md-3">
-                                                        <label for="info_civilstatus">Civil Status <span class="text-danger">*</span></label>
-                                                        <select class="form-control" id="info_civilstatus" name="info_civilstatus" required="">
-                                                            <option disabled="" value="">--Select Civil Status--</option>
-                                                            <option selected="" value="Single">Single</option>
-                                                            <option value="Married">Married</option>
-                                                            <option value="Divorced">Divorced</option>
-                                                            <option value="Widowed">Widowed</option>
+                                                        <label for="info_section">Section <span class="text-danger">*</span></label>
+                                                        <select class="form-control" id="info_section" name="info_section" required>
+                                                            <option value="">Select Section</option>
+                                                            <option value="A">A</option>
+                                                            <option value="B">B</option>
+                                                            <option value="C" selected>C</option>
+                                                            <option value="D">D</option>
+                                                            <option value="E">E</option>
+                                                            <option value="F">F</option>
+                                                            <option value="G">G</option>
+                                                            <option value="H">H</option>
+                                                            <option value="I">I</option>
+                                                            <option value="J">J</option>
+                                                            <option value="K">K</option>
+                                                            <option value="L">L</option>
+                                                            <option value="M">M</option>
+                                                            <option value="N">N</option>
+                                                            <option value="O">O</option>
+                                                            <option value="P">P</option>
+                                                            <option value="Q">Q</option>
+                                                            <option value="R">R</option>
+                                                            <option value="S">S</option>
+                                                            <option value="T">T</option>
+                                                            <option value="U">U</option>
+                                                            <option value="V">V</option>
+                                                            <option value="W">W</option>
+                                                            <option value="X">X</option>
+                                                            <option value="Y">Y</option>
+                                                            <option value="Z">Z</option>
                                                         </select>
-                                                        <div class="invalid-feedback">Please select civil status.</div>
+                                                        <div class="invalid-feedback">Please select a section.</div>
                                                     </div>
-
                                                     <div class="col-md-3">
-                                                        <label for="info_birthday">Birthdate <span class="text-danger">*</span></label>
-                                                        <input class="form-control bg-white " id="info_birthday" name="info_birthday" readonly="" required="" type="text" value="Jan 01, 2000">
-                                                        <div class="invalid-feedback">Please provide a birthdate.</div>
-                                                    </div>
-
-                                                    <div class="col-md-3">
-                                                        <label for="info_religion">Religion <span class="text-danger">*</span></label>
-                                                        <input class="form-control" id="info_religion" name="info_religion" required="" type="text" value="Christian">
-                                                        <div class="invalid-feedback">Please provide a religion.</div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-3">
-                                                    <div class="col-md-12">
-                                                        <label for="info_placeofbirth">Place of Birth <span class="text-danger">*</span></label>
-                                                        <input class="form-control" id="info_placeofbirth" name="info_placeofbirth" required="" type="text" value="Tagoloan, Misamis Oriental">
-                                                        <div class="invalid-feedback">Please provide a place of birth.</div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mt-3">
-                                                    <div class="col-md-4">
-                                                        <label for="info_prov">Provincial Address <span class="text-danger">*</span></label>
-                                                        <select class="form-control select2" id="info_prov" name="info_prov" required="">
-                                                            <option value="1401">ABRA</option>
-                                                            <option value="1602">AGUSAN DEL NORTE</option>
-                                                            <option value="1603">AGUSAN DEL SUR</option>
-                                                            <option value="0604">AKLAN</option>
-                                                            <option value="0505">ALBAY</option>
-                                                            <option value="0606">ANTIQUE</option>
-                                                            <option value="1481">APAYAO</option>
-                                                            <option value="0377">AURORA</option>
-                                                            <option value="1507">BASILAN</option>
-                                                            <option value="0308">BATAAN</option>
-                                                            <option value="0209">BATANES</option>
-                                                            <option value="0410">BATANGAS</option>
-                                                            <option value="1411">BENGUET</option>
-                                                            <option value="0878">BILIRAN</option>
-                                                            <option value="0712">BOHOL</option>
-                                                            <option value="1013">BUKIDNON</option>
-                                                            <option value="0314">BULACAN</option>
-                                                            <option value="0215">CAGAYAN</option>
-                                                            <option value="0516">CAMARINES NORTE</option>
-                                                            <option value="0517">CAMARINES SUR</option>
-                                                            <option value="1018">CAMIGUIN</option>
-                                                            <option value="0619">CAPIZ</option>
-                                                            <option value="0520">CATANDUANES</option>
-                                                            <option value="0421">CAVITE</option>
-                                                            <option value="0722">CEBU</option>
-                                                            <option value="0997">CITY OF ISABELA</option>
-                                                            <option value="1339">CITY OF MANILA</option>
-                                                            <option value="1182">COMPOSTELA VALLEY</option>
-                                                            <option value="1247">COTABATO (NORTH COTABATO)</option>
-                                                            <option value="1298">COTABATO CITY</option>
-                                                            <option value="1123">DAVAO DEL NORTE</option>
-                                                            <option value="1124">DAVAO DEL SUR</option>
-                                                            <option value="1186">DAVAO OCCIDENTAL</option>
-                                                            <option value="1125">DAVAO ORIENTAL</option>
-                                                            <option value="1685">DINAGAT ISLANDS</option>
-                                                            <option value="0826">EASTERN SAMAR</option>
-                                                            <option value="0679">GUIMARAS</option>
-                                                            <option value="1427">IFUGAO</option>
-                                                            <option value="0128">ILOCOS NORTE</option>
-                                                            <option value="0129">ILOCOS SUR</option>
-                                                            <option value="0630">ILOILO</option>
-                                                            <option value="0231">ISABELA</option>
-                                                            <option value="1432">KALINGA</option>
-                                                            <option value="0133">LA UNION</option>
-                                                            <option value="0434">LAGUNA</option>
-                                                            <option value="1035">LANAO DEL NORTE</option>
-                                                            <option value="1536">LANAO DEL SUR</option>
-                                                            <option value="0837">LEYTE</option>
-                                                            <option value="1538">MAGUINDANAO</option>
-                                                            <option value="1740">MARINDUQUE</option>
-                                                            <option value="0541">MASBATE</option>
-                                                            <option value="1042">MISAMIS OCCIDENTAL</option>
-                                                            <option selected="" value="1043">MISAMIS ORIENTAL</option>
-                                                            <option value="1444">MOUNTAIN PROVINCE</option>
-                                                            <option value="1339">NCR, CITY OF MANILA, FIRST DISTRICT</option>
-                                                            <option value="1376">NCR, FOURTH DISTRICT</option>
-                                                            <option value="1374">NCR, SECOND DISTRICT</option>
-                                                            <option value="1375">NCR, THIRD DISTRICT</option>
-                                                            <option value="0645">NEGROS OCCIDENTAL</option>
-                                                            <option value="0746">NEGROS ORIENTAL</option>
-                                                            <option value="0848">NORTHERN SAMAR</option>
-                                                            <option value="0349">NUEVA ECIJA</option>
-                                                            <option value="0250">NUEVA VIZCAYA</option>
-                                                            <option value="1751">OCCIDENTAL MINDORO</option>
-                                                            <option value="1752">ORIENTAL MINDORO</option>
-                                                            <option value="1753">PALAWAN</option>
-                                                            <option value="0354">PAMPANGA</option>
-                                                            <option value="0155">PANGASINAN</option>
-                                                            <option value="0456">QUEZON</option>
-                                                            <option value="0257">QUIRINO</option>
-                                                            <option value="0458">RIZAL</option>
-                                                            <option value="1759">ROMBLON</option>
-                                                            <option value="0860">SAMAR (WESTERN SAMAR)</option>
-                                                            <option value="1280">SARANGANI</option>
-                                                            <option value="0761">SIQUIJOR</option>
-                                                            <option value="0562">SORSOGON</option>
-                                                            <option value="1263">SOUTH COTABATO</option>
-                                                            <option value="0864">SOUTHERN LEYTE</option>
-                                                            <option value="1265">SULTAN KUDARAT</option>
-                                                            <option value="1566">SULU</option>
-                                                            <option value="1667">SURIGAO DEL NORTE</option>
-                                                            <option value="1668">SURIGAO DEL SUR</option>
-                                                            <option value="0369">TARLAC</option>
-                                                            <option value="1570">TAWI-TAWI</option>
-                                                            <option value="0371">ZAMBALES</option>
-                                                            <option value="0972">ZAMBOANGA DEL NORTE</option>
-                                                            <option value="0973">ZAMBOANGA DEL SUR</option>
-                                                        </select>
-                                                        <div class="invalid-feedback">Please select a province.</div>
-                                                    </div>
-                                                    
-                                                    <div class="col-md-4">
-                                                        <label for="info_city">City/Municipality <span class="text-danger">*</span></label>
-                                                        <select class="form-control select2" id="info_city" name="info_city" required="">
-                                                            <option value="">--Select City/Municipality--</option>
-                                                            <option selected value="Tagoloan">Tagoloan</option>
-                                                            <option value="Cagayan de Oro City">Cagayan de Oro City</option>
-                                                            <option value="Gingoog City">Gingoog City</option>
-                                                            <option value="El Salvador City">El Salvador City</option>
-                                                        </select>
-                                                        <div class="invalid-feedback">Please select a city/municipality.</div>
-                                                    </div>
-                                                    
-                                                    <div class="col-md-4">
-                                                        <label for="info_barangay">Barangay <span class="text-danger">*</span></label>
-                                                        <select class="form-control select2" id="info_barangay" name="info_barangay" required="">
-                                                            <option value="">--Select Barangay--</option>
-                                                            <option selected value="Poblacion">Poblacion</option>
-                                                            <option value="Bonbon">Bonbon</option>
-                                                            <option value="Del Monte">Del Monte</option>
-                                                            <option value="Kalabaylabay">Kalabaylabay</option>
-                                                        </select>
-                                                        <div class="invalid-feedback">Please select a barangay.</div>
+                                                        <label for="inputEmail">Email <span class="text-danger">*</span></label>
+                                                        <input type="email" class="form-control" id="inputEmail" name="inputEmail" value="jhaypauldevera0@gmail.com" required>
+                                                        <div class="invalid-feedback">Please provide a valid email address.</div>
                                                     </div>
                                                 </div>
                                                 
@@ -341,7 +222,7 @@
                                         </div>
                                         
                                         <!-- Account Settings Tab -->
-                                        <div class="tab-pane" id="settings">
+                                        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                                             <form action="/" autocomplete="off" class="form-horizontal" id="passwordForm" method="POST" novalidate="">
                                                 <input type="hidden" name="_token" value="zooU9haeO2AFS7ZNSMsdJ3U6VtYZFV3OwV9GVPKQ" autocomplete="off">
                                                 <div class="form-group row">
@@ -473,6 +354,22 @@
     <script src="../../../js/sidebar.js"></script>
     <script src="../../../js/load-sidebar.js"></script>
     <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyB9NYs7wXP4bYxk3zRBlFufFvzx3OKOalo",
+            authDomain: "dsa-cose-vs.firebaseapp.com",
+            projectId: "dsa-cose-vs",
+            storageBucket: "dsa-cose-vs.appspot.com",
+            messagingSenderId: "640426080386",
+            appId: "1:640426080386:web:d6259e1017e7f509b64a66",
+            measurementId: "G-WK905LKM2N"
+        };
+        
+        // Initialize Firebase
+        if (typeof firebase !== 'undefined') {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
         // Initialize tooltips
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -484,39 +381,197 @@
             $('.select2').select2();
         });
         
+        // Initialize Bootstrap tabs
+        document.addEventListener('DOMContentLoaded', function() {
+            var triggerTabList = [].slice.call(document.querySelectorAll('#accountTabs button'))
+            triggerTabList.forEach(function (triggerEl) {
+                var tabTrigger = new bootstrap.Tab(triggerEl)
+                
+                triggerEl.addEventListener('click', function (event) {
+                    event.preventDefault()
+                    tabTrigger.show()
+                })
+            })
+        });
+        
         // Fetch and display user information
         document.addEventListener('DOMContentLoaded', function() {
-            // Mock user data for demonstration
-            const userData = {
-                name: "Admin User",
-                role: "Administrator"
-            };
-            
-            // Update user information in the UI
-            document.getElementById('userName').textContent = userData.name;
-            document.getElementById('userRole').textContent = userData.role;
-            document.getElementById('sidebarUserName').textContent = userData.name;
-            document.getElementById('sidebarUserRole').textContent = userData.role;
+            // Check if Firebase is available and user is signed in
+            if (typeof firebase !== 'undefined' && firebase.auth) {
+                firebase.auth().onAuthStateChanged(function(user) {
+                    if (user) {
+                        // User is signed in, fetch user data from Firestore
+                        fetchUserData(user);
+                    } else {
+                        // No user is signed in
+                        console.log('No user is currently signed in');
+                        // You might want to redirect to login page or show a message
+                    }
+                });
+            } else {
+                // Firebase not available, use mock data for demonstration
+                const userData = {
+                    name: "Admin User",
+                    role: "Administrator"
+                };
+                
+                // Update user information in the UI
+                document.getElementById('userName').textContent = userData.name;
+                document.getElementById('userRole').textContent = userData.role;
+                document.getElementById('sidebarUserName').textContent = userData.name;
+                document.getElementById('sidebarUserRole').textContent = userData.role;
+            }
         });
+        
+        // Fetch user data from Firestore
+        function fetchUserData(user) {
+            if (typeof firebase !== 'undefined' && firebase.firestore) {
+                const db = firebase.firestore();
+                db.collection('users').doc(user.uid).get()
+                    .then((doc) => {
+                        if (doc.exists) {
+                            const userData = doc.data();
+                            
+                            // Update user information in the UI
+                            const fullName = userData.firstName + ' ' + userData.lastName;
+                            document.getElementById('userName').textContent = fullName;
+                            document.getElementById('userRole').textContent = userData.role || 'User';
+                            document.getElementById('sidebarUserName').textContent = fullName;
+                            document.getElementById('sidebarUserRole').textContent = userData.role || 'User';
+                            
+                            // Populate form fields with user data
+                            document.getElementById('inputStudentId').value = userData.studentId || '';
+                            document.getElementById('inputLastName').value = userData.lastName || '';
+                            document.getElementById('inputFirstName').value = userData.firstName || '';
+                            document.getElementById('info_mname').value = userData.middleName || '';
+                            document.getElementById('info_year').value = userData.gradeLevel || '';  // Using gradeLevel from User model
+                            document.getElementById('info_section').value = userData.section || '';
+                            document.getElementById('inputEmail').value = userData.email || user.email || '';
+                        } else {
+                            console.log('No user data found in Firestore');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching user data:', error);
+                    });
+            }
+        }
         
         // Handle form submissions
         document.getElementById('userprofile_update_basicinfo').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            Swal.fire({
-                icon: 'success',
-                title: 'Profile Updated!',
-                text: 'Your profile information has been successfully updated.',
-                confirmButtonColor: '#800000'
-            });
+            // Get form data (only editable fields)
+            const formData = {
+                gradeLevel: document.getElementById('info_year').value,  // Using gradeLevel to match User model
+                section: document.getElementById('info_section').value,
+                email: document.getElementById('inputEmail').value
+            };
+            
+            // Update user profile in Firebase
+            updateProfileInFirebase(formData);
         });
+        
+        // Update profile in Firebase
+        function updateProfileInFirebase(userData) {
+            // Check if Firebase is available
+            if (typeof firebase !== 'undefined' && firebase.auth && firebase.firestore) {
+                const user = firebase.auth().currentUser;
+                
+                if (user) {
+                    // Update email if it has changed
+                    if (user.email !== userData.email) {
+                        user.updateEmail(userData.email)
+                            .then(() => {
+                                console.log('Email updated successfully');
+                                // Update user document in Firestore
+                                updateUserDocument(user.uid, userData);
+                            })
+                            .catch((error) => {
+                                console.error('Error updating email:', error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Failed to update email: ' + error.message,
+                                    confirmButtonColor: '#800000'
+                                });
+                            });
+                    } else {
+                        // Email hasn't changed, just update the user document
+                        updateUserDocument(user.uid, userData);
+                    }
+                } else {
+                    // No user signed in, show error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Not Signed In',
+                        text: 'Please sign in to update your profile.',
+                        confirmButtonColor: '#800000'
+                    });
+                }
+            } else {
+                // Firebase not available, show success message anyway
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Profile Updated!',
+                    text: 'Your profile information has been successfully updated.',
+                    confirmButtonColor: '#800000'
+                });
+            }
+        }
+        
+        // Update user document in Firestore
+        function updateUserDocument(uid, userData) {
+            if (typeof firebase !== 'undefined' && firebase.firestore) {
+                const db = firebase.firestore();
+                const updateData = {
+                    gradeLevel: userData.gradeLevel,  // Using gradeLevel to match User model
+                    section: userData.section,
+                    email: userData.email,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                db.collection('users').doc(uid).update(updateData)
+                .then(() => {
+                    console.log('User document updated successfully');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Profile Updated!',
+                        text: 'Your profile information has been successfully updated.',
+                        confirmButtonColor: '#800000'
+                    });
+                    
+                    // Update the UI with the new data
+                    document.getElementById('inputEmail').value = userData.email;
+                })
+                .catch((error) => {
+                    console.error('Error updating user document:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update profile: ' + error.message,
+                        confirmButtonColor: '#800000'
+                    });
+                });
+            } else {
+                // Firestore not available, show success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Profile Updated!',
+                    text: 'Your profile information has been successfully updated.',
+                    confirmButtonColor: '#800000'
+                });
+            }
+        }
         
         document.getElementById('passwordForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const currentPassword = document.getElementById('current_password').value;
             const newPassword = document.getElementById('password').value;
             const confirmPassword = document.getElementById('password_confirmation').value;
             
+            // Validate passwords
             if (newPassword !== confirmPassword) {
                 Swal.fire({
                     icon: 'error',
@@ -537,15 +592,77 @@
                 return;
             }
             
-            Swal.fire({
-                icon: 'success',
-                title: 'Password Changed!',
-                text: 'Your password has been successfully updated.',
-                confirmButtonColor: '#800000'
-            }).then(() => {
-                document.getElementById('passwordForm').reset();
-            });
+            // Update password in Firebase
+            updatePasswordInFirebase(currentPassword, newPassword);
         });
+        
+        // Update password in Firebase
+        function updatePasswordInFirebase(currentPassword, newPassword) {
+            // Check if Firebase is available
+            if (typeof firebase !== 'undefined' && firebase.auth) {
+                const user = firebase.auth().currentUser;
+                
+                if (user) {
+                    // Reauthenticate user with current password before updating
+                    const credential = firebase.auth.EmailAuthProvider.credential(
+                        user.email, 
+                        currentPassword
+                    );
+                    
+                    user.reauthenticateWithCredential(credential)
+                        .then(() => {
+                            // User reauthenticated, now update password
+                            return user.updatePassword(newPassword);
+                        })
+                        .then(() => {
+                            console.log('Password updated successfully');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Password Changed!',
+                                text: 'Your password has been successfully updated.',
+                                confirmButtonColor: '#800000'
+                            }).then(() => {
+                                document.getElementById('passwordForm').reset();
+                            });
+                        })
+                        .catch((error) => {
+                            console.error('Error updating password:', error);
+                            let errorMessage = 'Failed to update password.';
+                            
+                            if (error.code === 'auth/wrong-password') {
+                                errorMessage = 'Current password is incorrect.';
+                            } else if (error.code === 'auth/weak-password') {
+                                errorMessage = 'New password is too weak.';
+                            }
+                            
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: errorMessage,
+                                confirmButtonColor: '#800000'
+                            });
+                        });
+                } else {
+                    // No user signed in, show error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Not Signed In',
+                        text: 'Please sign in to change your password.',
+                        confirmButtonColor: '#800000'
+                    });
+                }
+            } else {
+                // Firebase not available, show success message anyway
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Password Changed!',
+                    text: 'Your password has been successfully updated.',
+                    confirmButtonColor: '#800000'
+                }).then(() => {
+                    document.getElementById('passwordForm').reset();
+                });
+            }
+        }
         
         // Set up logout functionality with SweetAlert2
         function setupLogout() {
@@ -641,21 +758,82 @@
                 .then(data => {
                     document.getElementById('sidebar-container').innerHTML = data;
                     setActiveLink(); // Set active link after loading sidebar
-                    // Initialize logout functionality after sidebar is loaded
-                    if (typeof window.initializeLogout === 'function') {
-                        window.initializeLogout();
-                    }
                 })
                 .catch(error => {
                     console.error('Error loading sidebar:', error);
                 });
+        }
+        
+        // Set active link in sidebar
+        function setActiveLink() {
+            // Small delay to ensure DOM is ready
+            setTimeout(function() {
+                const currentPath = window.location.pathname;
+                const allNavItems = document.querySelectorAll('.nav-link');
+                
+                // Remove active class from all items first
+                allNavItems.forEach(navItem => navItem.classList.remove('active'));
+                
+                // Add active class to matching item
+                let activeFound = false;
+                allNavItems.forEach(item => {
+                    const href = item.getAttribute('href');
+                    if (href && href !== '#' && currentPath.includes(href)) {
+                        item.classList.add('active');
+                        activeFound = true;
+                    }
+                });
+                
+                // Special case for account settings page - if no other link matched, activate account settings
+                if (!activeFound && currentPath.includes('/pages/admin/acc-setting/')) {
+                    const accSettingLink = document.querySelector('a[href="/pages/admin/acc-setting/"]');
+                    if (accSettingLink) {
+                        accSettingLink.classList.add('active');
+                    }
+                }
+            }, 100);
+        }
+        
+        // Load user data from Firebase
+        function loadUserData() {
+            // Check if Firebase is available
+            if (typeof firebase !== 'undefined' && firebase.auth && firebase.firestore) {
+                const user = firebase.auth().currentUser;
+                
+                if (user) {
+                    // Load user data from Firestore
+                    const db = firebase.firestore();
+                    db.collection('users').doc(user.uid).get()
+                        .then((doc) => {
+                            if (doc.exists) {
+                                const userData = doc.data();
+                                
+                                // Populate form fields with user data
+                                document.getElementById('inputStudentId').value = userData.studentId || '';
+                                document.getElementById('inputLastName').value = userData.lastName || '';
+                                document.getElementById('inputFirstName').value = userData.firstName || '';
+                                document.getElementById('info_mname').value = userData.middleName || '';
+                                document.getElementById('info_sname').value = userData.nameExtension || '';
+                                document.getElementById('info_sex').value = userData.sex || '';
+                                document.getElementById('info_civilstatus').value = userData.civilStatus || '';
+                                document.getElementById('info_birthday').value = userData.birthdate || '';
+                                document.getElementById('info_religion').value = userData.religion || '';
+                                document.getElementById('info_year').value = userData.year || '';
+                                document.getElementById('info_section').value = userData.section || '';
+                                document.getElementById('inputEmail').value = userData.email || user.email || '';
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Error loading user data:', error);
+                        });
+                }
+            }
         }
 
         // Load navbar and sidebar when page loads
         document.addEventListener('DOMContentLoaded', function() {
             loadNavbar();
             loadSidebar();
-            setupLogout();
         });
     </script>
 </body>

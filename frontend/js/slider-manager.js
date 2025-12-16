@@ -14,48 +14,108 @@ class SliderManager {
     /**
      * Initialize the slider
      */
-    init() {
+    async init() {
         if (!this.container) {
             console.error(`Slider container with ID '${this.containerId}' not found.`);
             return;
         }
 
-        // Load slider items (in a real app, this would come from an API)
-        this.loadSliderItems();
+        // Load slider items from Firebase
+        await this.loadSliderItems();
         
         // Set up interval for automatic sliding
         this.startAutoSlide();
     }
 
     /**
-     * Load slider items
-     * In a real application, this would fetch from a database or API
+     * Load slider items from Firebase
      */
-    loadSliderItems() {
-        // Mock data for demonstration
-        this.sliderItems = [
-            {
-                id: 1,
-                title: "Upcoming Elections",
-                description: "Check out the upcoming student council elections",
-                imageUrl: "https://via.placeholder.com/800x400/800000/FFD700?text=Upcoming+Elections",
-                link: "/pages/elections/"
-            },
-            {
-                id: 2,
-                title: "Voting Guidelines",
-                description: "Review the voting guidelines and procedures",
-                imageUrl: "https://via.placeholder.com/800x400/FFD700/800000?text=Voting+Guidelines",
-                link: "/pages/voting-guidelines/"
-            },
-            {
-                id: 3,
-                title: "Results Announcement",
-                description: "Election results will be announced on December 30, 2025",
-                imageUrl: "https://via.placeholder.com/800x400/800000/FFD700?text=Results+Announcement",
-                link: "/pages/results/"
+    async loadSliderItems() {
+        try {
+            // Get token from localStorage
+            const token = localStorage.getItem('token');
+            
+            const response = await fetch('/api/slider', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                // Try to parse JSON response
+                try {
+                    this.sliderItems = await response.json();
+                } catch (jsonError) {
+                    console.error('Failed to parse JSON response:', jsonError);
+                    // Fallback to mock data if JSON parsing fails
+                    this.sliderItems = [];
+                }
+            } else {
+                console.error('Failed to fetch slider items:', response.status);
+                // Try to get error message
+                let errorMessage = 'Unknown error';
+                try {
+                    const errorData = await response.json();
+                    errorMessage = errorData.error || errorMessage;
+                } catch (jsonError) {
+                    try {
+                        errorMessage = await response.text();
+                    } catch (textError) {
+                        errorMessage = `HTTP Error: ${response.status}`;
+                    }
+                }
+                console.error('Error message:', errorMessage);
+                // Fallback to mock data if fetch fails
+                this.sliderItems = [
+                    {
+                        id: 1,
+                        title: "Upcoming Elections",
+                        description: "Check out the upcoming student council elections",
+                        imageUrl: "https://via.placeholder.com/800x400/800000/FFD700?text=Upcoming+Elections",
+                        link: "/pages/elections/"
+                    },
+                    {
+                        id: 2,
+                        title: "Voting Guidelines",
+                        description: "Review the voting guidelines and procedures",
+                        imageUrl: "https://via.placeholder.com/800x400/FFD700/800000?text=Voting+Guidelines",
+                        link: "/pages/voting-guidelines/"
+                    },
+                    {
+                        id: 3,
+                        title: "Results Announcement",
+                        description: "Election results will be announced on December 30, 2025",
+                        imageUrl: "https://via.placeholder.com/800x400/800000/FFD700?text=Results+Announcement",
+                        link: "/pages/results/"
+                    }
+                ];
             }
-        ];
+        } catch (error) {
+            console.error('Error loading slider items:', error);
+            // Fallback to mock data if fetch fails
+            this.sliderItems = [
+                {
+                    id: 1,
+                    title: "Upcoming Elections",
+                    description: "Check out the upcoming student council elections",
+                    imageUrl: "https://via.placeholder.com/800x400/800000/FFD700?text=Upcoming+Elections",
+                    link: "/pages/elections/"
+                },
+                {
+                    id: 2,
+                    title: "Voting Guidelines",
+                    description: "Review the voting guidelines and procedures",
+                    imageUrl: "https://via.placeholder.com/800x400/FFD700/800000?text=Voting+Guidelines",
+                    link: "/pages/voting-guidelines/"
+                },
+                {
+                    id: 3,
+                    title: "Results Announcement",
+                    description: "Election results will be announced on December 30, 2025",
+                    imageUrl: "https://via.placeholder.com/800x400/800000/FFD700?text=Results+Announcement",
+                    link: "/pages/results/"
+                }
+            ];
+        }
 
         this.renderSlider();
     }
@@ -200,9 +260,9 @@ class SliderManager {
 }
 
 // Initialize slider manager when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     if (document.getElementById('slider-container')) {
         window.sliderManager = new SliderManager('slider-container');
-        window.sliderManager.init();
+        await window.sliderManager.init();
     }
 });

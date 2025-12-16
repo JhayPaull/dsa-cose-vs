@@ -19,6 +19,10 @@
         "destination": "/auth/login/index.html"
       },
       {
+        "source": "/pages/admin/acc-setting",
+        "destination": "/pages/admin/acc-setting/index.html"
+      },
+      {
         "source": "/pages/admin",
         "destination": "/pages/dashboard/index.html"
       },

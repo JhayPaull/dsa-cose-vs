@@ -7,6 +7,7 @@ const Election = require('../models/Election');
 const Candidate = require('../models/Candidate');
 const Vote = require('../models/Vote');
 const Notification = require('../models/Notification');
+const SliderItem = require('../models/SliderItem');
 
 class DatabaseController {
     // Generic method to create a document
@@ -216,6 +217,41 @@ class DatabaseController {
 
     async getVotesByElection(electionId) {
         return await this.getAllDocuments(COLLECTIONS.VOTES, { electionId });
+    }
+
+    // Slider Item-specific methods
+    async createSliderItem(sliderItemData) {
+        const sliderItem = new SliderItem(sliderItemData);
+        const validation = sliderItem.validate();
+        
+        if (!validation.isValid) {
+            throw new Error(`Validation error: ${validation.errors.join(', ')}`);
+        }
+        
+        return await this.createDocument(COLLECTIONS.SLIDER_ITEMS, sliderItem.toFirestore());
+    }
+
+    async getSliderItemById(id) {
+        return await this.getDocumentById(COLLECTIONS.SLIDER_ITEMS, id);
+    }
+
+    async updateSliderItem(id, sliderItemData) {
+        const sliderItem = new SliderItem({ id, ...sliderItemData });
+        const validation = sliderItem.validate();
+        
+        if (!validation.isValid) {
+            throw new Error(`Validation error: ${validation.errors.join(', ')}`);
+        }
+        
+        return await this.updateDocument(COLLECTIONS.SLIDER_ITEMS, id, sliderItem.toFirestore());
+    }
+
+    async deleteSliderItem(id) {
+        return await this.deleteDocument(COLLECTIONS.SLIDER_ITEMS, id);
+    }
+
+    async getAllSliderItems(filters = {}) {
+        return await this.getAllDocuments(COLLECTIONS.SLIDER_ITEMS, filters);
     }
 
     // Notification-specific methods

@@ -11,6 +11,8 @@ services:
       - ./backend/serviceAccountKey.json:/usr/src/app/serviceAccountKey.json:ro
       # Alternative service account key location (if exists)
       - ./dsa-cose-vs-firebase-adminsdk-fbsvc-c1f89c2c57.json:/usr/src/app/dsa-cose-vs-firebase-adminsdk-fbsvc-c1f89c2c57.json:ro
+      # Volume for uploaded images
+      - ./backend/uploads:/app/uploads
     environment:
       - NODE_ENV=production
       - PORT=3001

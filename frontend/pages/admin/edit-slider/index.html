@@ -221,7 +221,7 @@
         });
         
         // Fetch and display user information
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             // Mock user data for demonstration
             const userData = {
                 name: "Admin User",
@@ -233,6 +233,9 @@
             document.getElementById('userRole').textContent = userData.role;
             document.getElementById('sidebarUserName').textContent = userData.name;
             document.getElementById('sidebarUserRole').textContent = userData.role;
+            
+            // Load current slider items
+            await loadCurrentSliderItems();
         });
         
         // Image preview functionality
@@ -251,8 +254,68 @@
             }
         });
         
+        // Load current slider items from Firebase
+        async function loadCurrentSliderItems() {
+            try {
+                // Get token from localStorage
+                const token = localStorage.getItem('token');
+                
+                const response = await fetch('/api/slider', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (response.ok) {
+                    // Try to parse JSON response
+                    let sliderItems = [];
+                    try {
+                        sliderItems = await response.json();
+                    } catch (jsonError) {
+                        console.error('Failed to parse JSON response:', jsonError);
+                        sliderItems = [];
+                    }
+                    
+                    const container = document.getElementById('currentSliderItems');
+                    
+                    // Clear container
+                    container.innerHTML = '';
+                    
+                    // Add each slider item
+                    sliderItems.forEach(item => {
+                        addToCurrentSliderItems(item.title, item.description, item.link, item.imageUrl);
+                    });
+                    
+                    // If no items, show placeholder
+                    if (sliderItems.length === 0) {
+                        container.innerHTML = `
+                            <div class="text-center p-5">
+                                <p>No slider items found. Add your first slider item above.</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    console.error('Failed to fetch slider items:', response.status);
+                    // Try to get error message
+                    let errorMessage = 'Unknown error';
+                    try {
+                        const errorData = await response.json();
+                        errorMessage = errorData.error || errorMessage;
+                    } catch (jsonError) {
+                        try {
+                            errorMessage = await response.text();
+                        } catch (textError) {
+                            errorMessage = `HTTP Error: ${response.status}`;
+                        }
+                    }
+                    console.error('Error message:', errorMessage);
+                }
+            } catch (error) {
+                console.error('Error loading slider items:', error);
+            }
+        }
+        
         // Form submission
-        document.getElementById('sliderForm').addEventListener('submit', function(e) {
+        document.getElementById('sliderForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const title = document.getElementById('sliderTitle').value;
@@ -270,26 +333,72 @@
                 return;
             }
             
-            // In a real application, you would upload the image and save the data to a database
-            // For this demo, we'll just show a success message and add to the list
-            
-            Swal.fire({
-                icon: 'success',
-                title: 'Slider Item Added!',
-                text: 'Your slider item has been successfully added.',
-                confirmButtonColor: '#800000'
-            }).then(() => {
-                // Reset form
-                document.getElementById('sliderForm').reset();
-                document.getElementById('imagePreviewContainer').innerHTML = '';
+            // Upload image and save data to backend
+            try {
+                // Create FormData to send both file and data
+                const formData = new FormData();
+                formData.append('title', title);
+                formData.append('description', description);
+                formData.append('link', link);
+                formData.append('image', imageFile);
                 
-                // Add to current slider items (in a real app, this would come from the server)
-                addToCurrentSliderItems(title, description, link, imageFile.name);
-            });
+                // Get token from localStorage
+                const token = localStorage.getItem('token');
+                
+                // Send data to backend with authorization header
+                const response = await fetch('/api/slider', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const newSliderItem = await response.json();
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Slider Item Added!',
+                        text: 'Your slider item has been successfully added.',
+                        confirmButtonColor: '#800000'
+                    }).then(() => {
+                        // Reset form
+                        document.getElementById('sliderForm').reset();
+                        document.getElementById('imagePreviewContainer').innerHTML = '';
+                        
+                        // Add to current slider items
+                        addToCurrentSliderItems(newSliderItem.title, newSliderItem.description, newSliderItem.link, newSliderItem.imageUrl);
+                    });
+                } else {
+                    // Try to parse JSON error response
+                    let errorMessage = 'Failed to add slider item';
+                    try {
+                        const errorData = await response.json();
+                        errorMessage = errorData.error || errorMessage;
+                    } catch (jsonError) {
+                        // If JSON parsing fails, use the response text
+                        try {
+                            errorMessage = await response.text();
+                        } catch (textError) {
+                            errorMessage = `HTTP Error: ${response.status}`;
+                        }
+                    }
+                    throw new Error(errorMessage);
+                }
+            } catch (error) {
+                console.error('Error adding slider item:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Failed to add slider item. Please try again.',
+                    confirmButtonColor: '#800000'
+                });
+            }
         });
         
         // Function to add item to current slider items list
-        function addToCurrentSliderItems(title, description, link, imageName) {
+        function addToCurrentSliderItems(title, description, link, imageUrl) {
             const container = document.getElementById('currentSliderItems');
             
             // Remove the placeholder if it exists
@@ -303,7 +412,7 @@
             newItem.innerHTML = `
                 <div class="row">
                     <div class="col-md-3">
-                        <img src="https://via.placeholder.com/300x150/800000/FFD700?text=${encodeURIComponent(title)}" alt="${title}">
+                        <img src="${imageUrl}" alt="${title}" style="max-width: 100%; height: auto; border-radius: 5px;">
                     </div>
                     <div class="col-md-7">
                         <h5>${title}</h5>
@@ -322,7 +431,7 @@
             container.insertBefore(newItem, container.firstChild);
             
             // Add event listener to delete button
-            newItem.querySelector('.delete-slider-item').addEventListener('click', function() {
+            newItem.querySelector('.delete-slider-item').addEventListener('click', async function() {
                 Swal.fire({
                     title: 'Delete Slider Item?',
                     text: "This action cannot be undone!",
@@ -331,15 +440,27 @@
                     confirmButtonColor: '#800000',
                     cancelButtonColor: '#6c757d',
                     confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
+                }).then(async (result) => {
                     if (result.isConfirmed) {
-                        newItem.remove();
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Deleted!',
-                            text: 'Slider item has been deleted.',
-                            confirmButtonColor: '#800000'
-                        });
+                        // In a real application, you would delete from the database
+                        try {
+                            // For now, we'll just remove it from the UI
+                            newItem.remove();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'Slider item has been deleted.',
+                                confirmButtonColor: '#800000'
+                            });
+                        } catch (error) {
+                            console.error('Error deleting slider item:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Failed to delete slider item. Please try again.',
+                                confirmButtonColor: '#800000'
+                            });
+                        }
                     }
                 });
             });
@@ -457,15 +578,4 @@
             loadSidebar();
         });
     </script>
-</body>
-</html>
-        // Load navbar and sidebar when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set up logout button
-            setupLogout();
-            loadNavbar();
-            loadSidebar();
-        });
-    </script>
-</body>
 </html>

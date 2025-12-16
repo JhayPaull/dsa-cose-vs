@@ -19,6 +19,30 @@ function authenticateToken(req, res, next) {
     });
 }
 
+function isAdmin(req, res, next) {
+    // First verify the token
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ message: 'Access token required' });
+    }
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) {
+            return res.status(403).json({ message: 'Invalid or expired token' });
+        }
+        
+        // Check if user has admin role
+        if (user.role === 'admin') {
+            req.user = user;
+            next();
+        } else {
+            return res.status(403).json({ message: 'Admin access required' });
+        }
+    });
+}
+
 function generateToken(user) {
     return jwt.sign(
         { 
@@ -31,5 +55,11 @@ function generateToken(user) {
     );
 }
 
-module.exports = { authenticateToken, generateToken };
+module.exports = { 
+    authenticateToken, 
+    generateToken, 
+    isAdmin,
+    // Alias for backward compatibility
+    verifyToken: authenticateToken
+};
 

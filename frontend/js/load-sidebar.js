@@ -1,11 +1,11 @@
-// Load sidebar based on user role
+ // Load sidebar based on user role
 document.addEventListener('DOMContentLoaded', function() {
     loadSidebar();
 });
 
 function loadSidebar() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const sidebarContainer = document.querySelector('.sidebar-container');
+    const sidebarContainer = document.querySelector('#sidebar-container');
     
     if (!sidebarContainer) {
         console.error('Sidebar container not found');
@@ -13,10 +13,11 @@ function loadSidebar() {
     }
     
     let sidebarPath = '';
-    if (user.role === 'admin' || user.role === 'sub-admin') {
-        sidebarPath = '/components/sidebar/admin-sidebar.html';
+    // Allow access to admin sidebar even without authentication for account settings page
+    if (user.role === 'admin' || user.role === 'sub-admin' || window.location.pathname.includes('/pages/admin/acc-setting/')) {
+        sidebarPath = '/components/admin-sidebar.html';
     } else {
-        sidebarPath = '/components/sidebar/student-sidebar.html';
+        sidebarPath = '/components/student-sidebar.html';
     }
     
     fetch(sidebarPath)
@@ -29,18 +30,24 @@ function loadSidebar() {
             console.error('Error loading sidebar:', error);
             // Fallback to default sidebar
             sidebarContainer.innerHTML = `
-                <aside class="sidebar">
-                    <nav class="sidebar-nav">
-                        <a href="/pages/dashboard/" class="nav-link active">
-                            <i class="nav-icon fas fa-home"></i>
-                            <p>Dashboard</p>
-                        </a>
-                        <a href="#" class="nav-link" id="logoutLink">
-                            <i class="nav-icon fas fa-sign-out-alt"></i>
-                            <p>Logout</p>
-                        </a>
+                <div class="sidebar">
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column">
+                            <li class="nav-item">
+                                <a href="/pages/dashboard/" class="nav-link">
+                                    <i class="nav-icon fas fa-home"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/pages/admin/acc-setting/" class="nav-link active">
+                                    <i class="nav-icon fas fa-cog"></i>
+                                    <p>Account Settings</p>
+                                </a>
+                            </li>
+                        </ul>
                     </nav>
-                </aside>
+                </div>
             `;
             setupSidebarEvents();
         });
@@ -94,8 +101,15 @@ function setupSidebarEvents() {
             }
         });
         
+        // Special case for account settings page - if no other link matched, activate account settings
+        if (!activeFound && currentPath.includes('/pages/admin/acc-setting/')) {
+            const accSettingLink = document.querySelector('a[href="/pages/admin/acc-setting/"]');
+            if (accSettingLink) {
+                accSettingLink.classList.add('active');
+            }
+        }
         // Special case for dashboard - if no other link matched, activate dashboard
-        if (!activeFound) {
+        else if (!activeFound) {
             const dashboardLink = document.getElementById('dashboard-link');
             if (dashboardLink) {
                 dashboardLink.classList.add('active');

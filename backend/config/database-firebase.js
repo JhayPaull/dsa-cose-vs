@@ -7,7 +7,8 @@ const COLLECTIONS = {
     CANDIDATES: 'candidates',
     VOTES: 'votes',
     NOTIFICATIONS: 'notifications',
-    VOTE_HISTORY: 'vote_history'
+    VOTE_HISTORY: 'vote_history',
+    SLIDER_ITEMS: 'slider_items'
 };
 
 // Initialize collections with indexes (Firestore automatically creates collections)
@@ -25,6 +26,7 @@ async function initializeDatabase() {
         const Candidate = require('../models/Candidate');
         const Vote = require('../models/Vote');
         const Notification = require('../models/Notification');
+        const SliderItem = require('../models/SliderItem');
         
         console.log('Database models loaded successfully');
     } catch (error) {

@@ -72,14 +72,17 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' })); // Increase payload limit
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Log all incoming requests for debugging
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} - from ${req.ip}`);
     next();
 });
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve uploaded files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Initialize Firebase
 let useFirebase = true; // Enable Firebase by default
@@ -105,6 +108,7 @@ const analyticsRoutes = require('./routes/analytics-firebase');
 const notificationRoutes = require('./routes/notifications-firebase');
 const votingRoutes = require('./routes/voting-firebase');
 const adminRoutes = require('./routes/admin-firebase'); // Add admin routes
+const sliderRoutes = require('./routes/slider'); // Add slider routes
 
 console.log('Using Firebase routes for all endpoints');
 
@@ -115,6 +119,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/voting', votingRoutes);
 app.use('/api/admin', adminRoutes); // Add admin routes
+app.use('/api/slider', sliderRoutes); // Add slider routes
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -126,9 +131,21 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// Serve frontend routes
+// Serve frontend routes (must be after all API routes)
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Global error handler for JSON responses
+app.use((err, req, res, next) => {
+    // Log the error for debugging
+    console.error('Unhandled error:', err);
+    
+    // Return JSON error response
+    res.status(500).json({
+        error: 'Internal server error',
+        message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
+    });
 });
 
 // Real-time vote updates via Socket.IO
@@ -169,7 +186,7 @@ function startServer(port) {
         if (err.code === 'EADDRINUSE') {
             retryCount++;
             if (retryCount <= maxRetries) {
-                const newPort = port + retryCount;
+                const newPort = port + (retryCount * 10);
                 console.log(`Port ${port} is busy, trying ${newPort}`);
                 setTimeout(() => startServer(newPort), 1000);
             } else {

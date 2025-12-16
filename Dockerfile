@@ -17,6 +17,11 @@ COPY . .
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 RUN chown -R nextjs:nodejs /app
+
+# Create uploads directory with proper permissions
+RUN mkdir -p /app/uploads/slider-images
+RUN chown -R nextjs:nodejs /app/uploads
+
 USER nextjs
 
 # Expose port 8080 for the application

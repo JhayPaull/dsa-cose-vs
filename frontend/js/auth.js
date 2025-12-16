@@ -439,12 +439,13 @@ function checkAuthState() {
     }
     
     // If no token and on protected pages, redirect to login
+    // BUT allow access to account settings page without authentication
     if (!token && (currentPath.includes('/pages/dashboard/') || 
                   currentPath.includes('/pages/analytics/') || 
                   currentPath.includes('/pages/voting/') || 
                   currentPath.includes('/pages/notifications/') || 
                   currentPath.includes('/pages/profile/') ||
-                  currentPath.includes('/pages/admin/'))) {
+                  (currentPath.includes('/pages/admin/') && !currentPath.includes('/pages/admin/acc-setting/')))) {
         console.log('No token on protected page, redirecting to login');
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -456,6 +457,12 @@ function checkAuthState() {
     // Admin pages are separate from the dashboard now
     if (token && currentPath.includes('/pages/admin/')) {
         console.log('User accessing admin page, allowing access');
+        // No redirect needed - allow normal navigation
+    }
+    
+    // Specifically allow access to account settings page without authentication
+    if (currentPath.includes('/pages/admin/acc-setting/')) {
+        console.log('Allowing access to account settings page without authentication');
         // No redirect needed - allow normal navigation
     }
 }
