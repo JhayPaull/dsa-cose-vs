@@ -50,25 +50,58 @@ function setupSidebarEvents() {
     // Set up logout confirmation
     const logoutLink = document.getElementById('logoutLink');
     if (logoutLink) {
-        logoutLink.addEventListener('click', function(e) {
+        // Remove any existing event listeners to prevent duplicates
+        const newLogoutLink = logoutLink.cloneNode(true);
+        logoutLink.parentNode.replaceChild(newLogoutLink, logoutLink);
+        
+        newLogoutLink.addEventListener('click', function(e) {
             e.preventDefault();
             confirmLogout();
         });
     }
     
-    // Set up active link highlighting
-    const currentPath = window.location.pathname;
+    // Set up navigation link behavior - Allow default behavior for navigation links
     const navItems = document.querySelectorAll('.nav-link');
     
     navItems.forEach(item => {
         const href = item.getAttribute('href');
-        if (href && currentPath.includes(href)) {
-            // Remove active class from all items
-            navItems.forEach(navItem => navItem.classList.remove('active'));
-            // Add active class to current item
-            item.classList.add('active');
+        
+        // Skip logout link and empty hrefs
+        if (!href || href === '#') {
+            return;
         }
+        
+        // For navigation links, we want to allow default behavior
+        // So we don't add any special event listeners that would prevent default
+        // The links should work normally with their href attributes
     });
+    
+    // Set up active link highlighting with a small delay to ensure DOM is ready
+    setTimeout(function() {
+        const currentPath = window.location.pathname;
+        const allNavItems = document.querySelectorAll('.nav-link');
+        
+        // Remove active class from all items first
+        allNavItems.forEach(navItem => navItem.classList.remove('active'));
+        
+        // Add active class to matching item
+        let activeFound = false;
+        allNavItems.forEach(item => {
+            const href = item.getAttribute('href');
+            if (href && href !== '#' && currentPath.includes(href)) {
+                item.classList.add('active');
+                activeFound = true;
+            }
+        });
+        
+        // Special case for dashboard - if no other link matched, activate dashboard
+        if (!activeFound) {
+            const dashboardLink = document.getElementById('dashboard-link');
+            if (dashboardLink) {
+                dashboardLink.classList.add('active');
+            }
+        }
+    }, 100);
 }
 
 function confirmLogout() {

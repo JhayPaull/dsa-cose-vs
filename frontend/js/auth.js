@@ -452,11 +452,11 @@ function checkAuthState() {
         return;
     }
     
-    // If user is logged in and trying to access admin page directly, redirect to dashboard
-    // since we're consolidating admin functionality into the dashboard
+    // If user is logged in and trying to access admin page directly, allow access
+    // Admin pages are separate from the dashboard now
     if (token && currentPath.includes('/pages/admin/')) {
-        console.log('User accessing admin page, redirecting to consolidated dashboard');
-        window.location.href = '/pages/dashboard/';
+        console.log('User accessing admin page, allowing access');
+        // No redirect needed - allow normal navigation
     }
 }
 
