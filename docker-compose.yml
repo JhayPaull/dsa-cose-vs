@@ -16,6 +16,7 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3001
+      - HOST=0.0.0.0
       - FIREBASE_PROJECT_ID=dsa-cose-vs
       - FIREBASE_SERVICE_ACCOUNT_PATH=/usr/src/app/serviceAccountKey.json
       # Alternative: Use service account key as environment variable (more secure)

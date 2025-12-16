@@ -17,7 +17,7 @@ This guide explains how to deploy the TCC E-Voting System using Docker container
 ## Ports
 
 - **Backend**: `3001:3001`
-- **Frontend**: `8080:8080`
+- **Frontend**: `8081:8080` (changed from 8080:8080 to avoid conflicts)
 
 ## Setup Steps
 
@@ -51,8 +51,26 @@ docker-compose up -d --build
 ### 3. Verify Services
 
 - **Backend Health Check**: http://localhost:3001/api/health
-- **Frontend**: http://localhost:8080
+- **Frontend**: http://localhost:8081
 - **Backend API**: http://localhost:3001/api
+
+### 4. Accessing from Other Devices
+
+To access the system from other devices on the same network:
+
+1. Find your computer's IP address:
+   - Windows: Open Command Prompt and run `ipconfig`, look for "IPv4 Address"
+   - macOS/Linux: Open Terminal and run `ifconfig` or `ip addr`
+
+2. Access the system using your computer's IP address:
+   - Frontend: http://YOUR_COMPUTER_IP:8081
+   - Backend API: http://YOUR_COMPUTER_IP:3001/api
+   - Backend Health Check: http://YOUR_COMPUTER_IP:3001/api/health
+
+Example: If your computer's IP is 192.168.1.100:
+- Frontend: http://192.168.1.100:8081
+- Backend API: http://192.168.1.100:3001/api
+- Backend Health Check: http://192.168.1.100:3001/api/health
 
 ### 4. Check Container Logs
 

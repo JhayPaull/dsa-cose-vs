@@ -51,19 +51,19 @@
             color: #FFD700 !important;
         }
         
-        /* Slider Styles */
-        .slider-wrapper {
+        /* Carousel Styles */
+        .featured-carousel {
             position: relative;
             overflow: hidden;
-            border-radius: 8px;
+            border-radius: 0 0 8px 8px;
         }
         
-        .slider-inner {
+        .carousel-inner {
             position: relative;
-            height: 400px;
+            height: 350px;
         }
         
-        .slider-slide {
+        .carousel-item {
             position: absolute;
             top: 0;
             left: 0;
@@ -73,32 +73,35 @@
             transition: opacity 0.5s ease-in-out;
         }
         
-        .slider-slide.active {
+        .carousel-item.active {
             opacity: 1;
         }
         
-        .slider-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .slider-content {
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
             background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: white;
+            text-align: left;
         }
         
-        .slider-title {
-            font-size: 2rem;
-            font-weight: bold;
+        .carousel-caption h5 {
+            font-size: 1.5rem;
+            font-weight: 600;
             margin-bottom: 10px;
+            color: #FFD700;
         }
         
-        .slider-description {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
+        .carousel-caption p {
+            font-size: 1rem;
+            margin-bottom: 15px;
         }
         
-        .slider-control {
+        .carousel-control-prev,
+        .carousel-control-next {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -114,42 +117,28 @@
             z-index: 10;
         }
         
-        .slider-control:hover {
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
             background: rgba(128, 0, 0, 0.9);
             color: #FFF;
         }
         
-        .slider-control.prev {
+        .carousel-control-prev {
             left: 20px;
         }
         
-        .slider-control.next {
+        .carousel-control-next {
             right: 20px;
         }
         
-        .slider-indicators {
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-image: none;
             display: flex;
-            gap: 10px;
-        }
-        
-        .indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        
-        .indicator.active {
-            background: #FFD700;
-        }
-        
-        .slider-placeholder {
-            background: #f8f9fa;
-            border: 2px dashed #dee2e6;
-            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
         }
     </style>
         <script src="/js/shared-logout.js"></script>
@@ -200,24 +189,56 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <!-- Slider Section -->
+                    <!-- Featured Content Carousel -->
                     <div class="row mb-4">
                         <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Featured Content Slider</h3>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                    </div>
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-maroon text-white d-flex justify-content-between align-items-center">
+                                    <h3 class="card-title mb-0">Featured Content</h3>
                                 </div>
-                                <div class="card-body">
-                                    <div id="slider-container" class="slider-container">
-                                        <!-- Slider items will be dynamically loaded here -->
-                                        <div class="slider-placeholder text-center p-5">
-                                            <p>No slider images configured yet.</p>
+                                <div class="card-body p-0">
+                                    <div id="featured-carousel" class="featured-carousel">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <img src="/images/slide1.jpg" class="d-block w-100" alt="Student Council Elections 2025">
+                                                <div class="carousel-caption">
+                                                    <h5>Student Council Elections 2025</h5>
+                                                    <p>Make your voice heard! Vote for your student representatives.</p>
+                                                    <a href="/elections/student-council-2025" class="btn btn-gold">Learn More</a>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item ">
+                                                <img src="/images/slide2.jpg" class="d-block w-100" alt="Voting Now Open">
+                                                <div class="carousel-caption">
+                                                    <h5>Voting Now Open</h5>
+                                                    <p>Participate in the ongoing elections and make your vote count!</p>
+                                                    <a href="/vote" class="btn btn-gold">Vote Now</a>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item ">
+                                                <img src="/images/slide3.jpg" class="d-block w-100" alt="Meet the Candidates">
+                                                <div class="carousel-caption">
+                                                    <h5>Meet the Candidates</h5>
+                                                    <p>Get to know the candidates running for various positions.</p>
+                                                    <a href="/candidates" class="btn btn-gold">View Profiles</a>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item ">
+                                                <img src="/images/slide4.jpg" class="d-block w-100" alt="Election Results">
+                                                <div class="carousel-caption">
+                                                    <h5>Election Results</h5>
+                                                    <p>View the latest election results and statistics.</p>
+                                                    <a href="/results" class="btn btn-gold">View Results</a>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <!-- Carousel navigation buttons positioned on left and right -->
+                                        <button class="carousel-control-prev" type="button" onclick="sliderManager.prevSlide()" aria-label="Previous">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"><i class="fas fa-chevron-left"></i></span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" onclick="sliderManager.nextSlide()" aria-label="Next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -408,6 +429,12 @@
             
             // Initialize AdminLTE features
             // Add any additional initialization code here
+            
+            // Initialize slider manager for the featured carousel
+            if (document.getElementById('featured-carousel')) {
+                window.sliderManager = new SliderManager('featured-carousel');
+                window.sliderManager.init();
+            }
         });
         
         // No charts needed for voter dashboard
@@ -525,6 +552,15 @@
                 }
             }
         }
+        
+        // Initialize slider manager when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize slider manager for the featured carousel
+            if (document.getElementById('featured-carousel')) {
+                window.sliderManager = new SliderManager('featured-carousel');
+                window.sliderManager.init();
+            }
+        });
     </script>
 </body>
 </html>

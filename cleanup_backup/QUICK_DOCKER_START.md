@@ -29,13 +29,31 @@ firebase deploy --only hosting
 - **Backend Container**: `developmentofwebandmobile-basede-votingsystemwithreal-timevotetabulationforschoolelectionsforcose-backend`
 - **Frontend Container**: `developmentofwebandmobile-basede-votingsystemwithreal-timevotetabulationforschoolelectionsforcose-frontend`
 - **Backend Port**: `3001:3001`
-- **Frontend Port**: `8080:8080`
+- **Frontend Port**: `8081:8080` (changed from 8080:8080 to avoid conflicts)
 
 ## ✅ Verify Everything Works
 
 1. **Backend Health**: http://localhost:3001/api/health
-2. **Frontend**: http://localhost:8080
+2. **Frontend**: http://localhost:8081
 3. **Firebase Hosting**: https://dsa-cose-vs.web.app
+
+## 📱 Accessing from Other Devices
+
+To access the system from other devices on the same network:
+
+1. Find your computer's IP address:
+   - Windows: Open Command Prompt and run `ipconfig`, look for "IPv4 Address"
+   - macOS/Linux: Open Terminal and run `ifconfig` or `ip addr`
+
+2. Access the system using your computer's IP address:
+   - Frontend: http://YOUR_COMPUTER_IP:8081
+   - Backend API: http://YOUR_COMPUTER_IP:3001/api
+   - Backend Health Check: http://YOUR_COMPUTER_IP:3001/api/health
+
+Example: If your computer's IP is 192.168.1.100:
+- Frontend: http://192.168.1.100:8081
+- Backend API: http://192.168.1.100:3001/api
+- Backend Health Check: http://192.168.1.100:3001/api/health
 
 ## 🔧 Firestore Connection
 

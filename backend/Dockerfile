@@ -22,5 +22,5 @@ COPY . .
 # Document that the container listens on port 3001
 EXPOSE 3001
 
-# Run the web service on container startup
+# Run the web service on container startup, binding to all interfaces
 CMD [ "node", "server.js" ]

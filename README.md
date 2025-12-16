@@ -240,6 +240,24 @@ To override the backend URL for production deployments, you can:
    - Frontend: http://localhost:8081
    - Backend API: http://localhost:3001/api
 
+### Accessing from Other Devices
+
+To access the system from other devices on the same network:
+
+1. Find your computer's IP address:
+   - Windows: Open Command Prompt and run `ipconfig`, look for "IPv4 Address"
+   - macOS/Linux: Open Terminal and run `ifconfig` or `ip addr`
+
+2. Access the system using your computer's IP address:
+   - Frontend: http://YOUR_COMPUTER_IP:8081
+   - Backend API: http://YOUR_COMPUTER_IP:3001/api
+   - Backend Health Check: http://YOUR_COMPUTER_IP:3001/api/health
+
+Example: If your computer's IP is 192.168.1.100:
+- Frontend: http://192.168.1.100:8081
+- Backend API: http://192.168.1.100:3001/api
+- Backend Health Check: http://192.168.1.100:3001/api/health
+
 ## API Endpoints
 
 ### Authentication
@@ -278,6 +296,11 @@ To override the backend URL for production deployments, you can:
    - Check backend logs for error messages
    - Verify environment variables are set correctly
    - Ensure the database collections exist (run migrations)
+
+4. **Cannot access from other devices**
+   - Check the NETWORK_ACCESS_TROUBLESHOOTING.md guide for detailed steps
+   - Ensure Windows Firewall is not blocking the ports
+   - Verify all devices are on the same network
 
 ### Testing Connections
 

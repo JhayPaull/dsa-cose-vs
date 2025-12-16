@@ -168,19 +168,20 @@ app.set('io', io);
 
 // Get port from environment or use default
 const PORT = process.env.PORT || 3001;
+const HOST = process.env.HOST || '0.0.0.0'; // Bind to all interfaces by default
 
 // Handle server startup with port fallback (limit retries)
 let retryCount = 0;
 const maxRetries = 3; // Limit retries to prevent infinite loops
 let serverStarted = false;
 
-function startServer(port) {
+function startServer(port, host = HOST) {
     if (serverStarted) return;
     
-    // Bind to 0.0.0.0 to allow connections from outside the container
-    server.listen(port, '0.0.0.0', () => {
+    // Bind to specified host to allow connections from outside the container
+    server.listen(port, host, () => {
         serverStarted = true;
-        console.log(`Server running on port ${port}`);
+        console.log(`Server running on ${host}:${port}`);
         console.log(`Database backend: Firebase`);
         console.log(`CORS enabled for origins: http://localhost:8000, http://localhost:8080, http://localhost:3000, http://localhost:3001, https://dsa-cose-vs.web.app, https://dsa-cose-vs.firebaseapp.com`);
         console.log(`Serving static files from: ${path.join(__dirname, 'public')}`);
@@ -190,7 +191,7 @@ function startServer(port) {
             if (retryCount <= maxRetries) {
                 const newPort = port + (retryCount * 10);
                 console.log(`Port ${port} is busy, trying ${newPort}`);
-                setTimeout(() => startServer(newPort), 1000);
+                setTimeout(() => startServer(newPort, host), 1000);
             } else {
                 console.error(`Unable to start server after ${maxRetries} attempts. Please free up port ${port} or specify a different port.`);
                 process.exit(1);
@@ -202,4 +203,4 @@ function startServer(port) {
     });
 }
 
-startServer(PORT);
+startServer(PORT, HOST);
