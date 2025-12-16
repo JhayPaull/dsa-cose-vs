@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Setting - E-Voting System</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
+    <!-- Custom Gold and Maroon Theme CSS -->
+    <link rel="stylesheet" href="../../../css/gold-maroon-theme.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        .content-wrapper {
+            background-color: #f4f6f9;
+        }
+        
+        .brand-text {
+            color: #FFD700 !important;
+            font-weight: bold;
+        }
+        
+        .card-header {
+            background-color: #800000;
+            color: white;
+        }
+        
+        .breadcrumb-item a {
+            color: #800000 !important;
+        }
+        
+        .breadcrumb-item.active {
+            color: #FFD700 !important;
+        }
+        
+        .user-panel .info a {
+            color: white !important;
+        }
+        
+        /* Updated styles for white tab text and nav-pills */
+        .nav-pills .nav-link {
+            color: white;
+            border-radius: .25rem;
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: #800000;
+            color: white;
+            border-radius: .25rem;
+        }
+        
+        .form-control.bg-light {
+            background-color: #f8f9fa !important;
+        }
+        
+        .select2-container .select2-selection--single {
+            height: calc(2.25rem + 2px);
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+        }
+        
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 28px;
+            padding-left: 0;
+        }
+    </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+        <script src="/js/shared-logout.js"></script>
+        <script src="/js/auth.js"></script>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <div id="navbar-container">
+            <!-- Navbar will be loaded here -->
+        </div>
+        <!-- /.navbar -->
+
+        <!-- Include the Gold and Maroon Sidebar -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="/pages/dashboard/" class="brand-link">
+                <span class="brand-text font-weight-light">E-Voting System</span>
+            </a>
+
+            <!-- Load sidebar content -->
+            <div id="sidebar-container">
+                <!-- Sidebar will be loaded here -->
+            </div>
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-header p-2">
+                                        <ul class="nav nav-pills" id="accountTabs" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="basicinformation-tab" data-bs-toggle="tab" data-bs-target="#basicinformation" type="button" role="tab" aria-controls="basicinformation" aria-selected="true">Basic Information</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Change Password</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="tab-content mt-3" id="accountTabContent">
+                                        <!-- Basic Information Tab -->
+                                        <div class="tab-pane fade show active" id="basicinformation" role="tabpanel" aria-labelledby="basicinformation-tab">
+                                            <form id="userprofile_update_basicinfo" method="POST" novalidate="">
+                                                <input type="hidden" name="_token" value="zooU9haeO2AFS7ZNSMsdJ3U6VtYZFV3OwV9GVPKQ" autocomplete="off">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label for="inputStudentId">Student ID</label>
+                                                        <input type="text" class="form-control bg-light" id="inputStudentId" name="inputStudentId" value="20231732" readonly>
+                                                        <div class="invalid-feedback">Please provide a student ID.</div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="inputLastName">Last Name</label>
+                                                        <input type="text" class="form-control bg-light" id="inputLastName" name="inputLastName" value="De Vera" readonly>
+                                                        <div class="invalid-feedback">Please provide a last name.</div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="inputFirstName">First Name</label>
+                                                        <input type="text" class="form-control bg-light" id="inputFirstName" name="inputFirstName" value="Jhay Paul" readonly>
+                                                        <div class="invalid-feedback">Please provide a first name.</div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="info_mname">Middle Initial</label>
+                                                        <input type="text" class="form-control bg-light" id="info_mname" name="info_mname" value="Calustre" readonly>
+                                                        <div class="invalid-feedback">Please provide a middle initial.</div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-md-3">
+                                                        <label for="info_year">Year <span class="text-danger">*</span></label>
+                                                        <select class="form-control" id="info_year" name="info_year" required>
+                                                            <option value="">Select Year</option>
+                                                            <option value="1">1st Year</option>
+                                                            <option value="2">2nd Year</option>
+                                                            <option value="3" selected>3rd Year</option>
+                                                            <option value="4">4th Year</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">Please select a year level.</div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="info_section">Section <span class="text-danger">*</span></label>
+                                                        <select class="form-control" id="info_section" name="info_section" required>
+                                                            <option value="">Select Section</option>
+                                                            <option value="A">A</option>
+                                                            <option value="B">B</option>
+                                                            <option value="C" selected>C</option>
+                                                            <option value="D">D</option>
+                                                            <option value="E">E</option>
+                                                            <option value="F">F</option>
+                                                            <option value="G">G</option>
+                                                            <option value="H">H</option>
+                                                            <option value="I">I</option>
+                                                            <option value="J">J</option>
+                                                            <option value="K">K</option>
+                                                            <option value="L">L</option>
+                                                            <option value="M">M</option>
+                                                            <option value="N">N</option>
+                                                            <option value="O">O</option>
+                                                            <option value="P">P</option>
+                                                            <option value="Q">Q</option>
+                                                            <option value="R">R</option>
+                                                            <option value="S">S</option>
+                                                            <option value="T">T</option>
+                                                            <option value="U">U</option>
+                                                            <option value="V">V</option>
+                                                            <option value="W">W</option>
+                                                            <option value="X">X</option>
+                                                            <option value="Y">Y</option>
+                                                            <option value="Z">Z</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">Please select a section.</div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="inputEmail">Email <span class="text-danger">*</span></label>
+                                                        <input type="email" class="form-control" id="inputEmail" name="inputEmail" value="jhaypauldevera0@gmail.com" required>
+                                                        <div class="invalid-feedback">Please provide a valid email address.</div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-gold">
+                                                                <i class="fas fa-save"></i> Save Changes
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        
+                                        <!-- Account Settings Tab -->
+                                        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                                            <form action="/" autocomplete="off" class="form-horizontal" id="passwordForm" method="POST" novalidate="">
+                                                <input type="hidden" name="_token" value="zooU9haeO2AFS7ZNSMsdJ3U6VtYZFV3OwV9GVPKQ" autocomplete="off">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-3 col-form-label" for="current_password">Current Password</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group">
+                                                            <input aria-describedby="current_password_error" autocomplete="current-password" class="form-control " id="current_password" name="current_password" placeholder="Enter current password" required="" type="password" value="">
+                                                            <div class="input-group-append">
+                                                                <button aria-label="Toggle password visibility" class="btn btn-outline-secondary toggle-password" data-target="#current_password" type="button">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <span class="invalid-feedback" role="alert"><strong id="current_password_error"></strong></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-3 col-form-label" for="password">New Password</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group">
+                                                            <input aria-describedby="password_error requirements_help" autocomplete="new-password" class="form-control " id="password" minlength="8" name="password" placeholder="Enter new password" required="" type="password">
+                                                            <div class="input-group-append">
+                                                                <button aria-label="Toggle password visibility" class="btn btn-outline-secondary toggle-password" data-target="#password" type="button">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <span class="invalid-feedback" role="alert"><strong id="password_error"></strong></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-3 col-form-label" for="password_confirmation">Confirm Password</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group">
+                                                            <input aria-describedby="password_confirmation_error" autocomplete="new-password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm new password" required="" type="password">
+                                                            <div class="input-group-append">
+                                                                <button aria-label="Toggle password visibility" class="btn btn-outline-secondary toggle-password" data-target="#password_confirmation" type="button">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <span class="invalid-feedback" role="alert"><strong id="password_confirmation_error"></strong></span>
+                                                    </div>
+                                                </div>
+                                                <style>
+                                                    .label-length {
+                                                        width: 23px;
+                                                        display: inline-block;
+                                                        text-align: center;
+                                                    }
+                                                </style>
+                                                <div class="form-group">
+                                                    <label class="font-weight-bold">Password must:</label>
+                                                    <ul class="pl-3 list-unstyled" id="password_requirements">
+                                                        <li class="d-flex align-items-center mb-1">
+                                                            <span class="label-length">
+                                                                <i class="hide fas fa-check text-success mr-2" id="req1"></i>
+                                                            </span>
+                                                            <span>be at least <strong>8 characters</strong> long</span>
+                                                        </li>
+                                                        <li class="d-flex align-items-center mb-1">
+                                                            <span class="label-length">
+                                                                <i class="hide fas fa-check text-success mr-2" id="req2"></i>
+                                                            </span>
+                                                            <span>contain at least <strong>one letter</strong></span>
+                                                        </li>
+                                                        <li class="d-flex align-items-center mb-1">
+                                                            <span class="label-length">
+                                                                <i class="hide fas fa-check text-success mr-2" id="req3"></i>
+                                                            </span>
+                                                            <span>contain at least <strong>one number</strong></span>
+                                                        </li>
+                                                        <script>
+                                                            var change_pass = true;
+                                                        </script>
+                                                        <li class="d-flex align-items-center mb-1">
+                                                            <span class="label-length">
+                                                                <i class="hide fas fa-check text-success mr-2" id="req4"></i>
+                                                            </span>
+                                                            <span>match the <strong>new password</strong></span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="offset-sm-3 col-sm-10">
+                                                        <button class="btn btn-primary" type="submit">
+                                                            <i class="fas fa-key"></i> Update Password
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- Shared Footer -->
+        <footer class="copyright text-center">
+            <div class="container">
+                <p class="mb-0 py-3">© 2025 Tagoloan Community College. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap 5 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <!-- AdminLTE App -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    
+    <!-- SweetAlert2 for beautiful alerts -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+    
+    <script src="../../../js/load-sidebar.js"></script>
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyB9NYs7wXP4bYxk3zRBlFufFvzx3OKOalo",
+            authDomain: "dsa-cose-vs.firebaseapp.com",
+            projectId: "dsa-cose-vs",
+            storageBucket: "dsa-cose-vs.appspot.com",
+            messagingSenderId: "640426080386",
+            appId: "1:640426080386:web:d6259e1017e7f509b64a66",
+            measurementId: "G-WK905LKM2N"
+        };
+        
+        // Initialize Firebase
+        if (typeof firebase !== 'undefined') {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Initialize Select2
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+        
+        // Initialize Bootstrap tabs
+        document.addEventListener('DOMContentLoaded', function() {
+            var triggerTabList = [].slice.call(document.querySelectorAll('#accountTabs button'))
+            triggerTabList.forEach(function (triggerEl) {
+                var tabTrigger = new bootstrap.Tab(triggerEl)
+                
+                triggerEl.addEventListener('click', function (event) {
+                    event.preventDefault()
+                    tabTrigger.show()
+                })
+            })
+        });
+        
+        // Fetch and display user information
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if Firebase is available and user is signed in
+            if (typeof firebase !== 'undefined' && firebase.auth) {
+                firebase.auth().onAuthStateChanged(function(user) {
+                    if (user) {
+                        // User is signed in, fetch user data from Firestore
+                        fetchUserData(user);
+                    } else {
+                        // No user is signed in
+                        console.log('No user is currently signed in');
+                        // You might want to redirect to login page or show a message
+                    }
+                });
+            } else {
+                // Firebase not available, use mock data for demonstration
+                const userData = {
+                    name: "Admin User",
+                    role: "Administrator"
+                };
+                
+                // Update user information in the UI
+                document.getElementById('userName').textContent = userData.name;
+                document.getElementById('userRole').textContent = userData.role;
+                document.getElementById('sidebarUserName').textContent = userData.name;
+                document.getElementById('sidebarUserRole').textContent = userData.role;
+            }
+        });
+        
+        // Fetch user data from Firestore
+        function fetchUserData(user) {
+            if (typeof firebase !== 'undefined' && firebase.firestore) {
+                const db = firebase.firestore();
+                db.collection('users').doc(user.uid).get()
+                    .then((doc) => {
+                        if (doc.exists) {
+                            const userData = doc.data();
+                            
+                            // Update user information in the UI
+                            const fullName = userData.firstName + ' ' + userData.lastName;
+                            document.getElementById('userName').textContent = fullName;
+                            document.getElementById('userRole').textContent = userData.role || 'User';
+                            document.getElementById('sidebarUserName').textContent = fullName;
+                            document.getElementById('sidebarUserRole').textContent = userData.role || 'User';
+                            
+                            // Populate form fields with user data
+                            document.getElementById('inputStudentId').value = userData.studentId || '';
+                            document.getElementById('inputLastName').value = userData.lastName || '';
+                            document.getElementById('inputFirstName').value = userData.firstName || '';
+                            document.getElementById('info_mname').value = userData.middleName || '';
+                            document.getElementById('info_year').value = userData.gradeLevel || '';  // Using gradeLevel from User model
+                            document.getElementById('info_section').value = userData.section || '';
+                            document.getElementById('inputEmail').value = userData.email || user.email || '';
+                        } else {
+                            console.log('No user data found in Firestore');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching user data:', error);
+                    });
+            }
+        }
+        
+        // Handle form submissions
+        document.getElementById('userprofile_update_basicinfo').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data (only editable fields)
+            const formData = {
+                gradeLevel: document.getElementById('info_year').value,  // Using gradeLevel to match User model
+                section: document.getElementById('info_section').value,
+                email: document.getElementById('inputEmail').value
+            };
+            
+            // Update user profile in Firebase
+            updateProfileInFirebase(formData);
+        });
+        
+        // Update profile in Firebase
+        function updateProfileInFirebase(userData) {
+            // Check if Firebase is available
+            if (typeof firebase !== 'undefined' && firebase.auth && firebase.firestore) {
+                const user = firebase.auth().currentUser;
+                
+                if (user) {
+                    // Update email if it has changed
+                    if (user.email !== userData.email) {
+                        user.updateEmail(userData.email)
+                            .then(() => {
+                                console.log('Email updated successfully');
+                                // Update user document in Firestore
+                                updateUserDocument(user.uid, userData);
+                            })
+                            .catch((error) => {
+                                console.error('Error updating email:', error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Failed to update email: ' + error.message,
+                                    confirmButtonColor: '#800000'
+                                });
+                            });
+                    } else {
+                        // Email hasn't changed, just update the user document
+                        updateUserDocument(user.uid, userData);
+                    }
+                } else {
+                    // No user signed in, show error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Not Signed In',
+                        text: 'Please sign in to update your profile.',
+                        confirmButtonColor: '#800000'
+                    });
+                }
+            } else {
+                // Firebase not available, show success message anyway
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Profile Updated!',
+                    text: 'Your profile information has been successfully updated.',
+                    confirmButtonColor: '#800000'
+                });
+            }
+        }
+        
+        // Update user document in Firestore
+        function updateUserDocument(uid, userData) {
+            if (typeof firebase !== 'undefined' && firebase.firestore) {
+                const db = firebase.firestore();
+                const updateData = {
+                    gradeLevel: userData.gradeLevel,  // Using gradeLevel to match User model
+                    section: userData.section,
+                    email: userData.email,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                db.collection('users').doc(uid).update(updateData)
+                .then(() => {
+                    console.log('User document updated successfully');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Profile Updated!',
+                        text: 'Your profile information has been successfully updated.',
+                        confirmButtonColor: '#800000'
+                    });
+                    
+                    // Update the UI with the new data
+                    document.getElementById('inputEmail').value = userData.email;
+                })
+                .catch((error) => {
+                    console.error('Error updating user document:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to update profile: ' + error.message,
+                        confirmButtonColor: '#800000'
+                    });
+                });
+            } else {
+                // Firestore not available, show success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Profile Updated!',
+                    text: 'Your profile information has been successfully updated.',
+                    confirmButtonColor: '#800000'
+                });
+            }
+        }
+        
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('current_password').value;
+            const newPassword = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('password_confirmation').value;
+            
+            // Validate passwords
+            if (newPassword !== confirmPassword) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Password Mismatch',
+                    text: 'New password and confirmation do not match.',
+                    confirmButtonColor: '#800000'
+                });
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Weak Password',
+                    text: 'Password must be at least 8 characters long.',
+                    confirmButtonColor: '#800000'
+                });
+                return;
+            }
+            
+            // Update password in Firebase
+            updatePasswordInFirebase(currentPassword, newPassword);
+        });
+        
+        // Update password in Firebase
+        function updatePasswordInFirebase(currentPassword, newPassword) {
+            // Check if Firebase is available
+            if (typeof firebase !== 'undefined' && firebase.auth) {
+                const user = firebase.auth().currentUser;
+                
+                if (user) {
+                    // Reauthenticate user with current password before updating
+                    const credential = firebase.auth.EmailAuthProvider.credential(
+                        user.email, 
+                        currentPassword
+                    );
+                    
+                    user.reauthenticateWithCredential(credential)
+                        .then(() => {
+                            // User reauthenticated, now update password
+                            return user.updatePassword(newPassword);
+                        })
+                        .then(() => {
+                            console.log('Password updated successfully');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Password Changed!',
+                                text: 'Your password has been successfully updated.',
+                                confirmButtonColor: '#800000'
+                            }).then(() => {
+                                document.getElementById('passwordForm').reset();
+                            });
+                        })
+                        .catch((error) => {
+                            console.error('Error updating password:', error);
+                            let errorMessage = 'Failed to update password.';
+                            
+                            if (error.code === 'auth/wrong-password') {
+                                errorMessage = 'Current password is incorrect.';
+                            } else if (error.code === 'auth/weak-password') {
+                                errorMessage = 'New password is too weak.';
+                            }
+                            
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: errorMessage,
+                                confirmButtonColor: '#800000'
+                            });
+                        });
+                } else {
+                    // No user signed in, show error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Not Signed In',
+                        text: 'Please sign in to change your password.',
+                        confirmButtonColor: '#800000'
+                    });
+                }
+            } else {
+                // Firebase not available, show success message anyway
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Password Changed!',
+                    text: 'Your password has been successfully updated.',
+                    confirmButtonColor: '#800000'
+                }).then(() => {
+                    document.getElementById('passwordForm').reset();
+                });
+            }
+        }
+        
+        // Set up logout functionality with SweetAlert2
+        function setupLogout() {
+            const logoutBtn = document.getElementById('logout');
+            const logoutLink = document.getElementById('logoutLink');
+            
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    
+                    const result = await Swal.fire({
+                        title: 'Logout Confirmation',
+                        text: 'Are you sure you want to sign out?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#800000',
+                        cancelButtonColor: '#FFD700',
+                        confirmButtonText: 'Yes, sign me out',
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: true
+                    });
+
+                    if (result.isConfirmed) {
+                        try {
+                            // Show loading state
+                            Swal.fire({
+                                title: 'Signing out...',
+                                text: 'Please wait while we sign you out.',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+
+                            // Clear local storage
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('user');
+                            localStorage.removeItem('registerFormData');
+                            localStorage.removeItem('loginFormData');
+                            
+                            // Redirect to login page
+                            window.location.href = '/auth/login/';
+                        } catch (error) {
+                            console.error('Logout error:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'There was an error signing out. Please try again.',
+                                confirmButtonColor: '#3085d6',
+                            });
+                        }
+                    }
+                });
+            }
+            
+            if (logoutLink) {
+                logoutLink.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    // Use the proper logout functionality with confirmation
+                    if (typeof confirmLogout !== 'undefined') {
+                        confirmLogout();
+                    } else {
+                        // Fallback if confirmLogout is not available
+                        if (confirm('Are you sure you want to logout?')) {
+                            // Clear local storage
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('user');
+                            
+                            // Redirect to login page
+                            window.location.href = 'https://dsa-cose-vs.web.app/auth/login/';
+                        }
+                    }
+                });
+            }
+        }
+
+        // Function to load navbar
+        function loadNavbar() {
+            fetch('/components/navbar/voter-navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading navbar:', error);
+                });
+        }
+
+        // Function to load sidebar
+        function loadSidebar() {
+            fetch('/components/sidebar/voter-sidebar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('sidebar-container').innerHTML = data;
+                    setActiveLink(); // Set active link after loading sidebar
+                })
+                .catch(error => {
+                    console.error('Error loading sidebar:', error);
+                });
+        }
+        
+        // Set active link in sidebar
+        function setActiveLink() {
+            // Small delay to ensure DOM is ready
+            setTimeout(function() {
+                const currentPath = window.location.pathname;
+                const allNavItems = document.querySelectorAll('.nav-link');
+                
+                // Remove active class from all items first
+                allNavItems.forEach(navItem => navItem.classList.remove('active'));
+                
+                // Add active class to matching item
+                let activeFound = false;
+                allNavItems.forEach(item => {
+                    const href = item.getAttribute('href');
+                    if (href && href !== '#' && currentPath.includes(href)) {
+                        item.classList.add('active');
+                        activeFound = true;
+                    }
+                });
+                
+                // Special case for account settings page - if no other link matched, activate account settings
+                if (!activeFound && currentPath.includes('/pages/acc-setting/')) {
+                    const accSettingLink = document.getElementById('acc-setting-link');
+                    if (accSettingLink) {
+                        accSettingLink.classList.add('active');
+                    }
+                }
+            }, 100);
+        }
+        
+        // Load user data from Firebase
+        function loadUserData() {
+            // Check if Firebase is available
+            if (typeof firebase !== 'undefined' && firebase.auth && firebase.firestore) {
+                const user = firebase.auth().currentUser;
+                
+                if (user) {
+                    // Load user data from Firestore
+                    const db = firebase.firestore();
+                    db.collection('users').doc(user.uid).get()
+                        .then((doc) => {
+                            if (doc.exists) {
+                                const userData = doc.data();
+                                
+                                // Populate form fields with user data
+                                document.getElementById('inputStudentId').value = userData.studentId || '';
+                                document.getElementById('inputLastName').value = userData.lastName || '';
+                                document.getElementById('inputFirstName').value = userData.firstName || '';
+                                document.getElementById('info_mname').value = userData.middleName || '';
+                                document.getElementById('info_sname').value = userData.nameExtension || '';
+                                document.getElementById('info_sex').value = userData.sex || '';
+                                document.getElementById('info_civilstatus').value = userData.civilStatus || '';
+                                document.getElementById('info_birthday').value = userData.birthdate || '';
+                                document.getElementById('info_religion').value = userData.religion || '';
+                                document.getElementById('info_year').value = userData.year || '';
+                                document.getElementById('info_section').value = userData.section || '';
+                                document.getElementById('inputEmail').value = userData.email || user.email || '';
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Error loading user data:', error);
+                        });
+                }
+            }
+        }
+
+        // Load navbar and sidebar when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNavbar();
+            loadSidebar();
+        });
+    </script>
+</body>
+</html>

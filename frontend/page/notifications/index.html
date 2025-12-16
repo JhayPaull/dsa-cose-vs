@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - E-Voting System</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    
+    <!-- Custom Gold and Maroon Theme CSS -->
+    <link rel="stylesheet" href="/page/dashboard/gold-maroon-theme.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        .content-wrapper {
+            background-color: #f4f6f9;
+        }
+        
+        .brand-text {
+            color: #FFD700 !important;
+            font-weight: bold;
+        }
+        
+        .user-panel .info a {
+            color: white !important;
+        }
+        
+        .card-header {
+            background-color: #800000;
+            color: white;
+        }
+        
+        .breadcrumb-item a {
+            color: #800000 !important;
+        }
+        
+        .breadcrumb-item.active {
+            color: #FFD700 !important;
+        }
+        
+        .notifications-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .notification-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: flex-end;
+        }
+        
+        .notifications-list {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .notification-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        
+        .notification-item.unread {
+            background-color: #fff8e1;
+        }
+        
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .notification-title {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .notification-time {
+            font-size: 0.8rem;
+            color: #999;
+        }
+        
+        .notification-message {
+            color: #666;
+            margin: 5px 0;
+        }
+        
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .loading-state {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+    </style>
+        <script src="/js/shared-logout.js"></script>
+        <script src="/js/auth.js"></script>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <div id="navbar-container">
+            <!-- Navbar will be loaded here -->
+        </div>
+        <!-- /.navbar -->
+
+        <!-- Include the Gold and Maroon Sidebar -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="/page/dashboard/" class="brand-link">
+                <span class="brand-text font-weight-light">E-Voting System</span>
+            </a>
+
+            <!-- Load sidebar content -->
+            <div id="sidebar-container">
+                <!-- Sidebar will be loaded here -->
+            </div>
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Notifications</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Notifications</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Election Updates & Announcements</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="notifications-container">
+                                        <div class="notification-controls">
+                                            <button id="markAllReadBtn" class="btn btn-secondary">
+                                                <i class="fas fa-check-double"></i> Mark All as Read
+                                            </button>
+                                            <button id="clearAllBtn" class="btn btn-danger">
+                                                <i class="fas fa-trash"></i> Clear All
+                                            </button>
+                                        </div>
+                                        
+                                        <div id="notificationsList" class="notifications-list">
+                                            <div class="loading-state">
+                                                <p>Loading notifications...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <footer class="copyright text-center">
+            <div class="container">
+                <p class="mb-0 py-3">© 2025 Tagoloan Community College. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap 5 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AdminLTE App -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    
+    <!-- SweetAlert2 for beautiful alerts -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+    
+    <!-- Load Sidebar -->
+    <script src="/js/load-sidebar.js"></script>
+    
+    <script>
+        // Function to highlight the active link in the sidebar
+        function setActiveLink() {
+            // Get the current page URL
+            const currentPage = window.location.pathname;
+            
+            // Remove active class from all links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Define page mappings to link IDs for voter sidebar
+            const pageMappings = {
+                '/page/dashboard/': 'dashboard-link',
+                '/page/voting/': 'cast-vote-link',
+                '/page/acc-setting/': 'acc-setting-link'
+            };
+            
+            // Add active class to the current page link
+            if (pageMappings[currentPage]) {
+                const activeLink = document.getElementById(pageMappings[currentPage]);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

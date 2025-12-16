@@ -1,0 +1,197 @@
+/* Gold and Maroon Theme for E-Voting System */
+
+:root {
+  --gold-primary: #FFD700;
+  --gold-light: #FFEC8B;
+  --gold-dark: #DAA520;
+  --maroon-primary: #800000;
+  --maroon-light: #A52A2A;
+  --maroon-dark: #5C0000;
+  --sidebar-bg: #343a40;
+  --sidebar-text: #ffffff;
+  --sidebar-text-hover: #f0f0f0;
+  --sidebar-active-bg: #343a40;
+  --sidebar-border: #444;
+  --bs-nav-pills-link-active-color: #fff;
+  --bs-nav-pills-link-active-bg: #007bff;
+}
+
+/* Nav styles with flexbox */
+.nav {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+
+/* Sidebar Styles */
+[class*=sidebar-dark-] {
+  background-color: #343a40;
+}
+
+.sidebar {
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  min-height: 100vh;
+  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar .nav-header {
+  color: var(--gold-primary);
+  font-weight: bold;
+  padding: 10px 15px 5px;
+  font-size: 0.85em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.sidebar #sidebarUserRole {
+  color: #ffffff !important;
+}
+
+.sidebar .nav-sidebar > .nav-item > .nav-link {
+  color: var(--sidebar-text);
+  border-radius: 0;
+  padding: 10px 15px;
+  margin: 0;
+  border-left: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.sidebar .nav-sidebar > .nav-item > .nav-link:hover {
+  background-color: rgba(255, 215, 0, 0.1);
+  color: var(--gold-light);
+  border-left-color: var(--gold-primary);
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active,
+.sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+  background-color: #007bff;
+  color: #fff;
+  border-left-color: #007bff;
+}
+
+.nav-pills .nav-link.active, 
+.nav-pills .show > .nav-link {
+  color: var(--bs-nav-pills-link-active-color);
+  background-color: var(--bs-nav-pills-link-active-bg);
+}
+
+/* Custom scrollbar for sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #343a40;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-primary);
+}
+
+/* Main content adjustments */
+.main-content {
+  background-color: #f4f6f9;
+  min-height: 100vh;
+}
+
+/* Top navigation bar */
+.top-navbar {
+  background-color: var(--maroon-primary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Brand logo text */
+.site-logo-text {
+  color: var(--gold-primary);
+  font-weight: bold;
+}
+
+/* Card styles with theme colors */
+.gold-card {
+  border-left: 4px solid var(--gold-primary);
+}
+
+.maroon-card {
+  border-left: 4px solid var(--maroon-primary);
+}
+
+/* Button styles */
+.btn-gold {
+  background-color: var(--gold-primary);
+  border-color: var(--gold-dark);
+  color: var(--maroon-primary);
+}
+
+.btn-gold:hover {
+  background-color: var(--gold-dark);
+  border-color: var(--maroon-primary);
+  color: white;
+}
+
+.btn-maroon {
+  background-color: var(--maroon-primary);
+  border-color: var(--maroon-dark);
+  color: white;
+}
+
+.btn-maroon:hover {
+  background-color: var(--maroon-dark);
+  border-color: black;
+}
+
+/* Dropdown menu with theme */
+.dropdown-menu {
+  border-color: var(--gold-primary);
+}
+
+.dropdown-item:hover {
+  background-color: rgba(128, 0, 0, 0.1);
+}
+
+/* Form controls with theme */
+.form-control:focus {
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+
+/* Table styles */
+.table th {
+  background-color: var(--maroon-primary);
+  color: white;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(255, 215, 0, 0.05);
+}
+
+/* Alert styles */
+.alert-gold {
+  background-color: var(--gold-light);
+  border-color: var(--gold-primary);
+  color: var(--maroon-primary);
+}
+
+.alert-maroon {
+  background-color: var(--maroon-light);
+  border-color: var(--maroon-primary);
+  color: white;
+}
+
+/* Progress bars */
+.progress-bar-gold {
+  background-color: var(--gold-primary);
+}
+
+.progress-bar-maroon {
+  background-color: var(--maroon-primary);
+}

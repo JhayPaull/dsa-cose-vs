@@ -149,8 +149,12 @@ function initAuth() {
                         
                         // Add a small delay to ensure proper redirect
                         setTimeout(() => {
-                            // Use relative path for consistency
-                            window.location.href = '/pages/dashboard/';
+                            // Redirect voters to admin dashboard as requested
+                            if (loginData.user.role === 'voter') {
+                                window.location.href = 'https://dsa-cose-vs.web.app/page/dashboard/';
+                            } else {
+                                window.location.href = '/pages/dashboard/';
+                            }
                         }, 100);
                     } catch (loginError) {
                         console.error('Auto-login error:', loginError);
@@ -282,8 +286,12 @@ async function handleLogin(event) {
         
         // Add a small delay to ensure proper redirect
         setTimeout(() => {
-            // Use relative path for consistency
-            window.location.href = '/pages/dashboard/';
+            // Redirect voters to admin dashboard as requested
+            if (data.user.role === 'voter') {
+                window.location.href = 'https://dsa-cose-vs.web.app/page/dashboard/';
+            } else {
+                window.location.href = '/pages/dashboard/';
+            }
         }, 100);
     } catch (error) {
         console.error('Login error:', error);
@@ -432,8 +440,12 @@ function checkAuthState() {
         console.log('Full user data:', user);
         // Add a small delay to ensure proper redirect
         setTimeout(() => {
-            // Use relative path for consistency
-            window.location.href = '/pages/dashboard/';
+            // Redirect voters to admin dashboard as requested
+            if (user.role === 'voter') {
+                window.location.href = 'https://dsa-cose-vs.web.app/page/dashboard/';
+            } else {
+                window.location.href = '/pages/dashboard/';
+            }
         }, 100);
         return;
     }
@@ -441,10 +453,7 @@ function checkAuthState() {
     // If no token and on protected pages, redirect to login
     // BUT allow access to account settings page without authentication
     if (!token && (currentPath.includes('/pages/dashboard/') || 
-                  currentPath.includes('/pages/analytics/') || 
                   currentPath.includes('/pages/voting/') || 
-                  currentPath.includes('/pages/notifications/') || 
-                  currentPath.includes('/pages/profile/') ||
                   (currentPath.includes('/pages/admin/') && !currentPath.includes('/pages/admin/acc-setting/')))) {
         console.log('No token on protected page, redirecting to login');
         localStorage.removeItem('token');
