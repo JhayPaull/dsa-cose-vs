@@ -151,8 +151,8 @@
                                     <div class="mb-3">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <button class="btn btn-gold" data-toggle="modal" data-target="#addSubAdminModal">
-                                                    <i class="fas fa-user-shield"></i> Add Sub-Admin
+                                                <button class="btn btn-gold" data-bs-toggle="modal" data-bs-target="#addSubAdminModal">
+                                                    <i class="fas fa-user-shield"></i> Add COSE Member
                                                 </button>
                                             </div>
                                             <div class="col-md-6">
@@ -293,10 +293,8 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addSubAdminModalLabel">Add Sub-Administrator</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <h5 class="modal-title" id="addSubAdminModalLabel">Add COSE Member</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form id="addSubAdminForm">
@@ -362,8 +360,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-gold" id="saveSubAdminBtn">Add Sub-Admin</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-gold" id="saveSubAdminBtn">Add COSE Member</button>
                     </div>
                 </div>
             </div>
@@ -433,13 +431,15 @@
             
             Swal.fire({
                 icon: 'success',
-                title: 'Sub-Admin Added!',
-                text: 'The sub-admin "' + firstName + ' ' + lastName + '" has been successfully added.',
+                title: 'COSE Member Added!',
+                text: 'The COSE member "' + firstName + ' ' + lastName + '" has been successfully added.',
                 confirmButtonColor: '#800000'
             }).then(() => {
                 // Reset form and close modal
                 document.getElementById('addSubAdminForm').reset();
-                $('#addSubAdminModal').modal('hide');
+                const modalElement = document.getElementById('addSubAdminModal');
+                const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+                modal.hide();
             });
         });
         

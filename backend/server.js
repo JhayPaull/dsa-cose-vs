@@ -109,6 +109,7 @@ const notificationRoutes = require('./routes/notifications-firebase');
 const votingRoutes = require('./routes/voting-firebase');
 const adminRoutes = require('./routes/admin-firebase'); // Add admin routes
 const sliderRoutes = require('./routes/slider'); // Add slider routes
+const electionsRoutes = require('./routes/elections'); // Add elections routes
 
 console.log('Using Firebase routes for all endpoints');
 
@@ -120,6 +121,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/voting', votingRoutes);
 app.use('/api/admin', adminRoutes); // Add admin routes
 app.use('/api/slider', sliderRoutes); // Add slider routes
+app.use('/api/admin/elections', electionsRoutes); // Add elections routes
 
 // Health check
 app.get('/api/health', (req, res) => {

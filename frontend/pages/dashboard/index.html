@@ -151,6 +151,129 @@
             border: 2px dashed #dee2e6;
             border-radius: 8px;
         }
+        
+        /* Modern Carousel Styles */
+        .featured-carousel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            min-height: 350px;
+        }
+        
+        .carousel-item {
+            min-width: 100%;
+            position: relative;
+            display: none;
+        }
+        
+        .carousel-item.active {
+            display: block;
+        }
+        
+        .carousel-item img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            object-position: center;
+        }
+        
+        .carousel-caption {
+            position: absolute;
+            right: 15%;
+            bottom: 1.25rem;
+            left: 15%;
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
+            color: #fff;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 80%;
+            margin: 0 auto 30px;
+        }
+        
+        .carousel-caption h5 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #FFD700;
+        }
+        
+        .carousel-caption p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .carousel-btn {
+            background: rgba(255, 215, 0, 0.8);
+            color: #800000;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-btn:hover {
+            background: #FFD700;
+            transform: scale(1.1);
+        }
+        
+        .carousel-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.25rem rgba(255, 215, 0, 0.5);
+        }
+        
+        .carousel-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 350px;
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 2;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .carousel-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-indicator.active {
+            background-color: #FFD700;
+            transform: scale(1.2);
+        }
     </style>
         <script src="/js/shared-logout.js"></script>
         <script src="/js/auth.js"></script>
@@ -200,24 +323,31 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <!-- Slider Section -->
+                    <!-- Featured Content Carousel -->
                     <div class="row mb-4">
                         <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Featured Content Slider</h3>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                            <i class="fas fa-minus"></i>
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-maroon text-white d-flex justify-content-between align-items-center">
+                                    <h3 class="card-title mb-0">Featured Content</h3>
+                                    <div class="nav-btn-wrapper d-flex">
+                                        <button class="carousel-btn prev-btn me-2" aria-label="Previous">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <button class="carousel-btn next-btn" aria-label="Next">
+                                            <i class="fas fa-chevron-right"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <div id="slider-container" class="slider-container">
-                                        <!-- Slider items will be dynamically loaded here -->
-                                        <div class="slider-placeholder text-center p-5">
-                                            <p>No slider images configured yet.</p>
-                                            <a href="/pages/admin/edit-slider/" class="btn btn-gold">Add Slider Images</a>
+                                <div class="card-body p-0">
+                                    <div id="featured-carousel" class="featured-carousel">
+                                        <div class="carousel-inner">
+                                            <!-- Carousel items will be dynamically loaded here -->
+                                            <div class="carousel-placeholder text-center p-5">
+                                                <p class="text-muted mb-3">No featured content available yet.</p>
+                                                <a href="/pages/admin/edit-slider/" class="btn btn-gold">
+                                                    <i class="fas fa-plus-circle me-2"></i>Add Featured Content
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -527,7 +657,7 @@
 
         <footer class="copyright text-center">
             <div class="container">
-                <p class="mb-0 py-3">© 2025 Tagoloan Community College. All rights reserved.</p>
+                <p class="mb-0 py-3"> 2025 Tagoloan Community College. All rights reserved.</p>
             </div>
         </footer>
     </div>
@@ -817,6 +947,184 @@
                 }
             }
         }
+    </script>
+    
+    <script>
+        // Initialize carousel when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.querySelector('.carousel-inner');
+            const items = [];
+            let currentIndex = 0;
+            let autoSlideInterval;
+            
+            // Local slide images in order from slide1.jpg to slide4.jpg
+            const carouselItems = [
+                {
+                    image: '/images/slide1.jpg',
+                    title: 'Student Council Elections 2025',
+                    description: 'Make your voice heard! Vote for your student representatives.',
+                    buttonText: 'Learn More',
+                    buttonLink: '/elections/student-council-2025'
+                },
+                {
+                    image: '/images/slide2.jpg',
+                    title: 'Voting Now Open',
+                    description: 'Participate in the ongoing elections and make your vote count!',
+                    buttonText: 'Vote Now',
+                    buttonLink: '/vote'
+                },
+                {
+                    image: '/images/slide3.jpg',
+                    title: 'Meet the Candidates',
+                    description: 'Get to know the candidates running for various positions.',
+                    buttonText: 'View Profiles',
+                    buttonLink: '/candidates'
+                },
+                {
+                    image: '/images/slide4.jpg',
+                    title: 'Election Results',
+                    description: 'View the latest election results and statistics.',
+                    buttonText: 'View Results',
+                    buttonLink: '/results'
+                }
+            ];
+            
+            // Initialize carousel with items
+            function initCarousel() {
+                const carouselInner = document.querySelector('.carousel-inner');
+                const indicatorsContainer = document.createElement('ol');
+                indicatorsContainer.className = 'carousel-indicators';
+                
+                // Clear existing content
+                carouselInner.innerHTML = '';
+                
+                // Add carousel items
+                carouselItems.forEach((item, index) => {
+                    const carouselItem = document.createElement('div');
+                    carouselItem.className = `carousel-item ${index === 0 ? 'active' : ''}`;
+                    carouselItem.innerHTML = `
+                        <img src="${item.image}" class="d-block w-100" alt="${item.title}">
+                        <div class="carousel-caption">
+                            <h5>${item.title}</h5>
+                            <p>${item.description}</p>
+                            <a href="${item.buttonLink}" class="btn btn-gold">${item.buttonText}</a>
+                        </div>
+                    `;
+                    carouselInner.appendChild(carouselItem);
+                    
+                    // Add indicator
+                    const indicator = document.createElement('button');
+                    indicator.type = 'button';
+                    indicator.className = `carousel-indicator ${index === 0 ? 'active' : ''}`;
+                    indicator.setAttribute('data-bs-slide-to', index);
+                    indicator.setAttribute('aria-label', `Slide ${index + 1}`);
+                    indicator.addEventListener('click', () => goToSlide(index));
+                    indicatorsContainer.appendChild(indicator);
+                    
+                    items.push(carouselItem);
+                });
+                
+                // Add indicators to carousel
+                if (carouselItems.length > 1) {
+                    carouselInner.parentNode.insertBefore(indicatorsContainer, carouselInner.nextSibling);
+                }
+                
+                // Update active indicator
+                updateIndicators();
+            }
+            
+            // Go to specific slide
+            function goToSlide(index) {
+                if (index < 0 || index >= items.length) return;
+                
+                // Update active class
+                items.forEach((item, i) => {
+                    if (i === index) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+                
+                currentIndex = index;
+                updateIndicators();
+                
+                // Reset auto-slide timer
+                resetAutoSlide();
+            }
+            
+            // Go to next slide
+            function nextSlide() {
+                const nextIndex = (currentIndex + 1) % items.length;
+                goToSlide(nextIndex);
+            }
+            
+            // Go to previous slide
+            function prevSlide() {
+                const prevIndex = (currentIndex - 1 + items.length) % items.length;
+                goToSlide(prevIndex);
+            }
+            
+            // Update active indicator
+            function updateIndicators() {
+                const indicators = document.querySelectorAll('.carousel-indicator');
+                indicators.forEach((indicator, i) => {
+                    if (i === currentIndex) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Auto-slide functionality
+            function startAutoSlide() {
+                if (items.length <= 1) return; // No auto-slide if only one item
+                
+                autoSlideInterval = setInterval(() => {
+                    nextSlide();
+                }, 5000); // Change slide every 5 seconds
+            }
+            
+            function resetAutoSlide() {
+                clearInterval(autoSlideInterval);
+                startAutoSlide();
+            }
+            
+            // Initialize carousel
+            initCarousel();
+            
+            // Add event listeners for navigation buttons
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    prevSlide();
+                });
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    nextSlide();
+                });
+            }
+            
+            // Start auto-slide
+            startAutoSlide();
+            
+            // Pause auto-slide on hover
+            const carouselContainer = document.querySelector('.featured-carousel');
+            if (carouselContainer) {
+                carouselContainer.addEventListener('mouseenter', () => {
+                    clearInterval(autoSlideInterval);
+                });
+                
+                carouselContainer.addEventListener('mouseleave', () => {
+                    startAutoSlide();
+                });
+            }
+        });
     </script>
 </body>
 </html>
